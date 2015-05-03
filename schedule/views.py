@@ -63,6 +63,7 @@ def schedule_term(request, termid):
         'term': term,
         'user': request.user,
         'authenticated': True,
+        'by_id': False,
         'share': len(query) > 0,
         'share_url': share_url,
         'credits_min': credits_min,
@@ -101,6 +102,7 @@ def schedule_view(request, identifier):
         'term': term,
         'user': user,
         'authenticated': False,
+        'by_id': True,
         'credits_min': credits_min,
         'credits_max': credits_max,
     }

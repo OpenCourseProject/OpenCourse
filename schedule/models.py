@@ -10,8 +10,11 @@ class ScheduleEntry(models.Model):
     identifier = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name = "course"
-        verbose_name_plural = "courses"
+        verbose_name = "scheduled course"
+        verbose_name_plural = "scheduled courses"
+
+    def __unicode__(self):
+        return "%s: %d" % (self.user, self.course.crn)
 
     def generate_hash(self):
         hash = hashlib.md5(b'%s:%s' % (str(self.user.username), str(self.term.name)))
@@ -31,10 +34,16 @@ class ExamEntry(models.Model):
     exam_end_time = models.TimeField()
 
     class Meta:
-        verbose_name = "exam"
-        verbose_name_plural = "exams"
+        verbose_name = "exam period"
+        verbose_name_plural = "exam periods"
+
+    def __unicode__(self):
+        return "%s: %s %s-%s" % (self.term.name, self.days, self.course_start_time, self.course_end_time)
 
 class ExamSource(models.Model):
     term = models.ForeignKey(Term)
     cnu_source = models.URLField()
     xl_source = models.URLField()
+
+    def __unicode__(self):
+        return self.term.name

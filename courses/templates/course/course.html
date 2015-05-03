@@ -17,13 +17,13 @@ facebookCallback = function(response) {
           var my_id = response.id;
           for(var i=0;i<arr.length;i++) {
             var id = arr[i];
-            //if (id != my_id) {
+            if (id != my_id) {
               people_length++;
-            //}
+            }
           }
           for(var i=0;i<arr.length;i++) {
             var id = arr[i];
-            //if (id != my_id) {
+            if (id != my_id) {
               FB.api('/' + id, function(response) {
                 var name = response.name;
                 var url = 'http://facebook.com/' + id;
@@ -37,7 +37,7 @@ facebookCallback = function(response) {
                   }
                 });
               });
-            //}
+            }
           }
         });
       }
@@ -85,7 +85,7 @@ facebookCallback = function(response) {
       <p>
         <a href="{{ course.course_link }}" target="_blank">
           <button type="button" class="btn btn-default btn-lg">
-            <span class="glyphicon glyphicon-home" aria-hidden="true"></span> View on Schedule of Classes
+            <span class="glyphicon glyphicon-home" aria-hidden="true"></span> View Details
           </button>
         </a>
         <a href="{{ course.bookstore_link }}" target="_blank">

@@ -8,6 +8,9 @@ class Term(models.Model):
     value = models.IntegerField(unique=True, primary_key=True, verbose_name ="Term Value")
     name = models.CharField(max_length=50, verbose_name="Term Name")
 
+    def __unicode__(self):
+        return self.name
+
 class Instructor(models.Model):
     first_name = models.CharField(null=True, max_length=50, verbose_name="First Name")
     last_name = models.CharField(db_index=True, max_length=50, verbose_name="Last Name")
@@ -49,8 +52,8 @@ class Course(models.Model):
         verbose_name = "course"
         verbose_name_plural = "courses"
 
-    def friendly_name(self):
-       return "%s (%s) by %s on %s" % (self.title, self.course, self.instructor, self.days)
+    def __unicode__(self):
+        return "%s: %s" % (self.course, self.title)
 
     def to_json(self):
        data = json.dumps(self, default=lambda o: o.__dict__,)

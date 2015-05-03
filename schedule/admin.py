@@ -1,3 +1,6 @@
 from django.contrib import admin
+from schedule.models import ScheduleEntry, ExamEntry, ExamSource
 
-# Register your models here.
+admin.site.register(ScheduleEntry)
+admin.site.register(ExamEntry)
+admin.site.register(ExamSource)

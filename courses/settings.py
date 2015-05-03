@@ -8,17 +8,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # reconstruction. Details of information have been noted where redactions have
 # been made.
 
-# SECRET_KEY is scrubbed
+# SECRET_KEY scrubbed
 
-# SOCIAL_AUTH_GOOGLE_OAUTH2 KEY and SECRET are scrubbed
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY scrubbed
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET scrubbed
 SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = ['cnu.edu']
-# SOCIAL_AUTH_FACEBOOK KEY and SECRET are scrubbed
+# SOCIAL_AUTH_FACEBOOK_KEY scrubbed
+# SOCIAL_AUTH_FACEBOOK_SECRET scrubbed
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/account/error/'
 
 DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = ['courses.gravitydevelopment.net']
 
@@ -77,11 +79,19 @@ WSGI_APPLICATION = 'courses.wsgi.application'
 
 DATABASES = {
     'default': {
-        # Database connection details are scrubbed
+        # 'ENGINE' scrubbed
+        # 'NAME' scrubbed
+        # 'USER' scrubbed
+        # 'PASSWORD' scrubbed
+        # 'HOST' scrubbed
+        # 'PORT' scrubbed
 }
 
-# SMTP connection details are scrubbed
 EMAIL_USE_TLS = True
+# EMAIL_HOST scrubbed
+# EMAIL_PORT scrubbed
+# EMAIL_HOST_USER scrubbed
+# EMAIL_HOST_PASSWORD scrubbed
 
 LANGUAGE_CODE = 'en-us'
 
@@ -93,11 +103,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+STATIC_ROOT = BASE_DIR + '/courses/static/'
 STATIC_URL = '/static/'
-
-STATICFILES_DIRS = (
-    BASE_DIR + '/courses/static/',
-)
 
 TEMPLATE_DIRS = (
     BASE_DIR + '/courses/templates/',

@@ -29,7 +29,7 @@ class CourseResource(ModelResource):
 
     class Meta:
         queryset = Course.objects.all()
-        #resource_name = 'course'
+        resource_name = 'course'
         allowed_methods = ['get']
         filtering = {
             'crn': ALL,
@@ -47,8 +47,3 @@ class CourseResource(ModelResource):
             'term': ALL_WITH_RELATIONS,
             'instructor': ALL_WITH_RELATIONS,
         }
-
-class TestResource(ModelResource):
-    class Meta:
-        queryset = Instructor.objects.all()
-        allowed_methods = ['get']
