@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <center>
+    <div class="well">
+      <p><strong>Whoops.</strong> That schedule doesn't exist.</p>
+      <p>
+        The schedule you're trying to view couldn't be found.
+        it may have been deleted by its owner, or the link is wrong.
+        If you're confused about why you're getting this error, feel free to
+        <a href="mailto:ad@mfendley.com?subject=404:{{ request.path }}" target="_top">email me</a>.
+      </p>
+    </div>
+  </center>
+</div>
+{% endblock %}

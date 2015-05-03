@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script src="/static/assets/js/facebook.js"></script>
+<script>
+var authenticated = "{{ authenticated }}"
+var term = "{{ term.value }}"
+
+facebookCallback = function(response) {
+  if (response.status === 'connected') {
+    $.get('/friends/', {term: "{{ term.value }}", crn: "{{ course.crn }}"}, function(data) {
+      var arr = data.split(",");
+      var people_length = 0
+      var people = 0
+      if (arr.length > 0) {
+        FB.api('/me', function(response) {
+          var my_id = response.id;
+          for(var i=0;i<arr.length;i++) {
+            var id = arr[i];
+            //if (id != my_id) {
+              people_length++;
+            //}
+          }
+          for(var i=0;i<arr.length;i++) {
+            var id = arr[i];
+            //if (id != my_id) {
+              FB.api('/' + id, function(response) {
+                var name = response.name;
+                var url = 'http://facebook.com/' + id;
+                FB.api('/' + id + '/picture/', function(response) {
+                  var picture_url = response.data.url;
+                  $(".social-body").append('<a href="' + url + '" title="' + name + '"><img src="' + picture_url + '" alt="' + name + '"></a>');
+                  people++;
+                  if (people == people_length && people_length > 0) {
+                    $(".social-panel").removeClass("hidden");
+                    $(".social-heading").html(people + (people == 1 ? " person" : " people") + " taking this class");
+                  }
+                });
+              });
+            //}
+          }
+        });
+      }
+    });
+  }
+}
+</script>
+<script src="/static/assets/js/buttons.js"></script>
+{% endblock %}
+
+{% block search-active %}active{% endblock %}
+{% block content %}
+<div class="container">
+  {% if not authenticated %}
+  <div class="alert alert-info" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    Log in with your CNU account to schedule or get updates about this course.
+  </div>
+  {% endif %}
+  {% if course.seats == 0 and authenticated %}
+  <div class="alert alert-danger" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong>Heads up:</strong> this class is full.
+    Click <strong>Get Updates</strong> to be notified if it opens.
+  </div>
+  {% endif %}
+  <div class="page-header">
+    {% if authenticated %}
+    <button type="submit" name="follow-button" type="button" data-course-crn="{{ course.crn }}" class="btn btn-default pull-right">
+      <span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Loading...
+    </button>
+    {% endif %}
+    <h1><strong>{{ course.course }}</strong>: {{ course.title }} <small>with {% if course.instructor.rmp_link %}<a href="{{ course.instructor.rmp_link }}" target="_blan">{% endif %}{{ course.instructor }}{% if course.instructor.rmp_link %}</a>{% endif %}</small></h1>
+  </div>
+  <div class="lead">
+    <div class="well well-sm">
+      {% if authenticated %}
+      <button type="submit" name="schedule-button" type="button" data-course-crn="{{ course.crn }}" class="btn btn-default pull-right">
+          <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Loading...
+      </button>
+      {% endif %}
+      <p>
+        Meets <strong>{{ course.days }}</strong> from <strong>{{ course.start_time }}</strong> - <strong>{{ course.end_time }}</strong> in {{ course.location }}.
+      </p>
+      <p>
+        <a href="{{ course.course_link }}" target="_blank">
+          <button type="button" class="btn btn-default btn-lg">
+            <span class="glyphicon glyphicon-home" aria-hidden="true"></span> View on Schedule of Classes
+          </button>
+        </a>
+        <a href="{{ course.bookstore_link }}" target="_blank">
+          <button type="button" class="btn btn-default btn-lg">
+            <span class="glyphicon glyphicon-book" aria-hidden="true"></span> View on Bookstore
+          </button>
+        </a>
+      </p>
+    </div>
+  </div>
+  <div class="panel panel-default social-panel hidden">
+    <div class="panel-heading social-heading"></div>
+    <div class="panel-body social-body">
+    </div>
+  </div>
+  <ul class="list-group">
+    <li class="list-group-item">
+      <h4 class="list-group-item-heading">Term</h4>
+      <p class="list-group-item-text">{{ term.name }}</p>
+    </li>
+    <li class="list-group-item">
+      <h4 class="list-group-item-heading">CRN</h4>
+      <p class="list-group-item-text">{{ course.crn }}</p>
+    </li>
+    <li class="list-group-item">
+      <h4 class="list-group-item-heading">Seats Left</h4>
+      <p class="list-group-item-text">{{ course.seats }}</p>
+    </li>
+    <li class="list-group-item">
+      <h4 class="list-group-item-heading">Section</h4>
+      <p class="list-group-item-text">{{ course.section }}</p>
+    </li>
+    <li class="list-group-item">
+      <h4 class="list-group-item-heading">Credit Hours</h4>
+      <p class="list-group-item-text">{{ course.hours }}</p>
+    </li>
+    <li class="list-group-item">
+      <h4 class="list-group-item-heading">Course Type</h4>
+      <p class="list-group-item-text">{{ course.ctype }}</p>
+    </li>
+    <li class="list-group-item">
+      <h4 class="list-group-item-heading">Liberal Learning Curriculum or Area of Inquiry</h4>
+      <p class="list-group-item-text">{% if course.llc %}{{ course.llc }}{% else %}N/A{% endif %}</p>
+    </li>
+    <li class="list-group-item">
+      <h4 class="list-group-item-heading">Exam Period</h4>
+      <p class="list-group-item-text">{% if exam %}<div class="pull-right">(Computed automatically - please <a href="{{ exam_source.cnu_source }}">double-check</a>)</div><strong>{{ exam.exam_date }}</strong> from <strong>{{ exam.exam_start_time }}</strong> - <strong>{{ exam.exam_end_time }}</strong>{% elif exam_source %}Unavailable - please check the <a href="{{ exam_source.cnu_source }}">official schedule.</a>{% else %}Unavailable.{% endif %}</p>
+    </li>
+  </ul>
+</div>
+<div id="fb-root"></div>
+{% endblock %}

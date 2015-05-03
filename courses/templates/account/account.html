@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script src="/static/assets/js/facebook.js"></script>
+<script>
+var facebookCallback = function(response) {
+  if (response.status === 'connected') {
+    FB.api('/me', function(response) {
+      $.get('/account/link/facebook/', {facebook_id: response.id}, function(data) {
+      });
+      document.getElementById('facebook-status').innerHTML = 'Connected as ' + response.name + '.';
+    });
+  } else if (response.status === 'not_authorized') {
+    document.getElementById('facebook-status').innerHTML = 'Not Connected';
+  } else {
+    document.getElementById('facebook-status').innerHTML = 'Not Logged In';
+  }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <center>
+    <div class="well">
+      {% if authenticated %}
+      <form class="form-horizontal pull-right" action="/account/logout/" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Logout</button>
+      </form>
+      <p><h4>Logged in as <strong>{{ user.username }}</strong></h4><p>
+      {% else %}
+      <p>Click Login to login with your CNU account.</p>
+      <a href="{% url "social:begin" "google-oauth2" %}">
+          <button class="btn btn-primary">Login</button>
+      </a>
+      {% endif %}
+    </div>
+  </center>
+  {% if authenticated %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Profile</h3>
+    </div>
+    <div class="panel-body">
+      <form class="form-horizontal" method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <p>
+          {{ field.errors }}
+          {{ field.label_tag }} {{ field }}
+        </p>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Save</button>
+      </form>
+    </div>
+  </div>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Facebook Integration</h3>
+    </div>
+    <div class="panel-body">
+      <strong>Log in with Facebook to see friends in your classes</strong>
+      <br>
+      <div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false"></div>
+
+      <div id="facebook-status"></div>
+      <div id="fb-test"></div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+<div id="fb-root"></div>
+<script>
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=886841334691353";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
+{% endblock %}

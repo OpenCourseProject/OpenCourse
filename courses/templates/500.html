@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <center>
+    <div class="well">
+      <p><strong>Uh oh.</strong> You broke it.</p>
+      <p>
+        The server has encountered an error. Try that again, and if it
+        still doesn't work please
+        <a href="mailto:ad@mfendley.com?subject=500:{{ request.path }}" target="_top">let me know</a>.
+      </p>
+    </div>
+  </center>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <center>
+    <div class="well">
+      <p><strong>Whoops.</strong> Something's missing.</p>
+      <p>
+        The page you're trying to get to can't be found. Try heading back
+        <a href="/">home</a> or double-checking your link. If you're confused
+        about why you're getting this error, feel free to
+        <a href="mailto:ad@mfendley.com?subject=404:{{ request.path }}" target="_top">email me</a>.
+      </p>
+    </div>
+  </center>
+</div>
+{% endblock %}

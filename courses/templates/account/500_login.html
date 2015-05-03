@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <center>
+    <div class="well">
+      <p><strong>Uh oh.</strong> There was a problem with that account.</p>
+      <p>
+        Double-check to make sure you used your CNU-provided email address
+        and not another other gmail account. If you are using your CNU account
+        and still getting this error, please
+        <a href="mailto:ad@mfendley.com?subject=500:Login Error" target="_top">email me</a>.
+      </p>
+      <a href="{% url "social:begin" "google-oauth2" %}">
+          <button class="btn btn-primary">Login</button>
+      </a>
+    </div>
+  </center>
+</div>
+{% endblock %}

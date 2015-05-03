@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <h1><strong>OpenCourse API</strong></h1>
+  </div>
+  <div class="lead">
+    <div class="well well-sm">
+      <p>
+        The "Open" in Open Course Project means devotion to free information and
+        Open Source technologies. The data that is compiled to service
+        this website is regularly extracted directly from various CNU websites,
+        but it's provided centrally using RESTful API standards to any
+        interested students or third parties.
+      </p>
+      <p>
+        If you are creating your own service or even a personal application
+        using course, term, or instructor data, you are welcomed to use the API
+        detailed on this page.
+        The API is keyless and anonymous for now. If you're interested in using
+        it for your projects, please don't abuse it. Otherwise I'll have to buy
+        a bike lock.
+      </p>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><strong>API Functionality</strong></h3>
+    </div>
+    <div class="panel-body">
+      <ul>
+        <li>
+          All queries should be directed to the API URL:
+          <code>http://courses.gravitydevelopment.net/api/v1/</code>
+        </li>
+        <li>
+          API queries can be returned in your choice of
+          <code>json</code>, <code>xml</code>, or <code>yaml</code> format.
+          To specify, use the <code>Accept</code> header in your GET
+          request (ex: <code>curl -H "Accept: application/json" http://courses.gravitydevelopment.net/api/v1/course/</code>).
+          Alternatively, you may append <code>?format=FORMAT</code> to the end
+          of the url.
+        </li>
+        <li>
+          Large sets of data will be paginated with a limit of 20 objects per
+          page. Each result will contain a <code>meta</code> object which has
+          <code>limit</code> and a <code>next</code> URI which you may navigate
+          to in order to get to the next page of data.
+        </li>
+        <li>
+          To avoid pagination, you can append <code>?limit=0</code> to the end
+          of the url. It is requested that you avoid this unless absolutely
+          necessary to avoid large I/O spikes. When possible, use filters so
+          that your queries don't result in data sets needing to be paginated
+          in the first place.
+        </li>
+        <li>
+          To filter objects, use field names in the query. For instance,
+          <code>http://courses.gravitydevelopment.net/api/v1/course/?days=MWF</code>
+          finds all courses which meet Monday, Wednesday, and Friday. You
+          can further filter objects, for instance
+          <code>http://courses.gravitydevelopment.net/api/v1/course/?days=MWF&start_time=10:00:00</code>
+          finds all courses which meet Monday, Wednesday, and Friday at 10am.
+        </li>
+        <li>
+          See the endpoint details for information about which fields you can
+          use to filter your queries. If you'd like to filter on a sub-object,
+          you can use the <code>__</code> (double underscore) accessor.
+          For instance, <code>http://courses.gravitydevelopment.net/api/v1/course/?instructor__rmp_score=3</code>
+          finds all courses where the instructor's RateMyProfessor score is 3.0.
+        </li>
+        <li>
+          You can use <code>__gt</code> (greater than), <code>__lt</code> (less than),
+          <code>__contains</code>, <code>__startswith</code> or <code>__endswith</code>
+          modifiers to make advanced queries.
+          For instance, <code>http://courses.gravitydevelopment.net/api/v1/course/?instructor__rmp_score__gt=3</code>
+          finds all courses where the instructor's RateMyProfessor score is 3.0
+          <strong>or higher</strong>.
+        </li>
+      </ul>
+      <p>
+        The API is <strong>read-only</strong> on all endpoints. Schedules or user
+        data are not offered for privacy purposes, but if you have a use case for
+        either please <a href="mailto:ad@mfendley.com" target="_top">shoot me an email</a>.
+      </p>
+      <p>
+        Fields with the <span class="badge">No Filter</span> badge cannot be used
+        as filters in your queries.
+      </p>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><samp>GET /term/</samp></h3>
+    </div>
+    <div class="panel-body">
+      <p>A <strong>Term</strong> represents a semester where classes are offered.</p>
+      Fields:
+      <ul>
+        <li><code>value</code>: a Term ID which is unique for this Term.</li>
+        <li><code>name</code>: the name of this Term.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><samp>GET /instructor/</samp></h3>
+    </div>
+    <div class="panel-body">
+      <p>An <strong>Instructor</strong> represents a professor who teaches a course.</p>
+      Fields:
+      <ul>
+        <li>
+          <code>first_name</code>: the first name of the Instructor.
+          This could be a single-character intitial if the full first name is not known.
+        </li>
+        <li><code>last_name</code>: the last name of the Instructor.</li>
+        <li><code>rmp_link</code>: the RateMyProfessor page for this Instructor, if known. <span class="badge">No Filter</span></li>
+        <li><code>rmp_score</code>: the last RateMyProfessor rating for this Instructor, if known.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><samp>GET /course/</samp></h3>
+    </div>
+    <div class="panel-body">
+      <p>A <strong>Course</strong> represents a class that is offered in a specified term.</p>
+      Fields:
+      <ul>
+        <li><code>term</code>: the <strong>Term</strong> object in which this Course is offered.</li>
+        <li>
+          <code>crn</code>: the Course Registration Number of this Course.
+          <ul>
+            <li>
+              <strong>WARNING: </strong> CRNs are not necessarily unique.
+              To query a specific Course you must offer a <strong>Term</strong>
+              ID value <i>and</i> a CRN value.
+            </li>
+          </ul>
+        </li>
+        <li><code>course</code>: the course and course number of this Course. (ex: ACCT 201).</li>
+        <li><code>course_link</code>: the link to the Course on CNU's website. <span class="badge">No Filter</span></li>
+        <li><code>section</code>: the section of this Course.</li>
+        <li><code>title</code>: the Course title.</li>
+        <li><code>bookstore_link</code>: the link to the Course on CNU's bookstore. <span class="badge">No Filter</span></li>
+        <li><code>hours</code>: the number of credit hours.</li>
+        <li><code>llc</code>: the Liberal Learning Curriculum or Area of Inquiry, if any.</li>
+        <li><code>ctype</code>: the type of course (ex: Lec, Lab, etc).</li>
+        <li><code>days</code>: the days this Course meets</li>
+        <li><code>start_time</code>: the time this Course starts.</li>
+        <li><code>end_time</code>: the time this Course ends.</li>
+        <li><code>location</code>: the building and room number of this Course, if any.</li>
+        <li><code>instructor</code>: the <strong>Instructor</strong> object of this Course, if any.</li>
+        <li><code>seats</code>: the seats left.</li>
+        <li><code>status</code>: Open or Closed, depending on how many seats are left.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><strong>Non-API Resources</strong></h3>
+    </div>
+    <div class="panel-body">
+      In addition to RESTful API methods, raw assets compiled to populate this
+      service are available to anyone interested.
+    </div>
+    <ul class="list-group">
+      <li class="list-group-item">
+        <strong>Exam schedule</strong> information is created using spreadsheet
+        files and are downloadable at
+        <code>http://courses.gravitydevelopment.net/static/assets/xl/exam_schedule_TERM.xlsx</code>
+        where TERM is a valid Term ID (ex: 201510 for Spring 2015). See the details
+        of the <strong>Term</strong> endpoint for more information on Term IDs.
+        <ul>
+          <li>
+            Exam spreadsheets are created by hand for each term using the tables
+            extracted from the official CNU-provided PDF using the fantastic
+            <a href="http://tabula.technology/">Tabula</a> to reduce risk of
+            human transcription errors.
+          </li>
+          <li>
+            Not all current Terms will have an exam spreadsheet. Spreadsheets
+            are created for all Spring and Fall semesters when the official
+            schedule is posted to the CNU website.
+          </li>
+          <li>
+            Data is organized by sheet, the name of the sheet being the exam day
+            in the format <code>mm-dd-yyyy</code> that the cells apply to.
+          </li>
+          <li>
+            The first cell in each column is the exam period in the format
+            <code>hh:mm-hh:mm</code> where the first time is the start time and
+            the second is the end time.
+          </li>
+          <li>
+            Each following cell in a column contains the applicable courses that
+            will have an exam during the period, in the format
+            <code>DAY: hh:mm-hh:mm</code> where DAY could be any combination of
+            M, T, W, R, F, MW, T/R, etc. and the times are start and end times
+            of the course as explained above.
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

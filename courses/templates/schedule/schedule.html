@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load render_table from django_tables2 %}
+
+{% block head %}
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<script src="/static/assets/js/facebook.js"></script>
+<meta property="og:site_name" content="CNU Open Course Project"/>
+<meta property="og:title" content="{{ term.name }} schedule for {{ user.first_name }} {{ user.last_name }}" />
+<meta property="fb:app_id" content="886841334691353" />
+<meta property="og:description" content="{{ social_desc }}" />
+{% endblock %}
+
+{% block schedule-active %}active{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <div class="well">
+      {% if share %}
+      <div class="fb-share-button pull-right" data-href="{{ share_url }}" data-layout="button"></div>
+      {% endif %}
+      <h1>
+        <form action="/schedule/" method="post">
+          {% if authenticated %}
+          Your
+          <h5>
+          {% csrf_token %}
+          {% for field in form %}
+            {{ field }}
+          {% endfor %}
+          </h5>
+          schedule
+          {% if share %}
+          <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> Share</span>
+            <input type="text" class="form-control" aria-describedby="basic-addon1" onClick="this.setSelectionRange(0, this.value.length)" value="{{ share_url }}">
+          </div>
+          {% else %}
+          <h6>
+            Your schedule looks a bit bare...
+            Click <a href="/search">Search</a> to begin adding classes.
+          </h6>
+          {% endif %}
+          {% else %}
+          <strong>{{ term.name }}</strong> schedule for
+          <strong>{{ user.first_name }} {{ user.last_name }}</strong>
+          {% endif %}
+        </form>
+      </h1>
+    </div>
+    {% if not share %}
+    <center><mark>Click courses to see more information</mark></center>
+    {% endif %}
+  </div>
+  {% render_table table %}
+</div>
+<div id="fb-root"></div>
+<script>
+(function(d, s, id) {
+  var share = "{{ share }}"
+  if (share == "True") {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=886841334691353";
+    fjs.parentNode.insertBefore(js, fjs);
+  }
+}(document, 'script', 'facebook-jssdk'));
+</script>
+<style>
+form h1, h5 {
+    display: inline-block;
+}
+form h5 {
+  vertical-align: middle;
+}
+table tbody tr td a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  width: 100%;
+  height: 100%;
+}
+table tbody tr td a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+form  { display: table;      }
+p     { display: table-row;  }
+label { display: table-cell; }
+input { display: table-cell; }
+</style>
+{% endblock %}
