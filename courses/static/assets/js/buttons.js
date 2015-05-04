@@ -1,4 +1,4 @@
-$(function() {
+$(document).ready(function() {
   if (authenticated == 'True') {
     $('button[name="schedule-button"]').each(function(i, obj) {
       var button = $(this)
@@ -17,34 +17,37 @@ $(function() {
       });
     });
   }
-});
-$('button[name="schedule-button"]').click(function() {
-  var button = $(this)
-  var course = button.attr('data-course-crn')
-  var state = button.attr('data-schedule-state')
-  if (state == '0') {
-    $.get('/schedule/add/', {term: term, course: course}, function(data) {
-      update_schedule_button(button, '1');
-    });
-  } else {
-    $.get('/schedule/remove/', {term: term, course: course}, function(data) {
-      update_schedule_button(button, '0');
-    });
-  }
-});
-$('button[name="follow-button"]').click(function() {
-  var button = $(this)
-  var course = button.attr('data-course-crn')
-  var state = button.attr('data-follow-state')
-  if (state == '0') {
-    $.get('/follow/add/', {term: term, course: course}, function(data) {
-      update_follow_button(button, '1');
-    });
-  } else {
-    $.get('/follow/remove/', {term: term, course: course}, function(data) {
-      update_follow_button(button, '0');
-    });
-  }
+
+  $('button[name="schedule-button"]').click(function() {
+    var button = $(this)
+    var course = button.attr('data-course-crn')
+    var state = button.attr('data-schedule-state')
+    if (state == '0') {
+      $.get('/schedule/add/', {term: term, course: course}, function(data) {
+        update_schedule_button(button, '1');
+      });
+    } else {
+      $.get('/schedule/remove/', {term: term, course: course}, function(data) {
+        update_schedule_button(button, '0');
+      });
+    }
+  });
+  
+  $('button[name="follow-button"]').click(function() {
+    console.log('follow clicked')
+    var button = $(this)
+    var course = button.attr('data-course-crn')
+    var state = button.attr('data-follow-state')
+    if (state == '0') {
+      $.get('/follow/add/', {term: term, course: course}, function(data) {
+        update_follow_button(button, '1');
+      });
+    } else {
+      $.get('/follow/remove/', {term: term, course: course}, function(data) {
+        update_follow_button(button, '0');
+      });
+    }
+  });
 });
 
 function update_schedule_button(button, state) {

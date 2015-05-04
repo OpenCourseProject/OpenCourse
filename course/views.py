@@ -37,19 +37,6 @@ def error_404(request):
     return response
 
 def search(request):
-    if request.method == 'POST':
-        form = SearchForm(request.POST)
-        if form.is_valid():
-            term = form.cleaned_data['term']
-    else:
-        term = Term.objects.all()[0]
-        if request.user.is_authenticated():
-            profile = Profile.objects.get(user=request.user)
-            if profile.default_term:
-                term = profile.default_term
-    return HttpResponseRedirect('/search/' + str(term.value))
-
-def search_term(request, termid):
     crn = None
     course = None
     days = None
@@ -72,7 +59,11 @@ def search_term(request, termid):
             instructor = form.cleaned_data['instructor']
             show_closed = form.cleaned_data['show_closed']
     else:
-        term = Term.objects.get(value=termid)
+        term = Term.objects.all()[0]
+        if request.user.is_authenticated():
+            profile = Profile.objects.get(user=request.user)
+            if profile.default_term:
+                term = profile.default_term
         form = SearchForm()
         form.fields['term'].initial = term
     query = Course.objects.filter(term=term)
@@ -155,8 +146,11 @@ def find_friends(request):
         for profile in Profile.objects.filter(facebook_id__isnull=False):
             facebook_id = profile.facebook_id
             user = profile.user
-            if ScheduleEntry.objects.get(user=user, course=course):
+            try:
+                ScheduleEntry.objects.get(user=user, course=course)
                 friends.append(facebook_id)
+            except ScheduleEntry.DoesNotExist:
+                continue
         return HttpResponse(','.join(friends), 201)
     else:
         return HttpResponse('Method not allowed', 405)

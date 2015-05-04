@@ -55,10 +55,37 @@
 {% with table.page.paginator.count as total %}
 {% with table.page.object_list|length as count %}
 {% block pagination %}
+<style>
+.pager li>form {
+	display:inline-block;
+}
+.pager li>form>a,.pager li>span{
+	display:inline-block;
+	padding:5px 14px;
+	background-color:#fff;
+	border:1px solid #ddd;
+	border-radius:15px
+}
+
+.pager li>form>a:focus,.pager li>form>a:hover{
+	text-decoration:none;
+	background-color:#eee
+}
+</style>
 <nav>
   <ul class="pager">
     {% if table.page.has_previous %}
-    {% nospaceless %}{% block pagination.previous %}<li class="previous"><a href="{% querystring table.prefixed_page_field=table.page.previous_page_number %}">{% trans "Previous" %}</a></li>{% endblock pagination.previous %}{% endnospaceless %}
+    {% nospaceless %}{% block pagination.previous %}
+    <li class="previous">
+      <form class="form-horizontal" action="{% querystring table.prefixed_page_field=table.page.previous_page_number %}" method="post">
+        {% csrf_token %}
+        {% for field in form %}
+          {{ field.as_hidden }}
+        {% endfor %}
+        <a href="javascript:void(0)" onclick="$(this).closest('form').submit()">{% trans "Previous" %}</a>
+      </form>
+    </li>
+    {% endblock pagination.previous %}{% endnospaceless %}
     {% endif %}
 
     {% if table.page.has_previous or table.page.has_next %}
@@ -66,7 +93,17 @@
     {% endif %}
 
     {% if table.page.has_next %}
-    {% nospaceless %}{% block pagination.next %}<li class="next"><a href="{% querystring table.prefixed_page_field=table.page.next_page_number %}">{% trans "Next" %}</a></li>{% endblock pagination.next %}{% endnospaceless %}
+    {% nospaceless %}{% block pagination.next %}
+    <li class="next">
+      <form class="form-horizontal" action="{% querystring table.prefixed_page_field=table.page.next_page_number %}" method="post">
+        {% csrf_token %}
+        {% for field in form %}
+          {{ field.as_hidden }}
+        {% endfor %}
+        <a href="javascript:void(0)" onclick="$(this).closest('form').submit()">{% trans "Next" %}</a>
+      </form>
+    </li>
+    {% endblock pagination.next %}{% endnospaceless %}
     {% endif %}
   </ul>
 </nav>

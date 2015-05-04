@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container">
   <div class="well">
-    <form class="form-horizontal" action="/search/{{ term.value }}/" method="post">
+    <form class="form-horizontal" action="/search/" method="post">
       {% csrf_token %}
       {% for field in form %}
       <p>

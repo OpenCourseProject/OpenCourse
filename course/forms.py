@@ -7,7 +7,7 @@ class TermChoiceField(forms.ModelChoiceField):
         return term.name
 
 class SearchForm(forms.Form):
-    term = TermChoiceField(queryset=Term.objects.all(), empty_label=None)
+    term = TermChoiceField(widget=forms.Select(attrs={'onchange':'this.form.submit()'}), queryset=Term.objects.all(), empty_label=None)
     crn = forms.IntegerField(label='CRN', required=False)
     course = forms.CharField(label='Course (ACCT or PHYS 151)', max_length=20, required=False)
     days = forms.CharField(label='Days (M, MWF, TR, etc.)', max_length=5, required=False)

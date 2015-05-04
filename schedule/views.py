@@ -14,28 +14,16 @@ def schedule(request):
     if not request.user.is_authenticated():
         return redirect('/account/?next=%s' % (request.path))
     else:
-        profile = Profile.objects.get(user=request.user)
-        if profile.default_term:
-            term = profile.default_term
-        else:
-            term = Term.objects.all()[0]
         if request.method == 'POST':
             form = ScheduleForm(request.POST)
             if form.is_valid():
                 term = form.cleaned_data['term']
-        return HttpResponseRedirect('/schedule/' + str(term.value))
-
-def schedule_term(request, termid):
-    if not request.user.is_authenticated():
-        return redirect('/account/?next=%s' % (request.path))
-    else:
-        if request.method == 'POST':
-            form = ScheduleForm(request.POST)
-            if form.is_valid():
-                term = form.cleaned_data['term']
-                return HttpResponseRedirect('/schedule/' + str(term.value))
         else:
-            term = Term.objects.get(value=termid)
+            profile = Profile.objects.get(user=request.user)
+            if profile.default_term:
+                term = profile.default_term
+            else:
+                term = Term.objects.all()[0]
             form = ScheduleForm()
             form.fields['term'].initial = term
     query = ScheduleEntry.objects.filter(user=request.user, term=term)
