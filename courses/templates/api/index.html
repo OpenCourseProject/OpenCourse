@@ -146,7 +146,7 @@
         <li><code>title</code>: the Course title.</li>
         <li><code>bookstore_link</code>: the link to the Course on CNU's bookstore. <span class="badge">No Filter</span></li>
         <li><code>hours</code>: the number of credit hours.</li>
-        <li><code>llc</code>: the Liberal Learning Curriculum or Area of Inquiry, if any.</li>
+        <li><code>attributes</code>: course Attributes. See the <strong>Attribute</strong> endpoint for details.</li>
         <li><code>ctype</code>: the type of course (ex: Lec, Lab, etc).</li>
         <li><code>days</code>: the days this Course meets</li>
         <li><code>start_time</code>: the time this Course starts.</li>
@@ -155,6 +155,24 @@
         <li><code>instructor</code>: the <strong>Instructor</strong> object of this Course, if any.</li>
         <li><code>seats</code>: the seats left.</li>
         <li><code>status</code>: Open or Closed, depending on how many seats are left.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><samp>GET /attribute/</samp></h3>
+    </div>
+    <div class="panel-body">
+      <p>
+        An <strong>Attribute</strong> represents a course classification that
+        meets University requirements for a specific field. This could include
+        courses in a Liberal Learning Foundation, Area of Inquiry, courses that
+        are Writing Intensive, or Honors courses.
+      </p>
+      Fields:
+      <ul>
+        <li><code>value</code>: an Attribute ID.</li>
+        <li><code>name</code>: the full name of this Attribute.</li>
       </ul>
     </div>
   </div>

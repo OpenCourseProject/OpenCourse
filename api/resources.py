@@ -1,6 +1,6 @@
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
-from course.models import Course, Term, Instructor
+from course.models import Course, Term, Instructor, Attribute
 
 class TermResource(ModelResource):
     class Meta:
@@ -37,7 +37,7 @@ class CourseResource(ModelResource):
             'title': ALL,
             'course': ALL,
             'hours': ALL,
-            'llc': ALL,
+            'attribute': ALL,
             'ctype': ALL,
             'days': ALL,
             'start_time': ALL,
@@ -46,4 +46,14 @@ class CourseResource(ModelResource):
             'status': ALL,
             'term': ALL_WITH_RELATIONS,
             'instructor': ALL_WITH_RELATIONS,
+        }
+
+class AttributeResource(ModelResource):
+    class Meta:
+        queryset = Attribute.objects.all()
+        resource_name = 'attribute'
+        allowed_methods = ['get']
+        filtering = {
+            'value': ALL,
+            'name': ALL,
         }

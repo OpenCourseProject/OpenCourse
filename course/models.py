@@ -29,6 +29,13 @@ class Instructor(models.Model):
     def full_name(self):
         return first_name + " " + last_name
 
+class Attribute(models.Model):
+    value = models.CharField(max_length=10, verbose_name="Attribute Value")
+    name = models.CharField(max_length=50, verbose_name="Attribute Name")
+
+    def __unicode__(self):
+        return self.name
+
 class Course(models.Model):
     term = models.ForeignKey(Term)
     crn = models.IntegerField(db_index=True, verbose_name="CRN")
@@ -38,7 +45,7 @@ class Course(models.Model):
     title = models.CharField(max_length=50, verbose_name="Title")
     bookstore_link = models.URLField(max_length=200, verbose_name="Bookstore Link")
     hours = models.CharField(max_length=5, verbose_name="Hours")
-    llc = models.CharField(max_length=10, verbose_name="LLC/AoI")
+    attributes = models.CharField(max_length=10, verbose_name="Attributes")
     ctype = models.CharField(max_length=10, verbose_name="Type")
     days = models.CharField(db_index=True, max_length=50, verbose_name="Days")
     start_time = models.TimeField(db_index=True, null=True, verbose_name="Start")
@@ -55,15 +62,18 @@ class Course(models.Model):
     def __unicode__(self):
         return "%s: %s" % (self.course, self.title)
 
-    def to_json(self):
-       data = json.dumps(self, default=lambda o: o.__dict__,)
-       parse = json.loads(data)
-       parse['type'] = parse['ctype']
-       del parse['ctype']
-       del parse['_state']
-       return json.dumps(parse, sort_keys=True, indent=4)
+    @property
+    def get_attributes(self):
+        attr = []
+        for value in self.attributes.split('  '):
+            attr.append(Attribute.objects.get(value=value).name)
+        return ", ".join(attr)
+
 
 class FollowEntry(models.Model):
     user = models.ForeignKey(User)
     term = models.ForeignKey(Term)
     course = models.ForeignKey(Course)
+
+    def __unicode__(self):
+        return "%s: %d" % (self.user, self.course.crn)

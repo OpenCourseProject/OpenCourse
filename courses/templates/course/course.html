@@ -127,8 +127,8 @@ facebookCallback = function(response) {
       <p class="list-group-item-text">{{ course.ctype }}</p>
     </li>
     <li class="list-group-item">
-      <h4 class="list-group-item-heading">Liberal Learning Curriculum or Area of Inquiry</h4>
-      <p class="list-group-item-text">{% if course.llc %}{{ course.llc }}{% else %}N/A{% endif %}</p>
+      <h4 class="list-group-item-heading">Attributes</h4>
+      <p class="list-group-item-text">{% if course.attributes %}{{ course.get_attributes }}{% else %}N/A{% endif %}</p>
     </li>
     <li class="list-group-item">
       <h4 class="list-group-item-heading">Exam Period</h4>
