@@ -10,8 +10,9 @@ class Profile(models.Model):
     facebook_id = models.CharField(max_length=50, null=True)
 
 def create_profile(sender, instance, created, **kwargs):
-    profile = Profile.objects.get(user=instance)
-    if not profile:
+    try:
+        profile = Profile.objects.get(user=instance)
+    except Profile.DoesNotExist:
         Profile(user=instance).save()
 
 signals.post_save.connect(create_profile, sender=User)
