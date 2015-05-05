@@ -29,7 +29,7 @@ def schedule(request):
     query = ScheduleEntry.objects.filter(user=request.user, term=term)
     table = ScheduleTable(schedule_get_courses(query))
     hash = hashlib.md5(b'%s:%s' % (str(request.user.username), str(term.name)))
-    share_url = "http://courses.gravitydevelopment.net/schedule/" + hash.hexdigest()[:15] + "/"
+    share_url = "http://opencourseproject.com/schedule/" + hash.hexdigest()[:15] + "/"
 
     credits_min = 0
     credits_max = 0

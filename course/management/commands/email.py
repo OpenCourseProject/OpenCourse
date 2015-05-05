@@ -15,8 +15,8 @@ class Command(BaseCommand):
         status = "CLOSED" if course.seats == 0 else "OPEN"
 
         subject, from_email, to = 'Course Update: ' + course.title, 'admin@opencourseproject.com', user.email
-        text_content = course.title + ' for ' + term.name + ' is now ' + status + '. Click here to view the course page: http://courses.gravitydevelopment.net/course/' + str(term.value) + '/' + str(course.crn) + '/'
-        html_content = '<p><strong>' + course.title + '</strong> for ' + term.name + ' is now <strong>' + status + '</strong>.</p><p>Click here to view the course page: http://courses.gravitydevelopment.net/course/' + str(term.value) + '/' + str(course.crn) + '/</p>'
+        text_content = course.title + ' for ' + term.name + ' is now ' + status + '. Click here to view the course page: http://opencourseproject.com/course/' + str(term.value) + '/' + str(course.crn) + '/'
+        html_content = '<p><strong>' + course.title + '</strong> for ' + term.name + ' is now <strong>' + status + '</strong>.</p><p>Click here to view the course page: http://opencourseproject.com/course/' + str(term.value) + '/' + str(course.crn) + '/</p>'
         msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
         msg.attach_alternative(html_content, "text/html")
         msg.send()
