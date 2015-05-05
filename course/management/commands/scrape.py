@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
-from course.models import Course, Term, Instructor
+from django.core.management import call_command
+from course.models import Course, Term, Instructor, FollowEntry
 from splinter import Browser
 from lxml import html
 import json
@@ -59,8 +60,8 @@ class Command(BaseCommand):
                 title = row.getchildren()[3].xpath('a')[0].text.strip()
                 bookstore_link = row.getchildren()[3].xpath('a')[0].attrib['href']
                 hours = row.getchildren()[4].text.strip()
-                llcstring = row.getchildren()[5].xpath('span')[0].text
-                llc = llcstring.strip() if llcstring else ''
+                attrstring = row.getchildren()[5].xpath('span')[0].text
+                attributes = attrstring.strip() if attrstring else ''
                 ctype = row.getchildren()[6].text.strip()
                 days = row.getchildren()[7].text.strip()
 
@@ -90,10 +91,6 @@ class Command(BaseCommand):
                     if len(arr) > 1:
                         first_name = arr[1]
 
-                # RMP lookup
-                #if instructor != 'Staff':
-
-
                 # Create the instructor
                 instructor = Instructor(first_name=first_name, last_name=last_name)
 
@@ -114,17 +111,26 @@ class Command(BaseCommand):
                 status = 1 if statusstring == 'Open' else 0 if statusstring == 'Closed' else -1
 
                 # Create the course
-                course = Course(term=term, crn=crn, course=course, course_link=course_link, section=section, title=title, bookstore_link=bookstore_link, hours=hours, llc=llc, ctype=ctype, days=days, start_time=start_time, end_time=end_time, location=location, instructor=instructor, seats=seats, status=status)
+                course = Course(term=term, crn=crn, course=course, course_link=course_link, section=section, title=title, bookstore_link=bookstore_link, hours=hours, attributes=attributes, ctype=ctype, days=days, start_time=start_time, end_time=end_time, location=location, instructor=instructor, seats=seats, status=status)
 
                 # Add it to the database
                 try:
                     obj = Course.objects.get(term=term, crn=crn)
                     opts = obj._meta
+                    status_update = False
                     for f in opts.fields:
                         if f.name != 'id':
-                            setattr(obj, f.name, getattr(course, f.name))
-                        obj.save()
-                        print 'rewrote ' + str(crn)
+                            old_attr = getattr(obj, f.name)
+                            new_attr = getattr(course, f.name)
+                            setattr(obj, f.name, new_attr)
+                            if f.name == 'status':
+                                if old_attr != new_attr:
+                                    status_update = True
+                    obj.save()
+                    if status_update:
+                        follows = FollowEntry.objects.filter(course=obj)
+                        for follow in follows:
+                            call_command('email', str(follow.user.id), str(obj.term.value), str(obj.crn))
                 except Course.DoesNotExist:
                     course.save()
         self.stdout.write('Successfully scraped courses')

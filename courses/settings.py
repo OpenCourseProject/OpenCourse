@@ -22,7 +22,7 @@ DEBUG = False
 
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['courses.gravitydevelopment.net']
+ALLOWED_HOSTS = ['courses.gravitydevelopment.net', 'opencourseproject.com']
 
 INSTALLED_APPS = (
     # Django Apps
