@@ -1,6 +1,6 @@
 # Open Course Project
 
-The Open Course Project is an effort to overhaul course lookup and registration. On Open Course you can: 
+The Open Course Project is an effort to overhaul course lookup and registration. On Open Course you can:
 * Search and view courses by any criteria
 * See your exam schedule
 * Find Facebook friends in your classes
@@ -12,7 +12,7 @@ The Open Course Project is an effort to overhaul course lookup and registration.
 
 This repository is a [Django](https://www.djangoproject.com/) project written in Python.
 
-The official Open Course Project website is online at http://courses.gravitydevelopment.net.
+The official Open Course Project website is online at http://opencourseproject.com.
 This website and project are still in heavy development, and the code at this repository should be up-to-date,
 but may not necessarily reflect the current state of the website.
 
@@ -44,4 +44,3 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-

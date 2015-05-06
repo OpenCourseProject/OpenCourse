@@ -50,6 +50,68 @@ facebookCallback = function(response) {
 
 {% block search-active %}active{% endblock %}
 {% block content %}
+<!-- Details Modal -->
+<div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="detailsLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="detailsLabel">Course Details</h4>
+      </div>
+      <div class="modal-body">
+        <iframe src="" style="zoom:0.60" frameborder="0" height="250" width="99.6%"></iframe>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Materials Modal -->
+<div class="modal fade" id="materials" tabindex="-1" role="dialog" aria-labelledby="materialsLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="materialsLabel">Course Materials</h4>
+      </div>
+      <div class="modal-body">
+        {% if materials %}
+        <ul class="list-group">
+          {% for material in materials %}
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">
+              {{ material.title }}
+              <div class="pull-right">
+                <a href="http://chegg.com/search/{{ material.isbn }}/">
+                  <img src="/static/assets/images/chegg-icon.png" width="30" height="30">
+                </a>
+                <a href="http://www.amazon.com/s?url=search-alias%3Daps&field-keywords={{ material.isbn }}">
+                  <img src="/static/assets/images/amazon-icon.png" width="30" height="30">
+                </a>
+              </div>
+              </h4>
+            <p class="list-group-item-text">
+              <ul>
+                <li><strong>ISBN</strong>: {{ material.isbn }}
+                <li><strong>Edition</strong>: {{ material.edition }}
+                <li><strong>Author</strong>: {{ material.author }}
+              </ul>
+            </p>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <strong>No required materials for this course.</strong>
+        {% endif %}
+        <p><a href="{{ course.bookstore_link }}">View on CNU Bookstore</a></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="container">
   {% if not authenticated %}
   <div class="alert alert-info" role="alert">
@@ -83,16 +145,14 @@ facebookCallback = function(response) {
         Meets <strong>{{ course.days }}</strong> from <strong>{{ course.start_time }}</strong> - <strong>{{ course.end_time }}</strong> in {{ course.location }}.
       </p>
       <p>
-        <a href="{{ course.course_link }}" target="_blank">
-          <button type="button" class="btn btn-default btn-lg">
+        <a href="{{ course.course_link }}">
+          <button id="detailsButton" type="button" class="btn btn-default btn-lg">
             <span class="glyphicon glyphicon-home" aria-hidden="true"></span> View Details
           </button>
         </a>
-        <a href="{{ course.bookstore_link }}" target="_blank">
-          <button type="button" class="btn btn-default btn-lg">
-            <span class="glyphicon glyphicon-book" aria-hidden="true"></span> View on Bookstore
-          </button>
-        </a>
+        <button id="materialsButton" type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#materials">
+          <span class="glyphicon glyphicon-book" aria-hidden="true"></span> View Materials
+        </button>
       </p>
     </div>
   </div>

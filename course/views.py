@@ -1,6 +1,6 @@
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from course.models import Course, Term, FollowEntry
+from course.models import Course, Term, FollowEntry, Material
 from schedule.models import ScheduleEntry, ExamEntry, ExamSource
 from django.template import RequestContext
 from django_tables2 import RequestConfig
@@ -94,6 +94,7 @@ def course(request, term, crn):
     except Course.DoesNotExist:
         raise Http404("Course does not exist")
 
+    materials = Material.objects.filter(course=course)
     exams = ExamEntry.objects.filter(term=term, course_start_time=course.start_time, course_end_time=course.end_time)
 
     if course.days == "T" or course.days == "R":
@@ -121,6 +122,7 @@ def course(request, term, crn):
         'user': user,
         'exam': exam,
         'exam_source': exam_source,
+        'materials': materials,
     }
     return render(request, 'course/course.html', context)
 

@@ -1,6 +1,6 @@
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
-from course.models import Course, Term, Instructor, Attribute
+from course.models import Course, Term, Instructor, Attribute, Material
 
 class TermResource(ModelResource):
     class Meta:
@@ -56,4 +56,21 @@ class AttributeResource(ModelResource):
         filtering = {
             'value': ALL,
             'name': ALL,
+        }
+
+class MaterialResource(ModelResource):
+    course = fields.ToOneField(CourseResource, 'course')
+
+    class Meta:
+        queryset = Material.objects.all()
+        resource_name = 'material'
+        allowed_methods = ['get']
+        filtering = {
+            'isbn': ALL,
+            'title': ALL,
+            'author': ALL,
+            'publisher': ALL,
+            'edition': ALL,
+            'year': ALL,
+            'course': ALL_WITH_RELATIONS,
         }

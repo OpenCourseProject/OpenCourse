@@ -32,13 +32,13 @@
       <ul>
         <li>
           All queries should be directed to the API URL:
-          <code>http://courses.gravitydevelopment.net/api/v1/</code>
+          <code>http://opencourseproject.com/api/v1/</code>
         </li>
         <li>
           API queries can be returned in your choice of
           <code>json</code>, <code>xml</code>, or <code>yaml</code> format.
           To specify, use the <code>Accept</code> header in your GET
-          request (ex: <code>curl -H "Accept: application/json" http://courses.gravitydevelopment.net/api/v1/course/</code>).
+          request (ex: <code>curl -H "Accept: application/json" http://opencourseproject.com/api/v1/course/</code>).
           Alternatively, you may append <code>?format=FORMAT</code> to the end
           of the url.
         </li>
@@ -57,24 +57,24 @@
         </li>
         <li>
           To filter objects, use field names in the query. For instance,
-          <code>http://courses.gravitydevelopment.net/api/v1/course/?days=MWF</code>
+          <code>http://opencourseproject.com/api/v1/course/?days=MWF</code>
           finds all courses which meet Monday, Wednesday, and Friday. You
           can further filter objects, for instance
-          <code>http://courses.gravitydevelopment.net/api/v1/course/?days=MWF&start_time=10:00:00</code>
+          <code>http://opencourseproject.com/api/v1/course/?days=MWF&start_time=10:00:00</code>
           finds all courses which meet Monday, Wednesday, and Friday at 10am.
         </li>
         <li>
           See the endpoint details for information about which fields you can
           use to filter your queries. If you'd like to filter on a sub-object,
           you can use the <code>__</code> (double underscore) accessor.
-          For instance, <code>http://courses.gravitydevelopment.net/api/v1/course/?instructor__rmp_score=3</code>
+          For instance, <code>http://opencourseproject.com/api/v1/course/?instructor__rmp_score=3</code>
           finds all courses where the instructor's RateMyProfessor score is 3.0.
         </li>
         <li>
           You can use <code>__gt</code> (greater than), <code>__lt</code> (less than),
           <code>__contains</code>, <code>__startswith</code> or <code>__endswith</code>
           modifiers to make advanced queries.
-          For instance, <code>http://courses.gravitydevelopment.net/api/v1/course/?instructor__rmp_score__gt=3</code>
+          For instance, <code>http://opencourseproject.com/api/v1/course/?instructor__rmp_score__gt=3</code>
           finds all courses where the instructor's RateMyProfessor score is 3.0
           <strong>or higher</strong>.
         </li>
@@ -160,6 +160,36 @@
   </div>
   <div class="panel panel-default">
     <div class="panel-heading">
+      <h3 class="panel-title"><samp>GET /material/</samp></h3>
+    </div>
+    <div class="panel-body">
+      <p>
+        A <strong>Material</strong> represents a required text for a Course.
+      </p>
+      Fields:
+      <ul>
+        <li>
+          <code>course</code>: the <strong>Course</strong> to which this Material belongs.
+          <ul>
+            <li>
+              To avoid unnecessarily long query results, the Course which this
+              Material belongs to is summed up with a URI to the location which
+              can provide you with the Course information. See the Course endpoint
+              for more details on Courses.
+            </li>
+          </ul>
+        </li>
+        <li><code>isbn</code>: the ISBN number for the text.</li>
+        <li><code>title</code>: the title of the text.</li>
+        <li><code>author</code>: the author of the text.</li>
+        <li><code>publisher</code>: the publisher of the text.</li>
+        <li><code>edition</code>: the edition of the text.</li>
+        <li><code>year</code>: the publishing year of the text.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
       <h3 class="panel-title"><samp>GET /attribute/</samp></h3>
     </div>
     <div class="panel-body">
@@ -188,7 +218,7 @@
       <li class="list-group-item">
         <strong>Exam schedule</strong> information is created using spreadsheet
         files and are downloadable at
-        <code>http://courses.gravitydevelopment.net/static/assets/xl/exam_schedule_TERM.xlsx</code>
+        <code>http://opencourseproject.com/static/assets/xl/exam_schedule_TERM.xlsx</code>
         where TERM is a valid Term ID (ex: 201510 for Spring 2015). See the details
         of the <strong>Term</strong> endpoint for more information on Term IDs.
         <ul>
