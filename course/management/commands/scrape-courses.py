@@ -128,7 +128,7 @@ class Command(BaseCommand):
                                     status_update = True
                     obj.save()
                     if status_update:
-                        follows = FollowEntry.objects.filter(course=obj)
+                        follows = FollowEntry.objects.filter(term=obj.term, course_crn=obj.crn)
                         for follow in follows:
                             call_command('email', str(follow.user.id), str(obj.term.value), str(obj.crn))
                 except Course.DoesNotExist:

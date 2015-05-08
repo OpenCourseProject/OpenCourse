@@ -106,6 +106,10 @@ USE_TZ = True
 STATIC_ROOT = BASE_DIR + '/courses/static/'
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, '/courses/static/'),
+)
+
 TEMPLATE_DIRS = (
     BASE_DIR + '/courses/templates/',
 )

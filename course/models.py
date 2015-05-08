@@ -2,6 +2,7 @@ from django.db import models
 from django.db import connection
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.core import serializers
 import json
 
 class Term(models.Model):
@@ -69,17 +70,17 @@ class Course(models.Model):
             attr.append(Attribute.objects.get(value=value).name)
         return ", ".join(attr)
 
-
 class FollowEntry(models.Model):
     user = models.ForeignKey(User)
     term = models.ForeignKey(Term)
-    course = models.ForeignKey(Course)
+    course_crn = models.IntegerField(max_length=4)
 
     def __unicode__(self):
         return "%s: %d" % (self.user, self.course.crn)
 
 class Material(models.Model):
-    course = models.ForeignKey(Course)
+    term = models.ForeignKey(Term)
+    course_crn = models.IntegerField(max_length=4)
     isbn = models.BigIntegerField()
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=50)

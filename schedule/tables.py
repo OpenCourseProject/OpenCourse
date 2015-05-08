@@ -4,8 +4,21 @@ from course.models import Course
 class ScheduleTable(tables.Table):
     class Meta:
         model = Course
-        template = "schedule/table.html"
+        template = "schedule/course_table.html"
         order_by = "start_time"
         empty_text = "No courses yet!"
         attrs = {"class": "table table-bordered table-striped table-hover"}
         fields = ("crn", "course", "section", "title", "hours", "llc", "ctype", "days", "start_time", "end_time", "location", "instructor", "seats")
+
+class ExamTable(tables.Table):
+    course = tables.Column()
+    title = tables.Column()
+    date = tables.DateColumn()
+    start_time = tables.TimeColumn()
+    end_time = tables.TimeColumn()
+
+    class Meta:
+        template = "schedule/exam_table.html"
+        order_by = "start_time"
+        empty_text = "No exams found for your schedule"
+        attrs = {"class": "table table-bordered table-striped table-hover"}

@@ -36,16 +36,20 @@
 <script>
 $(document).ready(function() {
   $('#calendar').fullCalendar({
+    header: {
+      left:   'today prev,next',
+      center: 'title',
+      right:  'agendaWeek,month',
+    },
     defaultView: 'agendaWeek',
-    header: false,
     editable: false,
     hiddenDays: [0],
     allDaySlot: false,
-    events: '/schedule/calendar/course/?term={{ term.value }}',
+    events: '/schedule/calendar/exam/?term={{ term.value }}',
     loading: function(isLoading, view) {
       // Hacky fix to avoid calendar loading
       if (!isLoading) {
-        var lastTab = localStorage.getItem('scheduleLastTab')
+        var lastTab = localStorage.getItem('examLastTab')
         if (lastTab) {
             $('#viewTabs a[href="' + lastTab + '"]').tab('show')
         } else {
@@ -55,19 +59,9 @@ $(document).ready(function() {
     }
   });
   $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-    localStorage.setItem('scheduleLastTab', $(e.target).attr('href'));
+    localStorage.setItem('examLastTab', $(e.target).attr('href'));
   });
 });
-(function(d, s, id) {
-  var share = "{{ share }}"
-  if (share == "True") {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=886841334691353";
-    fjs.parentNode.insertBefore(js, fjs);
-  }
-}(document, 'script', 'facebook-jssdk'));
 </script>
 {% endblock %}
 
@@ -75,45 +69,17 @@ $(document).ready(function() {
 {% block content %}
 <div class="container">
   <div class="well">
-    {% if share %}
-    <div class="fb-share-button pull-right" data-href="{{ share_url }}" data-layout="button"></div>
-    {% endif %}
     <h1>
-      <form action="/schedule/" method="post">
-        {% if authenticated %}
-        Your
-        <h5>
-        {% csrf_token %}
-        {% for field in form %}
-          {{ field }}
-        {% endfor %}
-        </h5>
-        schedule
-        {% if share %}
-        <div class="input-group">
-          <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> Share</span>
-          <input type="text" class="form-control" aria-describedby="basic-addon1" onClick="this.setSelectionRange(0, this.value.length)" value="{{ share_url }}">
-        </div>
-        {% else %}
-        <h6>
-          Your schedule looks a bit bare...
-          Click <a href="/search">Search</a> to begin adding classes.
-        </h6>
-        {% endif %}
-        {% else %}
-        <strong>{{ term.name }}</strong> schedule for
-        <strong>{{ user.first_name }} {{ user.last_name }}</strong>
-        {% endif %}
-      </form>
+      Your {{ term.name }} exam schedule
+      <h6>
+        <strong class="text-danger">Exam schedules are computed automatically.</strong>
+        <br>
+        Do not rely on this page to be accurate and ALWAYS double check your
+        exam schedule using the official PDF.
+      </h6>
     </h1>
   </div>
-  {% if by_id %}
-  <center><mark>Click courses to see more information</mark></center>
-  {% endif %}
   <div role="tabpanel">
-    {% if has_exams %}
-    <a href="/schedule/exam/{{ term.value }}" class="pull-right">View Exam Schedule</a>
-    {% endif %}
     <ul class="nav nav-tabs" role="tablist" id="viewTabs">
       <li role="presentation"><a href="#list-tab" aria-controls="list-tab" role="tab" data-toggle="tab">List View</a></li>
       <li role="presentation" class="active"><a href="#calendar-tab" aria-controls="calendar-tab" role="tab" data-toggle="tab">Calendar View</a></li>
@@ -124,5 +90,4 @@ $(document).ready(function() {
     </div>
   </div>
 </div>
-<div id="fb-root"></div>
 {% endblock %}

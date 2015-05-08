@@ -21,9 +21,10 @@ class Command(BaseCommand):
                     value = result[i]
                     list = value.xpath('span/text()')
                     try:
-                        Material.objects.get(isbn=int(list[2].strip()), course=course)
+                        Material.objects.get(isbn=int(list[2].strip()), term=course.term, course_crn=course.crn)
                     except Material.DoesNotExist:
-                        materials[i].course = course
+                        materials[i].term = course.term
+                        materials[i].course_crn = course.crn
                         materials[i].author = list[0].strip()
                         materials[i].edition = list[1].strip()
                         materials[i].isbn = int(list[2].strip())

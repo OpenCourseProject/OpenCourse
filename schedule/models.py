@@ -6,7 +6,7 @@ import hashlib
 class ScheduleEntry(models.Model):
     user = models.ForeignKey(User)
     term = models.ForeignKey(Term)
-    course = models.ForeignKey(Course)
+    course_crn = models.IntegerField(max_length=4)
     identifier = models.CharField(max_length=100)
 
     class Meta:

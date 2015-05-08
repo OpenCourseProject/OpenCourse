@@ -92,7 +92,7 @@ facebookCallback = function(response) {
               </div>
               </h4>
             <p class="list-group-item-text">
-              <ul>
+              <ul class="list-unstyled">
                 <li><strong>ISBN</strong>: {{ material.isbn }}
                 <li><strong>Edition</strong>: {{ material.edition }}
                 <li><strong>Author</strong>: {{ material.author }}
@@ -118,8 +118,7 @@ facebookCallback = function(response) {
     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     Log in with your CNU account to schedule or get updates about this course.
   </div>
-  {% endif %}
-  {% if course.seats == 0 and authenticated %}
+  {% elif course.seats == 0 %}
   <div class="alert alert-danger" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <strong>Heads up:</strong> this class is full.

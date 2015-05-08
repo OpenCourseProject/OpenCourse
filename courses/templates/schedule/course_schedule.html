@@ -13,13 +13,16 @@
 <meta property="fb:app_id" content="886841334691353" />
 <meta property="og:description" content="{{ social_desc }}" />
 <style>
-  form h1, h5 {
+  .schedule-form  {
+    display: table;
+  }
+  .schedule-form h1, h5 {
       display: inline-block;
   }
-  form h5 {
+  .schedule-form h5 {
     vertical-align: middle;
   }
-  input {
+  .schedule-form input {
     display: table-cell;
   }
 	#calendar-tab {
@@ -79,7 +82,7 @@ $(document).ready(function() {
     <div class="fb-share-button pull-right" data-href="{{ share_url }}" data-layout="button"></div>
     {% endif %}
     <h1>
-      <form action="/schedule/" method="post">
+      <form class="schedule-form" action="/schedule/" method="post">
         {% if authenticated %}
         Your
         <h5>
@@ -92,7 +95,7 @@ $(document).ready(function() {
         {% if share %}
         <div class="input-group">
           <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> Share</span>
-          <input type="text" class="form-control" aria-describedby="basic-addon1" onClick="this.setSelectionRange(0, this.value.length)" value="{{ share_url }}">
+          <input type="text" size="35" class="form-control" aria-describedby="basic-addon1" onClick="this.setSelectionRange(0, this.value.length)" value="{{ share_url }}">
         </div>
         {% else %}
         <h6>

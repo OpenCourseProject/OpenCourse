@@ -7,7 +7,7 @@ from django_tables2 import RequestConfig
 from course.tables import CourseTable
 from course.forms import SearchForm
 from account.models import Profile
-from django.db.models import Q
+from course.utils import exam_for_course
 from django.contrib.auth.decorators import login_required
 import json
 import logging
@@ -94,20 +94,9 @@ def course(request, term, crn):
     except Course.DoesNotExist:
         raise Http404("Course does not exist")
 
-    materials = Material.objects.filter(course=course)
-    exams = ExamEntry.objects.filter(term=term, course_start_time=course.start_time, course_end_time=course.end_time)
+    materials = Material.objects.filter(term=term, course_crn=course.crn)
 
-    if course.days == "T" or course.days == "R":
-        exams = exams.filter(Q(days=course.days) | Q(days="T/R"))
-    elif course.days == "M" or course.days == "W":
-        exams = exams.filter(Q(days=course.days) | Q(days="M/W") | Q(days="M/W/F"))
-    else:
-        exams = exams.filter(days=course.days)
-
-    exam = None
-    if len(exams) == 1:
-        exam = exams[0]
-
+    exam = exam_for_course(course)
     exam_sources = ExamSource.objects.filter(term=term)
     exam_source = None
     if len(exam_sources) == 1:
@@ -127,20 +116,6 @@ def course(request, term, crn):
     return render(request, 'course/course.html', context)
 
 @login_required
-def follow_add(request):
-    if request.method == 'GET':
-        term = Term.objects.get(value=request.GET['term'])
-        course = Course.objects.get(term=term, crn=request.GET['course'])
-        if not follow_check_course(term, course):
-            entry = FollowEntry(user=request.user, term=term, course=course)
-            entry.save()
-            return HttpResponse('OK', 201)
-        else:
-            return HttpResponse('User is already following', 400)
-    else:
-        return HttpResponse('Method not allowed', 405)
-
-@login_required
 def find_friends(request):
     if request.method == 'GET':
         course = Course.objects.get(term=request.GET['term'], crn=request.GET['crn'])
@@ -149,11 +124,25 @@ def find_friends(request):
             facebook_id = profile.facebook_id
             user = profile.user
             try:
-                ScheduleEntry.objects.get(user=user, course=course)
+                ScheduleEntry.objects.get(user=user, course_crn=course.crn)
                 friends.append(facebook_id)
             except ScheduleEntry.DoesNotExist:
                 continue
         return HttpResponse(','.join(friends), 201)
+    else:
+        return HttpResponse('Method not allowed', 405)
+
+@login_required
+def follow_add(request):
+    if request.method == 'GET':
+        term = Term.objects.get(value=request.GET['term'])
+        course = Course.objects.get(term=term, crn=request.GET['course'])
+        if not follow_check_course(term, course):
+            entry = FollowEntry(user=request.user, term=term, course_crn=course.crn)
+            entry.save()
+            return HttpResponse('OK', 201)
+        else:
+            return HttpResponse('User is already following', 400)
     else:
         return HttpResponse('Method not allowed', 405)
 
@@ -163,7 +152,7 @@ def follow_remove(request):
         term = Term.objects.get(value=request.GET['term'])
         course = Course.objects.get(term=term, crn=request.GET['course'])
         if follow_check_course(term, course):
-            entry = FollowEntry.objects.get(user=request.user, term=term, course=course)
+            entry = FollowEntry.objects.get(user=request.user, term=term, course_crn=course.crn)
             entry.delete()
             return HttpResponse('OK', 201)
         else:
@@ -184,5 +173,5 @@ def follow_has(request):
         return HttpResponse('Method not allowed', 405)
 
 def follow_check_course(term, course):
-    entries = FollowEntry.objects.filter(term=term, course=course)
+    entries = FollowEntry.objects.filter(term=term, course_crn=course.crn)
     return len(entries) > 0
