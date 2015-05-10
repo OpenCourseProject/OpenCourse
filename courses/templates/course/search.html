@@ -2,6 +2,7 @@
 {% load render_table from django_tables2 %}
 
 {% block head %}
+<script src="/static/assets/js/cookie.js"></script>
 <style>
   .panel-body form  {
     display: table;
@@ -16,6 +17,20 @@
     display: table-cell;
   }
 </style>
+<script>
+$(document).ready(function () {
+  $(".collapse").on('shown.bs.collapse', function () {
+      $.cookie('collapseState', 'show')
+  });
+  $(".collapse").on('hidden.bs.collapse', function () {
+    $.cookie('collapseState', 'hide')
+  });
+  var state = $.cookie('collapseState')
+  if (state != null) {
+    $(".collapse").collapse(state)
+  }
+  });
+</script>
 {% endblock %}
 
 {% block search-active %}active{% endblock %}

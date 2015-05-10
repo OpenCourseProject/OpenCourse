@@ -107,8 +107,9 @@ def schedule_view(request, identifier):
         term = query[0].term
         user = query[0].user
         for entry in query:
-            value = entry.course.hours
-            desc += entry.course.title + ", "
+            course = schedule_get_course(entry)
+            value = course.hours
+            desc += course.title + ", "
             credits_min += int(value[:1])
             if len(value) > 1:
                 credits_max += int(value[4:])

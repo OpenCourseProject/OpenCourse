@@ -49,17 +49,9 @@ $(document).ready(function() {
     loading: function(isLoading, view) {
       // Hacky fix to avoid calendar loading
       if (!isLoading) {
-        var lastTab = localStorage.getItem('examLastTab')
-        if (lastTab) {
-            $('#viewTabs a[href="' + lastTab + '"]').tab('show')
-        } else {
-          $('#viewTabs a[href="#list-tab"]').tab('show')
-        }
+        $('#viewTabs a[href="#list-tab"]').tab('show')
       }
     }
-  });
-  $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-    localStorage.setItem('examLastTab', $(e.target).attr('href'));
   });
 });
 </script>

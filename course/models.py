@@ -2,7 +2,6 @@ from django.db import models
 from django.db import connection
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.core import serializers
 import json
 
 class Term(models.Model):
