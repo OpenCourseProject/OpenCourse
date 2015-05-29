@@ -14,7 +14,7 @@ class ScheduleEntry(models.Model):
         verbose_name_plural = "scheduled courses"
 
     def __unicode__(self):
-        return "%s: %d" % (self.user, self.course.crn)
+        return "%s: %d" % (self.user, self.course_crn)
 
     def generate_hash(self):
         hash = hashlib.md5(b'%s:%s' % (str(self.user.username), str(self.term.name)))

@@ -5,7 +5,7 @@ from course.views import home, error_500, error_404
 admin.autodiscover()
 
 from tastypie.api import Api
-from api.resources import CourseResource, TermResource, InstructorResource, AttributeResource, MaterialResource
+from api.resources import CourseResource, TermResource, InstructorResource, AttributeResource, MaterialResource, ScheduleResource
 
 v1_api = Api(api_name='v1')
 v1_api.register(CourseResource())
@@ -13,6 +13,7 @@ v1_api.register(TermResource())
 v1_api.register(InstructorResource())
 v1_api.register(AttributeResource())
 v1_api.register(MaterialResource())
+v1_api.register(ScheduleResource())
 
 handler500 = error_500
 handler404 = error_404

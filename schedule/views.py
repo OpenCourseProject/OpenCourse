@@ -10,6 +10,7 @@ from schedule.forms import ScheduleForm
 from course.utils import exam_for_course
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 import hashlib
 import json
 import datetime
@@ -23,11 +24,14 @@ def schedule(request):
             if form.is_valid():
                 term = form.cleaned_data['term']
         else:
-            profile = Profile.objects.get(user=request.user)
-            if profile.default_term:
-                term = profile.default_term
+            if 'term' in request.GET:
+                term = Term.objects.get(value=request.GET['term'])
             else:
-                term = Term.objects.all()[0]
+                profile = Profile.objects.get(user=request.user)
+                if profile.default_term:
+                    term = profile.default_term
+                else:
+                    term = Term.objects.all()[0]
             form = ScheduleForm()
             form.fields['term'].initial = term
     query = ScheduleEntry.objects.filter(user=request.user, term=term)
@@ -134,6 +138,17 @@ def schedule_view(request, identifier):
         'credits_max': credits_max,
     }
     return render(request, 'schedule/schedule.html', context)
+
+@login_required
+def schedule_get(request):
+    if request.method == 'GET':
+        term = Term.objects.get(value=request.GET['term'])
+        query = ScheduleEntry.objects.filter(user=request.user, term=term)
+        courses = schedule_get_courses(query)
+        data = serializers.serialize("json", courses)
+        return HttpResponse(data, 200)
+    else:
+        return HttpResponse('Method not allowed', 405)
 
 @login_required
 def schedule_add(request):

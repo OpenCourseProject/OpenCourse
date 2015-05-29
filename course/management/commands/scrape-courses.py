@@ -127,6 +127,8 @@ class Command(BaseCommand):
                                 if old_attr != new_attr:
                                     status_update = True
                     obj.save()
+
+                    # Send status emails
                     if status_update:
                         follows = FollowEntry.objects.filter(term=obj.term, course_crn=obj.crn)
                         for follow in follows:

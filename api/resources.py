@@ -1,6 +1,9 @@
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
+from tastypie.authentication import ApiKeyAuthentication
+from tastypie.authorization import Authorization
 from course.models import Course, Term, Instructor, Attribute, Material
+from schedule.models import ScheduleEntry
 
 class TermResource(ModelResource):
     class Meta:
@@ -74,3 +77,23 @@ class MaterialResource(ModelResource):
             'year': ALL,
             'course': ALL_WITH_RELATIONS,
         }
+
+class ScheduleResource(ModelResource):
+    term = fields.ToOneField(TermResource, 'term', full=True)
+
+    class Meta:
+        queryset = ScheduleEntry.objects.all()
+        resource_name = 'schedule'
+        allowed_methods = ['get', 'post', 'delete']
+        authentication = ApiKeyAuthentication()
+        authorization = Authorization()
+        filtering = {
+            'course_crn': ALL,
+            'term': ALL_WITH_RELATIONS,
+        }
+
+    def obj_create(self, bundle, **kwargs):
+        return super(ScheduleResource, self).obj_create(bundle, user=bundle.request.user)
+
+    def apply_authorization_limits(self, request, object_list):
+        return object_list.filter(user=request.user)

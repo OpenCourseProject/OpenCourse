@@ -18,9 +18,9 @@
         If you are creating your own service or even a personal application
         using course, term, or instructor data, you are welcomed to use the API
         detailed on this page.
-        The API is keyless and anonymous for now. If you're interested in using
-        it for your projects, please don't abuse it. Otherwise I'll have to buy
-        a bike lock.
+        General API endpoints are keyless and anonymous for now. If you're
+        interested in using it for your projects, please don't abuse it.
+        Otherwise I'll have to buy a bike lock.
       </p>
     </div>
   </div>
@@ -38,8 +38,9 @@
           API queries can be returned in your choice of
           <code>json</code>, <code>xml</code>, or <code>yaml</code> format.
           To specify, use the <code>Accept</code> header in your GET
-          request (ex: <code>curl -H "Accept: application/json" http://opencourseproject.com/api/v1/course/</code>).
-          Alternatively, you may append <code>?format=FORMAT</code> to the end
+          request:
+          <pre>curl -H "Accept: application/json" http://opencourseproject.com/api/v1/course/</pre>
+          Alternatively, you may append <code>?format=json</code> to the end
           of the url.
         </li>
         <li>
@@ -79,11 +80,6 @@
           <strong>or higher</strong>.
         </li>
       </ul>
-      <p>
-        The API is <strong>read-only</strong> on all endpoints. Schedules or user
-        data are not offered for privacy purposes, but if you have a use case for
-        either please <a href="mailto:ad@mfendley.com" target="_top">shoot me an email</a>.
-      </p>
       <p>
         Fields with the <span class="badge">No Filter</span> badge cannot be used
         as filters in your queries.
@@ -204,6 +200,99 @@
         <li><code>value</code>: an Attribute ID.</li>
         <li><code>name</code>: the full name of this Attribute.</li>
       </ul>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><strong>Private Endpoints</strong></h3>
+    </div>
+    <div class="panel-body">
+      <p>
+        The following endpoints are considered "private" and require you to use
+        your account API key to access them. In addition to GETting information
+        from the API you may also add and remove data to/from these endpoints
+        using POST and DELETE respectively.
+      </p>
+      {% if api_key %}
+      <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Your API Key</span>
+        <input type="text" class="form-control" value="{{ api_key.key }}" aria-describedby="basic-addon1">
+      </div>
+      <br>
+      <p>
+        <strong>WARNING: Do not share your key with anyone.</strong>
+        <br>
+        Your username is <strong>{{ user.username }}</strong>. Your API key is
+        tied to your username and allows you to query private information stored
+        on this site. If you lose privacy of your key, please
+        <a href="mailto:ad@mfendley.com" target="_top">email me</a> to reset it.
+      </p>
+      <p>
+        To specify your key, use the <code>Authorization</code> header in your
+        GET request:
+        <pre>curl -H "Authorization: ApiKey {{ user.username }}:{{ api_key.key }}" http://opencourseproject.com/api/v1/schedule/</pre>
+        Alternatively, you may append <code>?username={{ user.username }}&api_key={{ api_key.key }}</code>
+        to the end of the url.
+      </p>
+      {% else %}
+      <a href="/account/">Log In</a> and return to this page to find your key.
+      {% endif %}
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><samp>GET /schedule/</samp></h3>
+    </div>
+    <div class="panel-body">
+      <p>
+        A <strong>Schedule</strong> is a listing of courses that you have
+        added to a Term.
+      </p>
+      Fields:
+      <ul>
+        <li><code>term</code>: the Term which the courses are scheduled for.</li>
+        <li><code>course_crn</code>: the course CRN.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><samp>POST /schedule/</samp></h3>
+    </div>
+    <div class="panel-body">
+      <p>
+        To add a course to your schedule with this API, simply send a POST
+        request where the body includes the following items:
+      </p>
+      <ul>
+        <li><code>term</code>: the Term resource to add this course to.</li>
+        <li><code>course_crn</code>: the course CRN.</li>
+      </ul>
+      <p>
+        For example, to add <a href="http://opencourseproject.com/course/201600/5984/">this</a>
+        course (CRN: <strong>5984</strong>) to your Fall Semester 2015 (Term ID: <strong>201600</strong>) schedule,
+        send the following request:
+        <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {{ user.username }}:{{ api_key.key }}" -X POST --data '{"term": "/api/v1/term/201600/", "course_crn": "5984"}' http://opencourseproject.com/api/v1/schedule/</pre>
+        A successful POST returns <code>HTTP 201 CREATED</code>.
+      </p>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><samp>DELETE /schedule/</samp></h3>
+    </div>
+    <div class="panel-body">
+      <p>
+        To delete a course from your schedule, specify it with the <code>resource_url</code>
+        given from your GET schedule query request.
+      </p>
+      <p>
+        For example, if you want to delete the following item from your schedule:
+        <code>{"course_crn": 5984, "id": 1, "resource_uri": "/api/v1/schedule/1/", "term": {"name": "Fall Semester 2015", "resource_uri": "/api/v1/term/201600/", "value": 201600}}</code>
+        send the following request:
+        <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {{ user.username }}:{{ api_key.key }}" -X DELETE  http://opencourseproject.com/api/v1/schedule/1/</pre>
+        A successful DELETE returns <code>HTTP 204 NO CONTENT</code>.
+      </p>
     </div>
   </div>
   <div class="panel panel-default">
