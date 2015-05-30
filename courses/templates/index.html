@@ -4,26 +4,51 @@
 {% block content %}
 <div class="container">
   <div class="jumbotron">
-    <h1>Welcome to Open Course</h1>
-    <p class="lead">
-      The Open Course Project is an effort to overhaul course lookup and registration.
-      On Open Course you can:
+    <h1>
+      {% if not user.is_authenticated %}
+      Welcome to Open Course
+      {% else %}
+      Welcome, {{ user.first_name }}!
+      {% endif %}
+    </h1>
+      {% if not user.is_authenticated %}
+      <p class="lead">
+        The Open Course Project is an effort to overhaul course lookup and registration.
+        On Open Course you can:
+        <ul>
+          <li>Search and view courses by any criteria
+          <li>See your exam schedule
+          <li>Find Facebook friends in your classes
+          <li>See instructor details, including their RateMyProfessor scores
+          <li>Create and share semester schedules
+          <li>Follow courses and get updates on their status
+        </ul>
+      </p>
+      <p>
+        By creating a system optimized for speed, clarity, and ease-of-use, this
+        website offers students at Christopher Newport University a brand new way to
+        plan your semester. To begin, Log In with your CNU account or simply click
+        Search to begin browsing classes.
+      </p>
+      <p><a class="btn btn-primary btn-lg" href="/search/" role="button">Get Started</a></p>
+      {% else %}
+      <p class="lead">
+        Glad to have you here.
+      </p>
+      <p>
+        If you're new, you might want to read the
+        <a href="/about/#getting-started">Getting Started guide</a> to get your
+        courses synced from CNU Live.
+      </p>
+      {% if todo|length > 0 %}
+      Here's some stuff you can do to improve your experience:
       <ul>
-        <li>Search and view courses by any criteria
-        <li>See your exam schedule
-        <li>Find Facebook friends in your classes
-        <li>See instructor details, including their RateMyProfessor scores
-        <li>Create and share semester schedules
-        <li>Follow courses and get updates on their status
-      </ul>
-    </p>
-    <p>
-      By creating a system optimized for speed, clarity, and ease-of-use, this
-      website offers students at Christopher Newport University a brand new way to
-      plan your semester. To begin, Log In with your CNU account or simply click
-      Search to begin browsing classes.
-    </p>
-    <p><a class="btn btn-primary btn-lg" href="/search/" role="button">Get Started</a></p>
+        {% for value in todo %}
+        <li>{{ value }}</li>
+        {% endfor %}
+      <ul>
+      {% endif %}
+      {% endif %}
   </div>
 </div>
 {% endblock %}

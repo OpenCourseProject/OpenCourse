@@ -1,131 +1,251 @@
 {% extends "base.html" %}
 
+{% block head %}
+<style>
+ul.nav-tabs {
+	width: 140px;
+	margin-top: 20px;
+	border-radius: 4px;
+	border: 1px solid #ddd;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+}
+ul.nav-tabs li {
+	margin: 0;
+	border-top: 1px solid #ddd;
+}
+ul.nav-tabs li:first-child {
+	border-top: none;
+}
+ul.nav-tabs li a {
+	margin: 0;
+	padding: 8px 16px;
+	border-radius: 0;
+}
+ul.nav-tabs li.active a, ul.nav-tabs li.active a:hover {
+	color: #fff;
+	background: #0088cc;
+	border: 1px solid #0088cc;
+}
+ul.nav-tabs li:first-child a {
+	border-radius: 4px 4px 0 0;
+}
+ul.nav-tabs li:last-child a {
+	border-radius: 0 0 4px 4px;
+}
+ul.nav-tabs.affix {
+	top: 30px;
+}
+</style>
+<script>
+$(document).ready(function () {
+  $('body').scrollspy({ target: '#scrollSpy' })
+});
+</script>
+<link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/iklkhbogomjhkakapieafljbldmhelep">
+{% endblock %}
 {% block content %}
 <div class="container">
   <div class="page-header">
     <h1>About OpenCourse</h1>
   </div>
-  <div class="panel panel-primary">
-    <div class="panel-heading">
-      <h3 class="panel-title">The Project</h3>
-    </div>
-    <div class="panel-body">
-      <p>
-        The Open Course Project is an <a href="http://opensource.org/">Open Source</a>
-        system designed to improve many aspects of course registration and lookup
-        at Christopher Newport University.
-      </p>
-      <p>
-        Source code for this website is hosted at <a href="http://github.com/gravitylow/OpenCourse">github.com/gravitylow/OpenCourse</a>.
-        If you're interested in contributing to the project by submitting code,
-        filing bug reports, or suggesting improvements, your support is greatly
-        appreciated!
-      </p>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Philosophy</h3>
-    </div>
-    <div class="panel-body">
-      <p>
-        Through official University locations such as CNU Live and Schedule of
-        Courses as well as third-party websites such as RateMyProfessor, Amazon,
-        Chegg, and others, there are many different sources students use to plan
-        their schedules each semester. The goal of this website is to provide a
-        centralized location for all course-related information at CNU, merging
-        data from all these sources into a single, beautiful website that meets
-        today's Internet standards.
-      </p>
-      <p>
-        CNU has done a great job with their registration services. There are no
-        glaring issues that exist that constantly cause problems for students.
-        The systems that power these sites are clearly well-kept, and the school
-        is to be commended for this. OpenCourse is not here to replace or to "fix"
-        any problems whatsoever. The goal of the project is to make small changes,
-        present data in a more user-friendly way, and to offer additional methods
-        of browsing and planning.
-      </p>
-      <p>
-        With this in mind, a lot of careful development has been done to ensure
-        that these two distinct systems stay seperate. This website does not
-        offer <strong>any</strong> registration services nor does it attempt to
-        subvert or replace any functionality of CNU Live. Because data is
-        automatically scraped from various sources to populate this website, it
-        could be temporarily out of date at any time. Furthermore, there's no
-        budget for this project; everything that you see is volunteer work.
-        There is always the possibility that something breaks and isn't noticed.
-        Please use this resource for it's intended purpose: planning, researching,
-        and as a supplement to official University systems. Do not entrust your
-        semester to any one website, ever.
-      </p>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Security</h3>
-    </div>
-    <div class="panel-body">
-      <p>
-        Security is one of the most important goals of this project. Not all
-        people are concerned about the privacy of their schedule information,
-        but for those who are it's been made a priority. Here are some details
-        of what has been done to protect personal information:
-      </p>
-      <ul>
-        <li>
-          <strong>No accounts are created on this site.</strong> When you login
-          with your CNU account, you are using Google's OAuth systems which give
-          information about your account, like your email address, to the site
-          but never your password or any other personal information from CNU Live.
-          Logging in with your CNU account to this site does not give it access
-          to act on your behalf in any way.
-        </li>
-        <li>
-          <strong>The site is encrypted with an industry-standard certificate.</strong>
-          The lock icon in the upper left-hand corner of your URL bar will confirm
-          that this site is using SSL/TLS to restrict visibility to you and only
-          you. The information that you enter on this site and any data you get
-          back is unreadable even to eavesdroppers. The certificate used has an
-          <a href="https://www.ssllabs.com/ssltest/analyze.html?d=opencourseproject.com&s=104.18.51.176">A rating on SSL Labs</a>.
-        </li>
-        <li>
-          <strong>Any personal information provided by API requires a secret key.</strong>
-          If you're a developer using the <a href="/api/">API</a>, you will already
-          know that aside from general, open data (such as course listings, term
-          details, professor scores, etc.), a private and unique key is required
-          to read or write. For the non-developer, this means that even at the
-          most barebones level of data retrieval, your schedules are visible only
-          to your account and cannot be accessed through the database without
-          your explicit permission.
-        </li>
-        <li>
-          <strong>The source code is open.</strong> Aside from private keys used
-          to communicate with third-parties such as Google and Facebook, none of
-          the code that runs this website is proprietary. If you come across a
-          vulnerability or a problem in the code that has security implications,
-          please <a href="mailto:ad@mfendley.com" target="_top">email me</a>.
-        </li>
+  <div class="row">
+    <div class="col-xs-3" id="scrollSpy">
+      <ul class="nav nav-tabs nav-stacked affix-top" data-spy="affix" data-offset-top="125">
+        <li class="active"><a href="#project">The Project</a></li>
+        <li><a href="#getting-started">Getting Started</a></li>
+        <li><a href="#philosophy">Philosophy</a></li>
+        <li><a href="#security">Security</a></li>
+        <li><a href="#extensibility">Extensibility</a></li>
       </ul>
     </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Extensibility</h3>
-    </div>
-    <div class="panel-body">
-      <p>
-        Though the goal of this project focuses completely on CNU, the framework
-        that has been created could apply to many universities. In order to
-        populate the site with information from a different source, the custom
-        management commands would need to be rewired to fetch from another location.
-        Some other discrepancies could exist in how courses are labled, but a lot
-        of the work is written to be generic.
-      </p>
-      <p>
-        If anyone has a plan to use the project in a new way,
-        <a href="mailto:ad@mfendley.com" target="_top">I'd love to know about it!</a>
-      </p>
+    <div class="col-xs-9">
+      <div class="panel panel-primary" id="project">
+        <div class="panel-heading">
+          <h3 class="panel-title">The Project</h3>
+        </div>
+        <div class="panel-body">
+          <p>
+            The Open Course Project is an <a href="http://opensource.org/">Open Source</a>
+            system designed to improve many aspects of course registration and lookup
+            at Christopher Newport University.
+          </p>
+          <p>
+            Source code for this website is hosted at <a href="http://github.com/gravitylow/OpenCourse">github.com/gravitylow/OpenCourse</a>.
+            If you're interested in contributing to the project by submitting code,
+            filing bug reports, or suggesting improvements, your support is greatly
+            appreciated!
+          </p>
+        </div>
+      </div>
+      <div class="panel panel-info" id="getting-started">
+        <div class="panel-heading">
+          <h3 class="panel-title">Getting Started</h3>
+        </div>
+        <div class="panel-body">
+          <p>
+            If you're just starting on OpenCourse, you'll probably want to sync
+            your current schedule from CNU Live instead of manually adding all
+            the classes.
+          </p>
+          <p>
+            Fortunately, this is made easy by the official
+            <a href="https://chrome.google.com/webstore/detail/iklkhbogomjhkakapieafljbldmhelep">Chrome Plugin</a>
+            which integrates with your schedule on CNU Live. You'll want to add
+            it to Chrome, either by clicking the link or just pressing the button:
+          </p>
+          <button class="btn btn-success" onclick="chrome.webstore.install()" id="install-button">Add to Chrome</button>
+          <br><br>
+          {% if not user.is_authenticated %}
+          <p class="text-danger">
+            You'll want to make sure you <a href="/account/">log in</a> before
+            you try to sync your courses.
+          </p>
+          {% endif %}
+          <p class="bg-info">
+            If you're not using Google Chrome, you can still use this site.
+            Instead of syncing courses from CNU Live, you should use the <a href="/search/">search</a>
+            function to find your courses, open them up, and hit the "Add to schedule" button.
+          </p>
+          <p>
+            Once you've got the plugin installed, you can head to <a href="https://luna.cnu.edu/sso/SSO/SSO_CNU_Live.aspx">CNU Live</a>
+            and go to <strong>Student Services</strong>, to <strong>Registration</strong>,
+            and then click <strong>Student Detail Schedule</strong>. Select the
+            term you're interested in syncing to OpenCourse, and then hit submit.
+          </p>
+          <p>
+            If the plugin has been installed correctly, you should see a large
+            green button linking you to the matching OpenCourse schedule as well
+            as green check marks or red X's depending on whether or not the
+            course listed is included on your OpenCourse schedule. If you don't
+            see any of these things, feel free to <a href="mailto:ad@mfendley.com" target="_top">contact me</a>.
+          </p>
+          <p>
+            If you see a green check mark, it means the course that is displayed
+            on your registration is properly synced - you're good to go! If you
+            see a red X, it means the course isn't on your schedule yet, so you
+            should probably add it. To do this easily you can click the blue
+            "Add" button that will appear there and the course will be synced.
+            Do this for all the courses until only green checks appear!
+          </p>
+          <p>
+            After everything is synced, you can click the green button to view
+            your schedule back here. You should see a nice listing of your
+            courses as well as a calendar view option to see them listed by time.
+            You can also make use of the share URL or the Facebook share widget
+            to share your schedule with whoever you like!
+          </p>
+          <p>
+            Remember that if you make changes to your schedule on OpenCourse, it
+            has no change on your official registration. Scheduling on this site
+            is purely for planning, sharing, and research. Enjoy!
+          </p>
+        </div>
+      </div>
+      <div class="panel panel-default" id="philosophy">
+        <div class="panel-heading">
+          <h3 class="panel-title">Philosophy</h3>
+        </div>
+        <div class="panel-body">
+          <p>
+            Through official University locations such as CNU Live and Schedule of
+            Courses as well as third-party websites such as RateMyProfessor, Amazon,
+            Chegg, and others, there are many different sources students use to plan
+            their schedules each semester. The goal of this website is to provide a
+            centralized location for all course-related information at CNU, merging
+            data from all these sources into a single, beautiful website that meets
+            today's Internet standards.
+          </p>
+          <p>
+            CNU has done a great job with their registration services. There are no
+            glaring issues that exist that constantly cause problems for students.
+            The systems that power these sites are clearly well-kept, and the school
+            is to be commended for this. OpenCourse is not here to replace or to "fix"
+            any problems whatsoever. The goal of the project is to make small changes,
+            present data in a more user-friendly way, and to offer additional methods
+            of browsing and planning.
+          </p>
+          <p>
+            With this in mind, a lot of careful development has been done to ensure
+            that these two distinct systems stay seperate. This website does not
+            offer <strong>any</strong> registration services nor does it attempt to
+            subvert or replace any functionality of CNU Live. Because data is
+            automatically scraped from various sources to populate this website, it
+            could be temporarily out of date at any time. Furthermore, there's no
+            budget for this project; everything that you see is volunteer work.
+            There is always the possibility that something breaks and isn't noticed.
+            Please use this resource for its intended purpose: planning, researching,
+            and as a supplement to official University systems. Do not entrust your
+            semester to any one website, ever.
+          </p>
+        </div>
+      </div>
+      <div class="panel panel-default" id="security">
+        <div class="panel-heading">
+          <h3 class="panel-title">Security</h3>
+        </div>
+        <div class="panel-body">
+          <p>
+            Security is one of the most important goals of this project. Not all
+            people are concerned about the privacy of their schedule information,
+            but for those who are it's been made a priority. Here are some details
+            of what has been done to protect personal information:
+          </p>
+          <ul>
+            <li>
+              <strong>No accounts are created on this site.</strong> When you login
+              with your CNU account, you are using Google's OAuth systems which give
+              information about your account, like your email address, to the site
+              but never your password or any other personal information from CNU Live.
+              Logging in with your CNU account to this site does not give it access
+              to act on your behalf in any way.
+            </li>
+            <li>
+              <strong>The site is encrypted with an industry-standard certificate.</strong>
+              The lock icon in the upper left-hand corner of your URL bar will confirm
+              that this site is using SSL/TLS to restrict visibility to you and only
+              you. The information that you enter on this site and any data you get
+              back is unreadable even to eavesdroppers. The certificate used has an
+              <a href="https://www.ssllabs.com/ssltest/analyze.html?d=opencourseproject.com&s=104.18.51.176">A rating on SSL Labs</a>.
+            </li>
+            <li>
+              <strong>Any personal information provided by API requires a secret key.</strong>
+              If you're a developer using the <a href="/api/">API</a>, you will already
+              know that aside from general, open data (such as course listings, term
+              details, professor scores, etc.), a private and unique key is required
+              to read or write. For the non-developer, this means that even at the
+              most barebones level of data retrieval, your schedules are visible only
+              to your account and cannot be accessed through the database without
+              your explicit permission.
+            </li>
+            <li>
+              <strong>The source code is open.</strong> Aside from private keys used
+              to communicate with third-parties such as Google and Facebook, none of
+              the code that runs this website is proprietary. If you come across a
+              vulnerability or a problem in the code that has security implications,
+              please <a href="mailto:ad@mfendley.com" target="_top">email me</a>.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="panel panel-default" id="extensibility">
+        <div class="panel-heading">
+          <h3 class="panel-title">Extensibility</h3>
+        </div>
+        <div class="panel-body">
+          <p>
+            Though the goal of this project focuses completely on CNU, the framework
+            that has been created could apply to many universities. In order to
+            populate the site with information from a different source, the custom
+            management commands would need to be rewired to fetch from another location.
+            Some other discrepancies could exist in how courses are labled, but a lot
+            of the work is written to be generic.
+          </p>
+          <p>
+            If anyone has a plan to use the project in a new way,
+            <a href="mailto:ad@mfendley.com" target="_top">I'd love to know about it!</a>
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </div>

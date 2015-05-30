@@ -39,7 +39,7 @@ var facebookCallback = function(response) {
     </div>
   </center>
   {% if authenticated %}
-  <div class="panel panel-default">
+  <div class="panel panel-default" id="profile">
     <div class="panel-heading">
       <h3 class="panel-title">Profile</h3>
     </div>
@@ -56,7 +56,7 @@ var facebookCallback = function(response) {
       </form>
     </div>
   </div>
-  <div class="panel panel-primary">
+  <div class="panel panel-primary" id="facebook">
     <div class="panel-heading">
       <h3 class="panel-title">Facebook Integration</h3>
     </div>
@@ -69,7 +69,7 @@ var facebookCallback = function(response) {
       <div id="fb-test"></div>
     </div>
   </div>
-  <div class="panel panel-info">
+  <div class="panel panel-info" id="plugin">
     <div class="panel-heading">
       <h3 class="panel-title">Chrome Plugin</h3>
     </div>
@@ -81,7 +81,7 @@ var facebookCallback = function(response) {
         If you use Google Chrome, you can install the official OpenCourse Chrome
         plugin to your browser to integrate with CNU Live. The plugin allows you
         to sync your classes with your official registration as well as
-        automatically enter CRNs during your reigstration timeslot.
+        automatically enter CRNs during your registration timeslot.
       </p>
     </div>
   </div>
