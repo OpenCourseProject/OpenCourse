@@ -2,7 +2,6 @@ from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from course.models import Course, Term, FollowEntry, Material
 from schedule.models import ScheduleEntry, ExamEntry, ExamSource
-from django.template import RequestContext
 from django_tables2 import RequestConfig
 from course.tables import CourseTable
 from course.forms import SearchForm
@@ -13,28 +12,6 @@ import json
 import logging
 
 logging.basicConfig()
-
-def home(request):
-    context = {}
-    return render(request, 'index.html', context)
-
-def error_500(request):
-    context = RequestContext(request)
-    if request.path == '/complete/google-oauth2/':
-        response = render_to_response('account/500_login.html', {}, context)
-    else:
-        response = render_to_response('500.html', {}, context)
-    response.status_code = 500
-    return response
-
-def error_404(request):
-    context = RequestContext(request)
-    if request.path.startswith('/schedule/'):
-        response = render_to_response('schedule/404.html', {}, context)
-    else:
-        response = render_to_response('404.html', {}, context)
-    response.status_code = 404
-    return response
 
 def search(request):
     crn = None

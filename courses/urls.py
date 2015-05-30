@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
-from course.views import home, error_500, error_404
+from courses.views import home, about, error_500, error_404
 admin.autodiscover()
 
 from tastypie.api import Api
@@ -21,6 +21,7 @@ handler404 = error_404
 urlpatterns = patterns('',
     url(r'^$', home, name='home'),
     url(r'^', include('course.urls', namespace="search")),
+    url(r'^about/', about, name='about'),
     url(r'^api/', include('api.urls')),
     url(r'^api/', include(v1_api.urls)),
     url(r'^schedule/', include('schedule.urls', namespace="schedule")),
