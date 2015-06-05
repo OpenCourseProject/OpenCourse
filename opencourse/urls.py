@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
-from courses.views import home, about, error_500, error_404
+from opencourse.views import home, about, error_500, error_404
 admin.autodiscover()
 
 from tastypie.api import Api

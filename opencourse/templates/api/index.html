@@ -32,14 +32,14 @@
       <ul>
         <li>
           All queries should be directed to the API URL:
-          <code>http://opencourseproject.com/api/v1/</code>
+          <code>https://opencourseproject.com/api/v1/</code>
         </li>
         <li>
           API queries can be returned in your choice of
           <code>json</code>, <code>xml</code>, or <code>yaml</code> format.
           To specify, use the <code>Accept</code> header in your GET
           request:
-          <pre>curl -H "Accept: application/json" http://opencourseproject.com/api/v1/course/</pre>
+          <pre>curl -H "Accept: application/json" https://opencourseproject.com/api/v1/course/</pre>
           Alternatively, you may append <code>?format=json</code> to the end
           of the url.
         </li>
@@ -58,24 +58,24 @@
         </li>
         <li>
           To filter objects, use field names in the query. For instance,
-          <code>http://opencourseproject.com/api/v1/course/?days=MWF</code>
+          <code>https://opencourseproject.com/api/v1/course/?days=MWF</code>
           finds all courses which meet Monday, Wednesday, and Friday. You
           can further filter objects, for instance
-          <code>http://opencourseproject.com/api/v1/course/?days=MWF&start_time=10:00:00</code>
+          <code>https://opencourseproject.com/api/v1/course/?days=MWF&start_time=10:00:00</code>
           finds all courses which meet Monday, Wednesday, and Friday at 10am.
         </li>
         <li>
           See the endpoint details for information about which fields you can
           use to filter your queries. If you'd like to filter on a sub-object,
           you can use the <code>__</code> (double underscore) accessor.
-          For instance, <code>http://opencourseproject.com/api/v1/course/?instructor__rmp_score=3</code>
+          For instance, <code>https://opencourseproject.com/api/v1/course/?instructor__rmp_score=3</code>
           finds all courses where the instructor's RateMyProfessor score is 3.0.
         </li>
         <li>
           You can use <code>__gt</code> (greater than), <code>__lt</code> (less than),
           <code>__contains</code>, <code>__startswith</code> or <code>__endswith</code>
           modifiers to make advanced queries.
-          For instance, <code>http://opencourseproject.com/api/v1/course/?instructor__rmp_score__gt=3</code>
+          For instance, <code>https://opencourseproject.com/api/v1/course/?instructor__rmp_score__gt=3</code>
           finds all courses where the instructor's RateMyProfessor score is 3.0
           <strong>or higher</strong>.
         </li>
@@ -230,7 +230,7 @@
       <p>
         To specify your key, use the <code>Authorization</code> header in your
         GET request:
-        <pre>curl -H "Authorization: ApiKey {{ user.username }}:{{ api_key.key }}" http://opencourseproject.com/api/v1/schedule/</pre>
+        <pre>curl -H "Authorization: ApiKey {{ user.username }}:{{ api_key.key }}" https://opencourseproject.com/api/v1/schedule/</pre>
         Alternatively, you may append <code>?username={{ user.username }}&api_key={{ api_key.key }}</code>
         to the end of the url.
       </p>
@@ -269,10 +269,10 @@
         <li><code>course_crn</code>: the course CRN.</li>
       </ul>
       <p>
-        For example, to add <a href="http://opencourseproject.com/course/201600/5984/">this</a>
+        For example, to add <a href="https://opencourseproject.com/course/201600/5984/">this</a>
         course (CRN: <strong>5984</strong>) to your Fall Semester 2015 (Term ID: <strong>201600</strong>) schedule,
         send the following request:
-        <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {{ user.username }}:{{ api_key.key }}" -X POST --data '{"term": "/api/v1/term/201600/", "course_crn": "5984"}' http://opencourseproject.com/api/v1/schedule/</pre>
+        <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {{ user.username }}:{{ api_key.key }}" -X POST --data '{"term": "/api/v1/term/201600/", "course_crn": "5984"}' https://opencourseproject.com/api/v1/schedule/</pre>
         A successful POST returns <code>HTTP 201 CREATED</code>.
       </p>
     </div>
@@ -290,7 +290,7 @@
         For example, if you want to delete the following item from your schedule:
         <code>{"course_crn": 5984, "id": 1, "resource_uri": "/api/v1/schedule/1/", "term": {"name": "Fall Semester 2015", "resource_uri": "/api/v1/term/201600/", "value": 201600}}</code>
         send the following request:
-        <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {{ user.username }}:{{ api_key.key }}" -X DELETE  http://opencourseproject.com/api/v1/schedule/1/</pre>
+        <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {{ user.username }}:{{ api_key.key }}" -X DELETE  https://opencourseproject.com/api/v1/schedule/1/</pre>
         A successful DELETE returns <code>HTTP 204 NO CONTENT</code>.
       </p>
     </div>
@@ -307,7 +307,7 @@
       <li class="list-group-item">
         <strong>Exam schedule</strong> information is created using spreadsheet
         files and are downloadable at
-        <code>http://opencourseproject.com/static/assets/xl/exam_schedule_TERM.xlsx</code>
+        <code>https://opencourseproject.com/static/assets/xl/exam_schedule_TERM.xlsx</code>
         where TERM is a valid Term ID (ex: 201510 for Spring 2015). See the details
         of the <strong>Term</strong> endpoint for more information on Term IDs.
         <ul>

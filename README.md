@@ -12,7 +12,7 @@ The Open Course Project is an effort to overhaul course lookup and registration.
 
 This repository is a [Django](https://www.djangoproject.com/) project written in Python.
 
-The official Open Course Project website is online at http://opencourseproject.com.
+The official Open Course Project website is online at https://opencourseproject.com.
 This website and project are still in heavy development, and the code at this repository should be up-to-date,
 but may not necessarily reflect the current state of the website.
 

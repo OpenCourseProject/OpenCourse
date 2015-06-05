@@ -72,20 +72,20 @@ class Course(models.Model):
 class FollowEntry(models.Model):
     user = models.ForeignKey(User)
     term = models.ForeignKey(Term)
-    course_crn = models.IntegerField(max_length=4)
+    course_crn = models.IntegerField()
 
     def __unicode__(self):
         return "%s: %d" % (self.user, self.course.crn)
 
 class Material(models.Model):
     term = models.ForeignKey(Term)
-    course_crn = models.IntegerField(max_length=4)
+    course_crn = models.IntegerField()
     isbn = models.BigIntegerField()
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=50)
     publisher = models.CharField(max_length=50)
     edition = models.CharField(max_length=20)
-    year = models.IntegerField(max_length=4, null=True)
+    year = models.IntegerField(null=True)
 
     def __unicode__(self):
         return self.title

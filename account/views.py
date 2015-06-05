@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 def account(request):
     form = None
+    next = None
     if request.user.is_authenticated():
         profile = Profile.objects.get(user=request.user)
         if request.method == 'POST':
@@ -23,10 +24,14 @@ def account(request):
                 form.fields['default_term'].initial = profile.default_term
             if profile.student_id:
                 form.fields['student_id'].initial = profile.student_id
+    else:
+        if 'next' in request.GET:
+            next = request.GET['next']
     context = {
         'user': request.user,
         'authenticated': request.user.is_authenticated(),
         'form': form,
+        'next': next,
     }
     return render(request, 'account/account.html', context)
 

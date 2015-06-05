@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.core.management import call_command
 from course.models import Course, Term, Instructor, FollowEntry
 from splinter import Browser
+from splinter.request_handler.status_code import HttpResponseError
 from lxml import html
 import json
 import datetime
@@ -12,8 +13,18 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
     	# Visit URL
     	url = "https://pulsar.cnu.edu/soc/socquery.aspx"
-    	browser = Browser('phantomjs')
-    	browser.visit(url)
+        # Some explaining to do about this setting:
+        # The CNU Schedule of Courses page no longer allows the testing-specific
+        # headless webbrowser PhantomJS that was being used in the past to
+        # scrape courses. Due to the way the server works with cookies and forms
+        # there's no possibility of making a few simple POST requests to get the
+        # data needed. Because of that, we now use plain Firefox running its
+        # display on an Xvfb service.
+    	browser = Browser('firefox')
+        try:
+            browser.visit(url)
+        except HttpResponseError, e:
+            print "Request failed with status code %s: %s" % (e.status_code, e.reason)
         # Parse page HTML
         page = html.fromstring(browser.html)
         # Get semester select options

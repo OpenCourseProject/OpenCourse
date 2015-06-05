@@ -18,6 +18,12 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = ['cnu.edu']
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/account/error/'
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
+    'access_type': 'offline',
+    'prompt': 'select_account',
+    'hd': 'cnu.edu',
+}
+
 DEBUG = False
 
 TEMPLATE_DEBUG = DEBUG
@@ -27,11 +33,9 @@ ALLOWED_HOSTS = ['opencourseproject.com']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 os.environ['wsgi.url_scheme'] = 'https'
-
 
 INSTALLED_APPS = (
     # Django Apps
@@ -82,9 +86,9 @@ TEMPLATE_CONTEXT_PROCESSORS = DEFAULT_SETTINGS.TEMPLATE_CONTEXT_PROCESSORS + (
     'django.contrib.auth.context_processors.auth',
 )
 
-ROOT_URLCONF = 'courses.urls'
+ROOT_URLCONF = 'opencourse.urls'
 
-WSGI_APPLICATION = 'courses.wsgi.application'
+WSGI_APPLICATION = 'opencourse.wsgi.application'
 
 DATABASES = {
     'default': {
@@ -112,13 +116,13 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_ROOT = BASE_DIR + '/courses/static/'
+STATIC_ROOT = BASE_DIR + '/opencourse/static/'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, '/courses/static/'),
+    os.path.join(BASE_DIR, '/opencourse/static/'),
 )
 
 TEMPLATE_DIRS = (
-    BASE_DIR + '/courses/templates/',
+    BASE_DIR + '/opencourse/templates/',
 )

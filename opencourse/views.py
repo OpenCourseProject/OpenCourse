@@ -15,7 +15,7 @@ def home(request):
         if len(entries) == 0:
             todo.append(SafeString('<a href="/search/">Start adding courses to your schedule</a>'))
         else:
-            todo.append(SafeString('<a href="https://www.facebook.com/sharer/sharer.php?u=http://opencourseproject.com/schedule/' + entries[0].identifier + '/&t=' + entries[0].term.name + ' schedule for ' + request.user.first_name + ' ' + request.user.last_name + '"onclick="javascript:window.open(this.href, '', \'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600\');return false;"target="_blank">Share a schedule on social media</a>'))
+            todo.append(SafeString('<a href="https://www.facebook.com/sharer/sharer.php?u=https://opencourseproject.com/schedule/' + entries[0].identifier + '/&t=' + entries[0].term.name + ' schedule for ' + request.user.first_name + ' ' + request.user.last_name + '"onclick="javascript:window.open(this.href, '', \'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600\');return false;"target="_blank">Share a schedule on social media</a>'))
         entries = FollowEntry.objects.filter(user=request.user)
         if len(entries) == 0:
             todo.append(SafeString('<a href="/search/">Follow a course to get status updates</a>'))
