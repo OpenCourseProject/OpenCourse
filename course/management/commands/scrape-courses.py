@@ -1,11 +1,14 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.core.management import call_command
 from course.models import Course, Term, Instructor, FollowEntry
+from pyvirtualdisplay import Display
 from splinter import Browser
 from splinter.request_handler.status_code import HttpResponseError
 from lxml import html
 import json
 import datetime
+from time import sleep
+import os
 
 class Command(BaseCommand):
     help = 'Scrapes the CNU courses'
@@ -20,6 +23,8 @@ class Command(BaseCommand):
         # there's no possibility of making a few simple POST requests to get the
         # data needed. Because of that, we now use plain Firefox running its
         # display on an Xvfb service.
+        display = Display(visible=0, size=(1024, 768))
+        display.start()
     	browser = Browser('firefox')
         try:
             browser.visit(url)
@@ -29,9 +34,6 @@ class Command(BaseCommand):
         page = html.fromstring(browser.html)
         # Get semester select options
         semesterlist = page.xpath(".//select[@name='semesterlist']/option")
-        # Get rid of all the existing entries
-        if len(semesterlist) > 0:
-            Term.objects.all().delete()
         # Add all the new entries
         for entry in semesterlist:
             # Term ID
@@ -40,7 +42,15 @@ class Command(BaseCommand):
             name = entry.text.strip()
             # Save it to the database
             term = Term(value=value, name=name)
-            term.save()
+            try:
+                term = Term.objects.get(value=value)
+            except Term.DoesNotExist:
+                term.save()
+
+            self.stdout.write('Parsing classes for: ' + term.name)
+            self.stdout.write('-> Sleeping for 30s...')
+            sleep(30)
+            self.stdout.write('-> Starting the scrape')
 
             # Visit the query page
             browser.visit(url)
@@ -54,8 +64,9 @@ class Command(BaseCommand):
             page = html.fromstring(browser.html)
         	# Get rows from the table
             rows = page.get_element_by_id('GridView1').xpath('tbody')[0]
-            courses = []
             skip = True
+            added = 0
+            updated = 0
             # Parse all rows
             for row in rows:
                 # Skip the first row (titles)
@@ -138,6 +149,7 @@ class Command(BaseCommand):
                                 if old_attr != new_attr:
                                     status_update = True
                     obj.save()
+                    updated += 1
 
                     # Send status emails
                     if status_update:
@@ -146,4 +158,8 @@ class Command(BaseCommand):
                             call_command('email', str(follow.user.id), str(obj.term.value), str(obj.crn))
                 except Course.DoesNotExist:
                     course.save()
+                    added += 1
+            self.stdout.write('Parsed ' + str(len(rows)) + 'courses. ' + str(added) + ' added, ' + str(updated) + ' updated.')
+        browser.quit()
+        display.stop()
         self.stdout.write('Successfully scraped courses')
