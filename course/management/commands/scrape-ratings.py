@@ -10,6 +10,8 @@ SEARCH_URL = BASE_URL + "/search.jsp?queryoption=HEADER&queryBy=teacherName&scho
 class Command(BaseCommand):
     def handle(self, *args, **options):
         query = Instructor.objects.all()
+        self.stdout.write('Gathering RMP links for all instructors...')
+        new = 0
         for instructor in query:
             if instructor.last_name != "Staff" and not instructor.rmp_link:
                 page = requests.get(SEARCH_URL + instructor.last_name)
@@ -27,7 +29,10 @@ class Command(BaseCommand):
                         link = value.xpath('a')[0].get('href')
                         instructor.rmp_link = BASE_URL + link
                         found = True
+                        new += 1
                         instructor.save()
+        self.stdout.write('Finished searching. ' + str(new) + ' links found.')
+        self.stdout.write('Gathering RMP ratings for all known instructors...')
         for instructor in query:
             if instructor.rmp_link:
                 page = requests.get(instructor.rmp_link)
@@ -37,4 +42,4 @@ class Command(BaseCommand):
                     value = decimal.Decimal(result[0])
                     instructor.rmp_score = value
                     instructor.save()
-        self.stdout.write('Successfully ran RMP lookup')
+        self.stdout.write('Finished lookup.')

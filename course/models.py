@@ -21,8 +21,6 @@ class Instructor(models.Model):
         name = self.last_name
         if self.first_name and len(self.first_name) > 0:
             name += ", " + self.first_name
-        if self.rmp_score:
-            name += " (" + str(self.rmp_score) + ")"
         return name
 
     @property
