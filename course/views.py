@@ -1,10 +1,10 @@
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from course.models import Course, Term, FollowEntry, Material
+from course.models import Course, Term, FollowEntry, Material, InstructorLinkSuggestion
 from schedule.models import ScheduleEntry, ExamEntry, ExamSource
 from django_tables2 import RequestConfig
 from course.tables import CourseTable
-from course.forms import SearchForm
+from course.forms import SearchForm, InstructorSuggestionForm
 from account.models import Profile
 from course.utils import exam_for_course
 from django.contrib.auth.decorators import login_required
@@ -87,6 +87,16 @@ def course(request, term, crn):
         'user': user,
         'materials': materials,
     }
+
+    if authenticated:
+        if request.method == 'POST':
+            form = InstructorSuggestionForm(request.POST)
+            if form.is_valid():
+                link = form.cleaned_data['link']
+                suggestion = InstructorLinkSuggestion(instructor=course.instructor, user=user, link=link)
+                suggestion.save()
+        else:
+            context['suggestion_form'] = InstructorSuggestionForm()
 
     primary = course.primary_meeting_time
     secondary = course.secondary_meeting_times

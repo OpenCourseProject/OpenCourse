@@ -106,3 +106,12 @@ class Material(models.Model):
 
     def __unicode__(self):
         return self.title
+
+class InstructorLinkSuggestion(models.Model):
+    instructor = models.ForeignKey(Instructor)
+    user = models.ForeignKey(User)
+    time_created = models.DateTimeField(auto_now_add=True)
+    link = models.URLField()
+
+    def __unicode__(self):
+        return str(self.instructor)

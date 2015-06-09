@@ -16,3 +16,6 @@ class SearchForm(forms.Form):
     instructor = forms.CharField(label='Instructor name', max_length=50, required=False)
     min_rating = forms.DecimalField(label='Instructor rating', decimal_places=1, max_digits=2, required=False)
     show_closed = forms.BooleanField(label='Show closed courses', initial=True, required=False)
+
+class InstructorSuggestionForm(forms.Form):
+    link = forms.URLField(label='RateMyProfessor URL')
