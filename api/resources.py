@@ -2,7 +2,7 @@ from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
-from course.models import Course, Term, Instructor, Attribute, Material
+from course.models import Course, Term, Instructor, MeetingTime, Attribute, Material
 from schedule.models import ScheduleEntry
 
 class TermResource(ModelResource):
@@ -26,9 +26,21 @@ class InstructorResource(ModelResource):
             'rmp_score': ALL,
         }
 
+class MeetingTimeResource(ModelResource):
+    class Meta:
+        queryset = MeetingTime.objects.all()
+        resource_name = 'meeting time'
+        allowed_methods = ['get']
+        filtering = {
+            'days': ALL,
+            'start_time': ALL,
+            'end_time': ALL,
+        }
+
 class CourseResource(ModelResource):
     term = fields.ToOneField(TermResource, 'term', full=True)
     instructor = fields.ToOneField(InstructorResource, 'instructor', full=True)
+    meeting_times = fields.ToManyField(MeetingTimeResource, 'meeting_times', full=True)
 
     class Meta:
         queryset = Course.objects.all()
@@ -42,13 +54,12 @@ class CourseResource(ModelResource):
             'hours': ALL,
             'attribute': ALL,
             'ctype': ALL,
-            'days': ALL,
-            'start_time': ALL,
             'location': ALL,
             'seats': ALL,
             'status': ALL,
             'term': ALL_WITH_RELATIONS,
             'instructor': ALL_WITH_RELATIONS,
+            'meeting_times': ALL_WITH_RELATIONS,
         }
 
 class AttributeResource(ModelResource):

@@ -141,7 +141,25 @@ facebookCallback = function(response) {
       </button>
       {% endif %}
       <p>
-        Meets <strong>{{ course.days }}</strong> from <strong>{{ course.start_time }}</strong> - <strong>{{ course.end_time }}</strong> in {{ course.location }}.
+        {% if course.location %}
+        Meets
+        {% endif %}
+        {% if primary_meeting_time %}
+        <strong>{{ primary_meeting_time.days }}</strong> from <strong>{{ primary_meeting_time.start_time }}</strong> - <strong>{{ primary_meeting_time.end_time }}</strong>
+        {% endif %}
+        {% if course.location %}
+        in {{ course.location }}.
+        {% endif %}
+        {% if secondary_meeting_times %}
+        <br>
+        <small>
+          <ul>
+            {% for meeting_time in secondary_meeting_times %}
+            <li>On <strong>{{ meeting_time.days }}</strong> from <strong>{{ meeting_time.start_time }}</strong> - <strong>{{ meeting_time.end_time }}</strong></li>
+            {% endfor %}
+          </ul>
+        </small>
+        {% endif %}
       </p>
       <p>
         <a href="{{ course.course_link }}">

@@ -61,7 +61,7 @@
           <code>https://opencourseproject.com/api/v1/course/?days=MWF</code>
           finds all courses which meet Monday, Wednesday, and Friday. You
           can further filter objects, for instance
-          <code>https://opencourseproject.com/api/v1/course/?days=MWF&start_time=10:00:00</code>
+          <code>https://opencourseproject.com/api/v1/course/?days=MWF&meeting_times__start_time=10:00:00</code>
           finds all courses which meet Monday, Wednesday, and Friday at 10am.
         </li>
         <li>
@@ -144,13 +144,19 @@
         <li><code>hours</code>: the number of credit hours.</li>
         <li><code>attributes</code>: course Attributes. See the <strong>Attribute</strong> endpoint for details.</li>
         <li><code>ctype</code>: the type of course (ex: Lec, Lab, etc).</li>
-        <li><code>days</code>: the days this Course meets</li>
-        <li><code>start_time</code>: the time this Course starts.</li>
-        <li><code>end_time</code>: the time this Course ends.</li>
         <li><code>location</code>: the building and room number of this Course, if any.</li>
         <li><code>instructor</code>: the <strong>Instructor</strong> object of this Course, if any.</li>
         <li><code>seats</code>: the seats left.</li>
         <li><code>status</code>: Open or Closed, depending on how many seats are left.</li>
+        <li>
+          <code>meeting_times</code>: the days and times this Course meets (there could be several).
+          <ul>
+            <li>Meeting times have the following fields:</li>
+            <li><code>days</code>: the days (MW, TR, MWF, etc.) for which this meeting time applies.</li>
+            <li><code>start_time</code>: the timecode in HH:MM:SS format that the meeting time starts.</li>
+            <li><code>end_time</code>: the timecode in HH:MM:SS format that the meeting time ends.</li>
+          </ul>
+        </li>
       </ul>
     </div>
   </div>

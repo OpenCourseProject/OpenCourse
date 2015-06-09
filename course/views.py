@@ -50,11 +50,12 @@ def search(request):
     if course:
         query = query.filter(course__icontains=course)
     if days:
-        query = query.filter(days=days)
+        for day in list(days):
+            query = query.filter(meeting_times__days__icontains=day)
     if start:
-        query = query.filter(start_time=start)
+        query = query.filter(meeting_times__start_time=start)
     if end:
-        query = query.filter(end_time=end)
+        query = query.filter(meeting_times__end_time=end)
     if instructor:
         query = query.filter(instructor__last_name__icontains=instructor)
     if min_rating:
@@ -76,23 +77,31 @@ def course(request, term, crn):
 
     materials = Material.objects.filter(term=term, course_crn=course.crn)
 
-    exam = exam_for_course(course)
-    exam_sources = ExamSource.objects.filter(term=term)
-    exam_source = None
-    if len(exam_sources) == 1:
-        exam_source = exam_sources[0]
-
     user = request.user
     authenticated = user.is_authenticated()
+
     context = {
         'course': course,
         'term': term,
         'authenticated': authenticated,
         'user': user,
-        'exam': exam,
-        'exam_source': exam_source,
         'materials': materials,
     }
+
+    primary = course.primary_meeting_time
+    secondary = course.secondary_meeting_times
+    if primary:
+        context['primary_meeting_time'] = primary
+    if secondary:
+        context['secondary_meeting_times'] = secondary
+
+    exam = exam_for_course(course)
+    exam_sources = ExamSource.objects.filter(term=term)
+    if exam:
+        context['exam'] = exam
+    if len(exam_sources) == 1:
+        context['exam_source'] = exam_sources[0]
+
     return render(request, 'course/course.html', context)
 
 @login_required

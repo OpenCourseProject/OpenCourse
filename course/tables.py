@@ -3,6 +3,9 @@ from course.models import Course
 
 class CourseTable(tables.Table):
     rating = tables.Column(accessor='instructor.rmp_score')
+    days = tables.Column(accessor='primary_meeting_time.days', order_by='meeting_times.days')
+    start_time = tables.Column(accessor='primary_meeting_time.start_time', order_by='meeting_times.start_time')
+    end_time = tables.Column(accessor='primary_meeting_time.end_time', order_by='meeting_times.end_time')
 
     class Meta:
         model = Course
