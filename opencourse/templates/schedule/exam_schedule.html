@@ -46,7 +46,7 @@ $(document).ready(function() {
     editable: false,
     hiddenDays: [0],
     allDaySlot: false,
-    events: '/schedule/calendar/exam/?term={{ term.value }}',
+    events: '/schedule/calendar/exam/?identifier={{ identifier }}',
     loading: function(isLoading, view) {
       // Hacky fix to avoid calendar loading
       if (!isLoading && !switched) {

@@ -36,8 +36,8 @@ def schedule(request):
             form.fields['term'].initial = term
     query = ScheduleEntry.objects.filter(user=request.user, term=term)
     table = ScheduleTable(schedule_get_courses(query))
-    hash = hashlib.md5(b'%s:%s' % (str(request.user.username), str(term.name)))
-    share_url = "https://opencourseproject.com/schedule/" + hash.hexdigest()[:15] + "/"
+    hash = hashlib.md5(b'%s:%s' % (str(request.user.username), str(term.name))).hexdigest()[:15]
+    share_url = "https://opencourseproject.com/schedule/" + hash + "/"
 
     credits_min = 0
     credits_max = 0
@@ -67,6 +67,7 @@ def schedule(request):
         'user': request.user,
         'authenticated': True,
         'by_id': False,
+        'identifier': hash,
         'share': len(query) > 0,
         'share_url': share_url,
         'credits_min': credits_min,
@@ -90,6 +91,8 @@ def exam_schedule(request, termid):
                 end = exam.exam_end_time
                 exams.append({'course': course.course, 'title': course.title, 'date': exam.exam_date, 'start_time': start, 'end_time': end})
 
+    hash = hashlib.md5(b'%s:%s' % (str(request.user.username), str(term.name))).hexdigest()[:15]
+
     table = ExamTable(exams)
 
     RequestConfig(request).configure(table)
@@ -97,6 +100,7 @@ def exam_schedule(request, termid):
         'term': term,
         'table': table,
         'user': request.user,
+        'identifier': hash,
         'authenticated': True,
     }
     return render(request, 'schedule/exam_schedule.html', context)
@@ -134,6 +138,7 @@ def schedule_view(request, identifier):
         'term': term,
         'schedule_user': user,
         'by_id': True,
+        'identifier': identifier,
         'credits_min': credits_min,
         'credits_max': credits_max,
     }
@@ -142,17 +147,6 @@ def schedule_view(request, identifier):
         context['user_courses'] = schedule_get_courses(ScheduleEntry.objects.filter(user=request.user))
 
     return render(request, 'schedule/course_schedule.html', context)
-
-@login_required
-def schedule_get(request):
-    if request.method == 'GET':
-        term = Term.objects.get(value=request.GET['term'])
-        query = ScheduleEntry.objects.filter(user=request.user, term=term)
-        courses = schedule_get_courses(query)
-        data = serializers.serialize("json", courses)
-        return HttpResponse(data, 200)
-    else:
-        return HttpResponse('Method not allowed', 405)
 
 @login_required
 def schedule_add(request):
@@ -205,8 +199,7 @@ def schedule_calendar(request):
     FRI = THU + delta
     SAT = FRI + delta
     if request.method == 'GET':
-        term = Term.objects.get(value=request.GET['term'])
-        query = ScheduleEntry.objects.filter(user=request.user, term=term)
+        query = ScheduleEntry.objects.filter(identifier=request.GET['identifier'])
         events = []
         for entry in query:
             course = schedule_get_course(entry)
@@ -220,7 +213,7 @@ def schedule_calendar(request):
                         'title': course.course,
                         'start': start,
                         'end': end,
-                        'url': 'https://opencourseproject.com/course/' + str(term.value) + '/' + str(course.crn) + '/',
+                        'url': 'https://opencourseproject.com/course/' + str(course.term.value) + '/' + str(course.crn) + '/',
                     })
         days = SafeString(json.dumps(events))
         return HttpResponse(days, 201)
@@ -230,8 +223,7 @@ def schedule_calendar(request):
 @login_required
 def exam_calendar(request):
     if request.method == 'GET':
-        term = Term.objects.get(value=request.GET['term'])
-        query = ScheduleEntry.objects.filter(user=request.user, term=term)
+        query = ScheduleEntry.objects.filter(identifier=request.GET['identifier'])
         events = []
         for entry in query:
             course = schedule_get_course(entry)
@@ -244,7 +236,7 @@ def exam_calendar(request):
                     'title': course.course,
                     'start': start,
                     'end': end,
-                    'url': 'https://opencourseproject.com/course/' + str(term.value) + '/' + str(course.crn) + '/',
+                    'url': 'https://opencourseproject.com/course/' + str(course.term.value) + '/' + str(course.crn) + '/',
                 })
         exams = SafeString(json.dumps(events))
         return HttpResponse(exams, 201)

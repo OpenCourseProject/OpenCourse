@@ -10,34 +10,32 @@ facebookCallback = function(response) {
   if (response.status === 'connected') {
     $.get('/friends/', {term: "{{ term.value }}", crn: "{{ course.crn }}"}, function(data) {
       var arr = data.split(",");
-      var people_length = 0
-      var people = 0
+      var ids = []
+      var added = 0
       if (arr.length > 0) {
         FB.api('/me', function(response) {
           var my_id = response.id;
           for(var i=0;i<arr.length;i++) {
             var id = arr[i];
             if (id != my_id) {
-              people_length++;
+              ids.push(id);
             }
           }
-          for(var i=0;i<arr.length;i++) {
-            var id = arr[i];
-            if (id != my_id) {
-              FB.api('/' + id, function(response) {
-                var name = response.name;
-                var url = 'http://facebook.com/' + id;
-                FB.api('/' + id + '/picture/', function(response) {
-                  var picture_url = response.data.url;
-                  $(".social-body").append('<a href="' + url + '" title="' + name + '"><img src="' + picture_url + '" alt="' + name + '"></a>');
-                  people++;
-                  if (people == people_length && people_length > 0) {
-                    $(".social-panel").removeClass("hidden");
-                    $(".social-heading").html(people + (people == 1 ? " person" : " people") + " taking this class");
-                  }
-                });
+          for(var i=0;i<ids.length;i++) {
+            var id = ids[i];
+            FB.api('/' + id, function(response) {
+              var name = response.name;
+              var url = 'http://facebook.com/' + id;
+              FB.api('/' + id + '/picture/', function(response) {
+                var picture_url = response.data.url;
+                $(".social-body").append('<a href="' + url + '" title="' + name + '"><img src="' + picture_url + '" alt="' + name + '"></a>');
+                added++;
+                if (added == ids.length && ids.length > 0) {
+                  $(".social-heading").html(ids.length + (ids.length == 1 ? " person" : " people") + " taking this class");
+                  $(".social-panel").removeClass("hidden");
+                }
               });
-            }
+            });
           }
         });
       }

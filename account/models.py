@@ -11,7 +11,7 @@ class Profile(models.Model):
     facebook_id = models.CharField(max_length=50, null=True)
 
     def __unicode__(self):
-        return self.user
+        return self.user.username
 
 def create_user(sender, instance, created, **kwargs):
     # Create user profile if it doesn't exist

@@ -44,7 +44,7 @@ $(document).ready(function() {
     editable: false,
     hiddenDays: [0],
     allDaySlot: false,
-    events: '/schedule/calendar/course/?term={{ term.value }}',
+    events: '/schedule/calendar/course/?identifier={{ identifier }}',
     loading: function(isLoading, view) {
       // Hacky fix to avoid calendar loading
       if (!isLoading) {
