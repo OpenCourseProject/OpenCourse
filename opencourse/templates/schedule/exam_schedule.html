@@ -34,6 +34,7 @@
 	}
 </style>
 <script>
+var switched = false;
 $(document).ready(function() {
   $('#calendar').fullCalendar({
     header: {
@@ -48,8 +49,9 @@ $(document).ready(function() {
     events: '/schedule/calendar/exam/?term={{ term.value }}',
     loading: function(isLoading, view) {
       // Hacky fix to avoid calendar loading
-      if (!isLoading) {
-        $('#viewTabs a[href="#list-tab"]').tab('show')
+      if (!isLoading && !switched) {
+        $('#viewTabs a[href="#list-tab"]').tab('show');
+        switched=true;
       }
     }
   });

@@ -206,17 +206,18 @@ def schedule_calendar(request):
         events = []
         for entry in query:
             course = schedule_get_course(entry)
-            for day in list(course.days):
-                day = MON if day == 'M' else TUE if day == 'T' else WED if day == 'W' else THU if day == 'R' else FRI if day == 'F' else SAT
-                start = datetime.datetime.combine(day, course.start_time).isoformat()
-                end = datetime.datetime.combine(day, course.end_time).isoformat()
-                events.append({
-                    'id': str(course.crn),
-                    'title': course.course,
-                    'start': start,
-                    'end': end,
-                    'url': 'https://opencourseproject.com/course/' + str(term.value) + '/' + str(course.crn) + '/',
-                })
+            for meeting_time in course.meeting_times.all():
+                for day in list(meeting_time.days):
+                    day = MON if day == 'M' else TUE if day == 'T' else WED if day == 'W' else THU if day == 'R' else FRI if day == 'F' else SAT
+                    start = datetime.datetime.combine(day, meeting_time.start_time).isoformat()
+                    end = datetime.datetime.combine(day, meeting_time.end_time).isoformat()
+                    events.append({
+                        'id': str(course.crn),
+                        'title': course.course,
+                        'start': start,
+                        'end': end,
+                        'url': 'https://opencourseproject.com/course/' + str(term.value) + '/' + str(course.crn) + '/',
+                    })
         days = SafeString(json.dumps(events))
         return HttpResponse(days, 201)
     else:
@@ -233,7 +234,7 @@ def exam_calendar(request):
             exam = exam_for_course(course)
             if exam:
                 start = datetime.datetime.combine(exam.exam_date, exam.exam_start_time).isoformat()
-                end = datetime.datetime.combine(exam.exam_date, exam.exam_start_time).isoformat()
+                end = datetime.datetime.combine(exam.exam_date, exam.exam_end_time).isoformat()
                 events.append({
                     'id': str(course.crn),
                     'title': course.course,
