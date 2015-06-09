@@ -1,0 +1,18 @@
+*******************************
+{course} for {term} is {status}
+*******************************
+
+{description}
+
+--------------
+Course Details
+--------------
+
+* CRN: {course_crn}
+* Section: {course_section}
+* Instructor: {course_instructor}
+
+View on OpenCourse ( course_link )
+
+To stop receiving emails about this course,
+unfollow it here ( course_link ).
