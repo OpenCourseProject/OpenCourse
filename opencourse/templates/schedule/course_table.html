@@ -37,7 +37,7 @@
   <tbody class="schedule-body">
     {% for row in table.page.object_list|default:table.rows %} {# support pagination #}
     {% block table.tbody.row %}
-      <tr class="{{ forloop.counter|divisibleby:2|yesno:"even,odd" }} clickable-row"> {# avoid cycle for Django 1.2-1.6 compatibility #}
+      <tr {% if user_courses and row.record in user_courses %}class="success" title="You and {{ schedule_user.first_name }} are both in this class"{% else %}class="{{ forloop.counter|divisibleby:2|yesno:"even,odd" }}"{% endif %}> {# avoid cycle for Django 1.2-1.6 compatibility #}
         {% for column, cell in row.items %}
         <td {{ column.attrs.td.as_html }}>
           <a href="/course/{{ term.value }}/{{ row.crn }}/" target="_blank">

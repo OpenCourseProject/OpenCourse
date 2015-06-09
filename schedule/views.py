@@ -127,17 +127,21 @@ def schedule_view(request, identifier):
     table = ScheduleTable(courses)
 
     RequestConfig(request).configure(table)
+
     context = {
         'table': table,
         'social_desc': desc,
         'term': term,
-        'user': user,
-        'authenticated': False,
+        'schedule_user': user,
         'by_id': True,
         'credits_min': credits_min,
         'credits_max': credits_max,
     }
-    return render(request, 'schedule/schedule.html', context)
+
+    if user != request.user and request.user.is_authenticated():
+        context['user_courses'] = schedule_get_courses(ScheduleEntry.objects.filter(user=request.user))
+
+    return render(request, 'schedule/course_schedule.html', context)
 
 @login_required
 def schedule_get(request):
@@ -155,7 +159,7 @@ def schedule_add(request):
     if request.method == 'GET':
         term = Term.objects.get(value=request.GET['term'])
         course = Course.objects.get(term=term, crn=request.GET['course'])
-        if not schedule_check_course(term, course):
+        if not schedule_check_course(request.user, term, course):
             entry = ScheduleEntry(user=request.user, term=term, course_crn=course.crn)
             entry.save()
             return HttpResponse('OK', 201)
@@ -169,7 +173,7 @@ def schedule_remove(request):
     if request.method == 'GET':
         term = Term.objects.get(value=request.GET['term'])
         course = Course.objects.get(term=term, crn=request.GET['course'])
-        if schedule_check_course(term, course):
+        if schedule_check_course(request.user, term, course):
             entry = ScheduleEntry.objects.get(user=request.user, term=term, course_crn=course.crn)
             entry.delete()
             return HttpResponse('OK', 201)
@@ -183,7 +187,7 @@ def schedule_has(request):
     if request.method == 'GET':
         term = Term.objects.get(value=request.GET['term'])
         course = Course.objects.get(term=term, crn=request.GET['course'])
-        if schedule_check_course(term, course):
+        if schedule_check_course(request.user, term, course):
             return HttpResponse('1', 200)
         else:
             return HttpResponse('0', 200)
@@ -247,8 +251,8 @@ def exam_calendar(request):
     else:
         return HttpResponse('Method not allowed', 405)
 
-def schedule_check_course(term, course):
-    entries = ScheduleEntry.objects.filter(term=term, course_crn=course.crn)
+def schedule_check_course(user, term, course):
+    entries = ScheduleEntry.objects.filter(user=user, term=term, course_crn=course.crn)
     return len(entries) > 0
 
 def schedule_get_course(entry):
