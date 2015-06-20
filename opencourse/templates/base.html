@@ -28,12 +28,14 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    {% if request.user.is_authenticated %}
     <!-- Fill the Report modal URL field -->
     <script>
     $(document).ready(function() {
       document.getElementById("id_url").value = window.location.href;
     });
     </script>
+    {% endif %}
 
     <!-- Begin custom header content -->
     {% block head %}{% endblock %}

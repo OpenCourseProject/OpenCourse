@@ -148,7 +148,6 @@ def schedule_view(request, identifier):
 
     return render(request, 'schedule/course_schedule.html', context)
 
-@login_required
 def schedule_calendar(request):
     # Requests will include a 'start' value which is a Monday
     delta = datetime.timedelta(days=1)
@@ -180,7 +179,6 @@ def schedule_calendar(request):
     else:
         return HttpResponse('Method not allowed', 405)
 
-@login_required
 def exam_calendar(request):
     if request.method == 'GET':
         query = ScheduleEntry.objects.filter(identifier=request.GET['identifier'])
