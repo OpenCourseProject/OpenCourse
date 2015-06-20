@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'django_tables2',
     'tastypie',
     # Custom Apps
+    'opencourse',
     'course',
     'schedule',
     'account',
@@ -84,6 +85,7 @@ TEMPLATE_CONTEXT_PROCESSORS = DEFAULT_SETTINGS.TEMPLATE_CONTEXT_PROCESSORS + (
     'social.apps.django_app.context_processors.login_redirect',
     'django.core.context_processors.request',
     'django.contrib.auth.context_processors.auth',
+    'opencourse.context.report',
 )
 
 ROOT_URLCONF = 'opencourse.urls'

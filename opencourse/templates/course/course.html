@@ -3,12 +3,17 @@
 {% block head %}
 <script src="/static/assets/js/facebook.js"></script>
 <script>
+var username = "{{ user.username }}"
 var authenticated = "{{ authenticated }}"
 var term = "{{ term.value }}"
+var apiKey = "{{ api_key.key }}"
 
 facebookCallback = function(response) {
   if (response.status === 'connected') {
     $.get('/friends/', {term: "{{ term.value }}", crn: "{{ course.crn }}"}, function(data) {
+      if (data.length == 0) {
+        return;
+      }
       var arr = data.split(",");
       var ids = []
       var added = 0
@@ -25,10 +30,11 @@ facebookCallback = function(response) {
             var id = ids[i];
             FB.api('/' + id, function(response) {
               var name = response.name;
-              var url = 'http://facebook.com/' + id;
-              FB.api('/' + id + '/picture/', function(response) {
+              var detail_id = response.id
+              var url = 'http://facebook.com/' + detail_id;
+              FB.api('/' + detail_id + '/picture/', function(response) {
                 var picture_url = response.data.url;
-                $(".social-body").append('<a href="' + url + '" title="' + name + '"><img src="' + picture_url + '" alt="' + name + '"></a>');
+                $(".social-body").append('<a href="' + url + '" title="' + name + '"><img src="' + picture_url + '" alt="' + name + '" hspace="5"></a>');
                 added++;
                 if (added == ids.length && ids.length > 0) {
                   $(".social-heading").html(ids.length + (ids.length == 1 ? " person" : " people") + " taking this class");
@@ -169,14 +175,12 @@ facebookCallback = function(response) {
         {% endif %}
       </p>
       <p>
-        <a href="{{ course.course_link }}">
-          <button id="detailsButton" type="button" class="btn btn-default btn-lg">
-            <span class="glyphicon glyphicon-home" aria-hidden="true"></span> View Details
-          </button>
+        <a class="btn btn-default btn-lg" href="{{ course.course_link }}" role="button">
+          <span class="glyphicon glyphicon-home" aria-hidden="true"></span> View Details
         </a>
-        <button id="materialsButton" type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#materials">
+        <a class="btn btn-default btn-lg" href="#materials" data-toggle="modal" data-target="#materials" role="button">
           <span class="glyphicon glyphicon-book" aria-hidden="true"></span> View Materials
-        </button>
+        </a>
       </p>
     </div>
   </div>

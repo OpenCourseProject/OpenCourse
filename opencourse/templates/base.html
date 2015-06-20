@@ -28,6 +28,13 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <!-- Fill the Report modal URL field -->
+    <script>
+    $(document).ready(function() {
+      document.getElementById("id_url").value = window.location.href;
+    });
+    </script>
+
     <!-- Begin custom header content -->
     {% block head %}{% endblock %}
   </head>
@@ -57,6 +64,39 @@
   		    <!--/.nav-collapse -->
   		  </div>
   	  </div>
+      {% if request.user.is_authenticated %}
+      <!-- Report Modal -->
+      <div class="modal fade" id="report" tabindex="-1" role="dialog" aria-labelledby="reportLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="reportLabel">Got a problem or a suggestion?</h4>
+            </div>
+            <div class="modal-body">
+              <p>
+                If you encounter a bug or have an improvement you'd like to share, please let us know here!
+                We'll follow up with you via email if it is required.
+              </p>
+              <form action="/report/" method="post">
+                {% csrf_token %}
+                {% for field in report_form.visible_fields %}
+                {{ field.label_tag }}
+                {{ field.errors }}
+                <p>
+                  {{ field }}
+                </p>
+                {% endfor %}
+                {% for field in report_form.hidden_fields %}
+                  {{ field }}
+                {% endfor %}
+                <button type="submit" class="btn btn-success">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
   	  <!-- Begin page content -->
   	  {% block content %}{% endblock %}
   	</div>

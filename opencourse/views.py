@@ -1,9 +1,12 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.utils.safestring import SafeString
 from account.models import Profile
 from schedule.models import ScheduleEntry
 from course.models import FollowEntry
+from opencourse.models import Report
+from opencourse.forms import ReportForm
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     todo = []
@@ -15,22 +18,35 @@ def home(request):
         if len(entries) == 0:
             todo.append(SafeString('<a href="/search/">Start adding courses to your schedule</a>'))
         else:
-            todo.append(SafeString('<a href="https://www.facebook.com/sharer/sharer.php?u=https://opencourseproject.com/schedule/' + entries[0].identifier + '/&t=' + entries[0].term.name + ' schedule for ' + request.user.first_name + ' ' + request.user.last_name + '"onclick="javascript:window.open(this.href, '', \'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600\');return false;"target="_blank">Share a schedule on social media</a>'))
+            todo.append(SafeString('<a href="https://www.facebook.com/sharer/sharer.php?u=https://opencourseproject.com/schedule/' + entries[0].identifier + '/&t=' + entries[0].term.name + ' schedule for ' + request.user.first_name + ' ' + request.user.last_name + ' "onclick="javascript:window.open(this.href, '', \'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600\');return false;" target="_blank">Share a schedule on social media</a>'))
         entries = FollowEntry.objects.filter(user=request.user)
         if len(entries) == 0:
             todo.append(SafeString('<a href="/search/">Follow a course to get status updates</a>'))
-        todo.append(SafeString('<a href="https://github.com/gravitylow/OpenCourse/issues">Send a suggestion or a bug report</a>'))
+        todo.append(SafeString('<a href="#report" data-toggle="modal" data-target="#report">Send a suggestion or a bug report</a>'))
     context = {
-        'user': request.user,
         'todo': todo,
     }
     return render(request, 'index.html', context)
 
 def about(request):
-    context = {
-        'user': request.user,
-    }
+    context = {}
     return render(request, 'about.html', context)
+
+@login_required
+def report(request):
+    context = {}
+    if request.method == 'POST':
+        form = ReportForm(request.POST)
+        if form.is_valid():
+            url = form.cleaned_data['url']
+            description = form.cleaned_data['description']
+            report = Report(user=request.user, url=url, description=description)
+            report.save()
+            context = {
+                'report': report,
+            }
+            return render(request, 'report.html', context)
+    return redirect('/')
 
 def error_500(request):
     context = RequestContext(request)

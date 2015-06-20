@@ -1,18 +1,32 @@
 $(document).ready(function() {
   if (authenticated == 'True') {
     $('button[name="schedule-button"]').each(function(i, obj) {
-      var button = $(this)
+      var button = $(this);
       var course = button.attr('data-course-crn');
-      $.get('/schedule/has/', {term: term, course: course}, function(data) {
-        state = $.trim(data);
+      var params = {
+        'username': username,
+        'api_key': apiKey,
+        'term__value': term,
+        'course_crn': course,
+        'format': 'json',
+      }
+      $.get('/api/v1/schedule/', params, function(data) {
+        state = data.meta.total_count;
         update_schedule_button(button, state);
       });
     });
     $('button[name="follow-button"]').each(function(i, obj) {
       var button = $(this)
       var course = button.attr('data-course-crn')
-      $.get('/follow/has/', {term: term, course: course}, function(data) {
-        state = $.trim(data);
+      var params = {
+        'username': username,
+        'api_key': apiKey,
+        'term__value': term,
+        'course_crn': course,
+        'format': 'json',
+      }
+      $.get('/api/v1/follow/', params, function(data) {
+        state = data.meta.total_count;
         update_follow_button(button, state);
       });
     });
@@ -23,28 +37,101 @@ $(document).ready(function() {
     var course = button.attr('data-course-crn')
     var state = button.attr('data-schedule-state')
     if (state == '0') {
-      $.get('/schedule/add/', {term: term, course: course}, function(data) {
-        update_schedule_button(button, '1');
+      var headers = {
+        'Authorization': 'ApiKey ' + username + ':' + apiKey,
+      }
+      var data = {
+        'term': '/api/v1/term/' + term + '/',
+        'course_crn': course,
+      }
+      $.ajax({
+        url: '/api/v1/schedule/',
+        type: 'POST',
+        data: JSON.stringify(data),
+        headers: headers,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        processData: false,
+        success: function (data, status, jqXHR) {
+          update_schedule_button(button, 1);
+        },
+        error: function (jqXHR, status, error) {
+          update_schedule_button(button, 1);
+        }
       });
     } else {
-      $.get('/schedule/remove/', {term: term, course: course}, function(data) {
-        update_schedule_button(button, '0');
+      var params = {
+        'username': username,
+        'api_key': apiKey,
+        'term__value': term,
+        'course_crn': course,
+        'format': 'json',
+      }
+      $.get('/api/v1/schedule/', params, function(data) {
+        uri = data.objects[0].resource_uri;
+        headers = {
+          'Authorization': 'ApiKey ' + username + ':' + apiKey,
+        }
+        $.ajax({
+          url: uri,
+          type: 'DELETE',
+          headers: headers,
+          success: function(data) {
+            update_schedule_button(button, 0);
+          }
+        });
       });
     }
   });
-  
+
   $('button[name="follow-button"]').click(function() {
-    console.log('follow clicked')
     var button = $(this)
     var course = button.attr('data-course-crn')
     var state = button.attr('data-follow-state')
     if (state == '0') {
-      $.get('/follow/add/', {term: term, course: course}, function(data) {
-        update_follow_button(button, '1');
+      var headers = {
+        'Authorization': 'ApiKey ' + username + ':' + apiKey,
+      }
+      var data = {
+        'term': '/api/v1/term/' + term + '/',
+        'course_crn': course,
+      }
+      $.ajax({
+        url: '/api/v1/follow/',
+        type: 'POST',
+        data: JSON.stringify(data),
+        headers: headers,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        processData: false,
+        success: function (data, status, jqXHR) {
+          update_follow_button(button, 1);
+        },
+        error: function (jqXHR, status, error) {
+          update_follow_button(button, 1);
+        }
       });
     } else {
-      $.get('/follow/remove/', {term: term, course: course}, function(data) {
-        update_follow_button(button, '0');
+      var params = {
+        'username': username,
+        'api_key': apiKey,
+        'term__value': term,
+        'course_crn': course,
+        'format': 'json',
+      }
+      $.get('/api/v1/follow/', params, function(data) {
+        uri = data.objects[0].resource_uri;
+        headers = {
+          'Authorization': 'ApiKey ' + username + ':' + apiKey,
+        }
+        $.ajax({
+          url: uri,
+          type: 'DELETE',
+          headers: headers,
+          success: function(data) {
+            update_follow_button(button, 0);
+          }
+        });
       });
     }
   });
@@ -53,7 +140,7 @@ $(document).ready(function() {
 function update_schedule_button(button, state) {
   button.attr('data-schedule-state', state)
   button.removeClass("btn-default");
-  if (state == '0') {
+  if (state == 0) {
     button.html('<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Add to Schedule');
     button.removeClass("btn-danger");
     button.addClass("btn-success");
@@ -67,7 +154,7 @@ function update_schedule_button(button, state) {
 function update_follow_button(button, state) {
   button.attr('data-follow-state', state)
   button.removeClass("btn-default");
-  if (state == '0') {
+  if (state == 0) {
     button.html('<span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Get Updates');
     button.removeClass("btn-danger");
     button.addClass("btn-success");

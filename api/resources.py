@@ -2,7 +2,7 @@ from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
-from course.models import Course, Term, Instructor, MeetingTime, Attribute, Material
+from course.models import Course, Term, Instructor, MeetingTime, Attribute, Material, FollowEntry
 from schedule.models import ScheduleEntry
 
 class TermResource(ModelResource):
@@ -108,3 +108,23 @@ class ScheduleResource(ModelResource):
 
     def get_object_list(self, request):
         return super(ScheduleResource, self).get_object_list(request).filter(user=request.user)
+
+class FollowResource(ModelResource):
+    term = fields.ToOneField(TermResource, 'term', full=True)
+
+    class Meta:
+        queryset = FollowEntry.objects.all()
+        resource_name = 'follow'
+        allowed_methods = ['get', 'post', 'delete']
+        authentication = ApiKeyAuthentication()
+        authorization = Authorization()
+        filtering = {
+            'course_crn': ALL,
+            'term': ALL_WITH_RELATIONS,
+        }
+
+    def obj_create(self, bundle, **kwargs):
+        return super(FollowResource, self).obj_create(bundle, user=bundle.request.user)
+
+    def get_object_list(self, request):
+        return super(FollowResource, self).get_object_list(request).filter(user=request.user)

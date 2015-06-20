@@ -5,6 +5,7 @@ import requests
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
+        self.stdout.write('Gathering materials for all courses...')
         query = Course.objects.all()
         for course in query:
             if course.bookstore_link:
@@ -21,13 +22,18 @@ class Command(BaseCommand):
                     value = result[i]
                     list = value.xpath('span/text()')
                     try:
-                        Material.objects.get(isbn=int(list[2].strip()), term=course.term, course_crn=course.crn)
+                        if list[2].strip().isdigit():
+                            Material.objects.get(isbn=int(list[2].strip()), term=course.term, course_crn=course.crn)
+                        else:
+                            Material.objects.get(title=materials[i].title, author=list[0].strip(), edition=list[1].strip(), term=course.term, course_crn=course.crn)
                     except Material.DoesNotExist:
                         materials[i].term = course.term
                         materials[i].course_crn = course.crn
                         materials[i].author = list[0].strip()
                         materials[i].edition = list[1].strip()
-                        materials[i].isbn = int(list[2].strip())
+                        if list[2].strip().isdigit():
+                            materials[i].isbn = int(list[2].strip())
                         if list[3].strip().isdigit():
                             materials[i].year = int(list[3].strip())
                         materials[i].save()
+        self.stdout.write('Finished lookup.')

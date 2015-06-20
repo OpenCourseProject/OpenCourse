@@ -149,46 +149,6 @@ def schedule_view(request, identifier):
     return render(request, 'schedule/course_schedule.html', context)
 
 @login_required
-def schedule_add(request):
-    if request.method == 'GET':
-        term = Term.objects.get(value=request.GET['term'])
-        course = Course.objects.get(term=term, crn=request.GET['course'])
-        if not schedule_check_course(request.user, term, course):
-            entry = ScheduleEntry(user=request.user, term=term, course_crn=course.crn)
-            entry.save()
-            return HttpResponse('OK', 201)
-        else:
-            return HttpResponse('Course is already scheduled', 400)
-    else:
-        return HttpResponse('Method not allowed', 405)
-
-@login_required
-def schedule_remove(request):
-    if request.method == 'GET':
-        term = Term.objects.get(value=request.GET['term'])
-        course = Course.objects.get(term=term, crn=request.GET['course'])
-        if schedule_check_course(request.user, term, course):
-            entry = ScheduleEntry.objects.get(user=request.user, term=term, course_crn=course.crn)
-            entry.delete()
-            return HttpResponse('OK', 201)
-        else:
-            return HttpResponse('Course is not scheduled', 400)
-    else:
-        return HttpResponse('Method not allowed', 405)
-
-@login_required
-def schedule_has(request):
-    if request.method == 'GET':
-        term = Term.objects.get(value=request.GET['term'])
-        course = Course.objects.get(term=term, crn=request.GET['course'])
-        if schedule_check_course(request.user, term, course):
-            return HttpResponse('1', 200)
-        else:
-            return HttpResponse('0', 200)
-    else:
-        return HttpResponse('Method not allowed', 405)
-
-@login_required
 def schedule_calendar(request):
     # Requests will include a 'start' value which is a Monday
     delta = datetime.timedelta(days=1)
@@ -242,10 +202,6 @@ def exam_calendar(request):
         return HttpResponse(exams, 201)
     else:
         return HttpResponse('Method not allowed', 405)
-
-def schedule_check_course(user, term, course):
-    entries = ScheduleEntry.objects.filter(user=user, term=term, course_crn=course.crn)
-    return len(entries) > 0
 
 def schedule_get_course(entry):
     return Course.objects.get(term=entry.term, crn=entry.course_crn)

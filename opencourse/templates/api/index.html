@@ -236,7 +236,7 @@
       <p>
         To specify your key, use the <code>Authorization</code> header in your
         GET request:
-        <pre>curl -H "Authorization: ApiKey {{ user.username }}:{{ api_key.key }}" https://opencourseproject.com/api/v1/schedule/</pre>
+        <pre>curl -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" https://opencourseproject.com/api/v1/schedule/</pre>
         Alternatively, you may append <code>?username={{ user.username }}&api_key={{ api_key.key }}</code>
         to the end of the url.
       </p>
@@ -278,7 +278,7 @@
         For example, to add <a href="https://opencourseproject.com/course/201600/5984/">this</a>
         course (CRN: <strong>5984</strong>) to your Fall Semester 2015 (Term ID: <strong>201600</strong>) schedule,
         send the following request:
-        <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {{ user.username }}:{{ api_key.key }}" -X POST --data '{"term": "/api/v1/term/201600/", "course_crn": "5984"}' https://opencourseproject.com/api/v1/schedule/</pre>
+        <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X POST --data '{"term": "/api/v1/term/201600/", "course_crn": "5984"}' https://opencourseproject.com/api/v1/schedule/</pre>
         A successful POST returns <code>HTTP 201 CREATED</code>.
       </p>
     </div>
@@ -296,7 +296,63 @@
         For example, if you want to delete the following item from your schedule:
         <code>{"course_crn": 5984, "id": 1, "resource_uri": "/api/v1/schedule/1/", "term": {"name": "Fall Semester 2015", "resource_uri": "/api/v1/term/201600/", "value": 201600}}</code>
         send the following request:
-        <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {{ user.username }}:{{ api_key.key }}" -X DELETE  https://opencourseproject.com/api/v1/schedule/1/</pre>
+        <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X DELETE  https://opencourseproject.com/api/v1/schedule/1/</pre>
+        A successful DELETE returns <code>HTTP 204 NO CONTENT</code>.
+      </p>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><samp>GET /follow/</samp></h3>
+    </div>
+    <div class="panel-body">
+      <p>
+        A <strong>Follow</strong> is a listing of courses that you have
+        decided to follow and recieve status updates for.
+      </p>
+      Fields:
+      <ul>
+        <li><code>term</code>: the Term which the courses are scheduled for.</li>
+        <li><code>course_crn</code>: the course CRN.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><samp>POST /follow/</samp></h3>
+    </div>
+    <div class="panel-body">
+      <p>
+        To start following a course with this API, simply send a POST
+        request where the body includes the following items:
+      </p>
+      <ul>
+        <li><code>term</code>: the Term resource that the course belongs to.</li>
+        <li><code>course_crn</code>: the course CRN.</li>
+      </ul>
+      <p>
+        For example, to follow <a href="https://opencourseproject.com/course/201600/5984/">this</a>
+        course (CRN: <strong>5984</strong>) which belongs to Fall Semester 2015 (Term ID: <strong>201600</strong>),
+        send the following request:
+        <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X POST --data '{"term": "/api/v1/term/201600/", "course_crn": "5984"}' https://opencourseproject.com/api/v1/follow/</pre>
+        A successful POST returns <code>HTTP 201 CREATED</code>.
+      </p>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><samp>DELETE /follow/</samp></h3>
+    </div>
+    <div class="panel-body">
+      <p>
+        To stop following a course, specify it with the <code>resource_url</code>
+        given from your GET schedule query request.
+      </p>
+      <p>
+        For example, if you want to delete the following item from your schedule:
+        <code>{"course_crn": 5984, "id": 1, "resource_uri": "/api/v1/follow/1/", "term": {"name": "Fall Semester 2015", "resource_uri": "/api/v1/term/201600/", "value": 201600}}</code>
+        send the following request:
+        <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X DELETE  https://opencourseproject.com/api/v1/follow/1/</pre>
         A successful DELETE returns <code>HTTP 204 NO CONTENT</code>.
       </p>
     </div>

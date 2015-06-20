@@ -97,7 +97,7 @@ class FollowEntry(models.Model):
 class Material(models.Model):
     term = models.ForeignKey(Term)
     course_crn = models.IntegerField()
-    isbn = models.BigIntegerField()
+    isbn = models.BigIntegerField(null=True)
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=50)
     publisher = models.CharField(max_length=50)

@@ -95,7 +95,7 @@ $(document).ready(function () {
           </p>
           <button class="btn btn-success" onclick="chrome.webstore.install()" id="install-button">Add to Chrome</button>
           <br><br>
-          {% if not user.is_authenticated %}
+          {% if not request.user.is_authenticated %}
           <p class="text-danger">
             You'll want to make sure you <a href="/account/">log in</a> before
             you try to sync your courses.

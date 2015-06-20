@@ -102,9 +102,6 @@ $(document).ready(function() {
       </form>
     </h1>
   </div>
-  {% if by_id %}
-  <center><mark>Click courses to see more information</mark></center>
-  {% endif %}
   <div role="tabpanel">
     {% if has_exams %}
     <a href="/schedule/exam/{{ term.value }}" class="pull-right">View Exam Schedule</a>

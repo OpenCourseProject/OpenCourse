@@ -8,6 +8,7 @@ from course.forms import SearchForm, InstructorSuggestionForm
 from account.models import Profile
 from course.utils import exam_for_course
 from django.contrib.auth.decorators import login_required
+from tastypie.models import ApiKey
 import json
 import logging
 
@@ -89,6 +90,9 @@ def course(request, term, crn):
     }
 
     if authenticated:
+        api_key = ApiKey.objects.get(user=request.user)
+        context['api_key'] = api_key
+
         if request.method == 'POST':
             form = InstructorSuggestionForm(request.POST)
             if form.is_valid():
@@ -130,47 +134,3 @@ def find_friends(request):
         return HttpResponse(','.join(friends), 201)
     else:
         return HttpResponse('Method not allowed', 405)
-
-@login_required
-def follow_add(request):
-    if request.method == 'GET':
-        term = Term.objects.get(value=request.GET['term'])
-        course = Course.objects.get(term=term, crn=request.GET['course'])
-        if not follow_check_course(term, course):
-            entry = FollowEntry(user=request.user, term=term, course_crn=course.crn)
-            entry.save()
-            return HttpResponse('OK', 201)
-        else:
-            return HttpResponse('User is already following', 400)
-    else:
-        return HttpResponse('Method not allowed', 405)
-
-@login_required
-def follow_remove(request):
-    if request.method == 'GET':
-        term = Term.objects.get(value=request.GET['term'])
-        course = Course.objects.get(term=term, crn=request.GET['course'])
-        if follow_check_course(term, course):
-            entry = FollowEntry.objects.get(user=request.user, term=term, course_crn=course.crn)
-            entry.delete()
-            return HttpResponse('OK', 201)
-        else:
-            return HttpResponse('User is not following', 400)
-    else:
-        return HttpResponse('Method not allowed', 405)
-
-@login_required
-def follow_has(request):
-    if request.method == 'GET':
-        term = Term.objects.get(value=request.GET['term'])
-        course = Course.objects.get(term=term, crn=request.GET['course'])
-        if follow_check_course(term, course):
-            return HttpResponse('1', 200)
-        else:
-            return HttpResponse('0', 200)
-    else:
-        return HttpResponse('Method not allowed', 405)
-
-def follow_check_course(term, course):
-    entries = FollowEntry.objects.filter(term=term, course_crn=course.crn)
-    return len(entries) > 0
