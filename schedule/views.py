@@ -114,6 +114,7 @@ def schedule_view(request, identifier):
         desc = str(len(query)) + (" courses: " if len(query) > 1 else " course: ")
         term = query[0].term
         user = query[0].user
+        profile = Profile.objects.get(user=user)
         for entry in query:
             course = schedule_get_course(entry)
             value = course.hours
@@ -137,6 +138,7 @@ def schedule_view(request, identifier):
         'social_desc': desc,
         'term': term,
         'schedule_user': user,
+        'schedule_profile': profile,
         'by_id': True,
         'identifier': identifier,
         'credits_min': credits_min,
@@ -145,6 +147,7 @@ def schedule_view(request, identifier):
 
     if user != request.user and request.user.is_authenticated():
         context['user_courses'] = schedule_get_courses(ScheduleEntry.objects.filter(user=request.user))
+        context['profile'] = Profile.objects.get(user=request.user)
 
     return render(request, 'schedule/course_schedule.html', context)
 

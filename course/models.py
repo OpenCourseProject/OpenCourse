@@ -92,7 +92,7 @@ class FollowEntry(models.Model):
     course_crn = models.IntegerField()
 
     def __unicode__(self):
-        return "%s: %d" % (self.user, self.course.crn)
+        return "%s: %d" % (self.user, self.course_crn)
 
 class Material(models.Model):
     term = models.ForeignKey(Term)

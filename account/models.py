@@ -7,6 +7,7 @@ from tastypie.models import ApiKey
 class Profile(models.Model):
     user = models.OneToOneField(User)
     student_id = models.CharField(max_length=10, null=True)
+    learning_community = models.CharField(max_length=100, null=True)
     default_term = models.ForeignKey(Term, null=True)
     facebook_id = models.CharField(max_length=50, null=True)
 

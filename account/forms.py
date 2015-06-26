@@ -7,5 +7,5 @@ class TermChoiceField(forms.ModelChoiceField):
         return term.name
 
 class ProfileForm(forms.Form):
-    default_term = TermChoiceField(queryset=Term.objects.all(), empty_label="Choose a term")
-    student_id = forms.CharField(label='Student ID', max_length=10, required=False)
+    default_term = TermChoiceField(queryset=Term.objects.all(), empty_label="Choose a term", required=False)
+    learning_community = forms.CharField(label='Learning Community', max_length=100, required=False)

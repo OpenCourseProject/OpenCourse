@@ -14,16 +14,16 @@ def account(request):
             form = ProfileForm(request.POST)
             if form.is_valid():
                 default_term = form.cleaned_data['default_term']
-                student_id = form.cleaned_data['student_id']
+                learning_community = form.cleaned_data['learning_community']
                 profile.default_term = default_term
-                profile.student_id = student_id
+                profile.learning_community = learning_community
                 profile.save()
         else:
             form = ProfileForm()
             if profile.default_term:
                 form.fields['default_term'].initial = profile.default_term
-            if profile.student_id:
-                form.fields['student_id'].initial = profile.student_id
+            if profile.learning_community:
+                form.fields['learning_community'].initial = profile.learning_community
     else:
         if 'next' in request.GET:
             next = request.GET['next']
