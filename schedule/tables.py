@@ -13,9 +13,10 @@ class ScheduleTable(tables.Table):
         empty_text = "No courses yet!"
         attrs = {"class": "table table-bordered table-striped table-hover"}
         fields = ("crn", "course", "section", "title", "hours", "llc", "ctype", "days", "start_time", "end_time", "location", "instructor", "seats")
-        
+
 class ExamTable(tables.Table):
     course = tables.Column()
+    crn = tables.Column(verbose_name='CRN')
     title = tables.Column()
     date = tables.DateColumn()
     start_time = tables.TimeColumn()
@@ -23,6 +24,6 @@ class ExamTable(tables.Table):
 
     class Meta:
         template = "schedule/exam_table.html"
-        order_by = "start_time"
+        order_by = "date"
         empty_text = "No exams found for your schedule"
         attrs = {"class": "table table-bordered table-striped table-hover"}

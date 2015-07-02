@@ -24,6 +24,8 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
     'hd': 'cnu.edu',
 }
 
+LOGIN_URL = '/account/'
+
 DEBUG = False
 
 TEMPLATE_DEBUG = DEBUG

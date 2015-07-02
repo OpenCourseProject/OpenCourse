@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.utils.safestring import SafeString
 from django.http import Http404
 from schedule.models import ScheduleEntry, ExamEntry, ExamSource
@@ -8,32 +8,30 @@ from django_tables2 import RequestConfig
 from schedule.tables import ScheduleTable, ExamTable
 from schedule.forms import ScheduleForm
 from course.utils import exam_for_course
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 import hashlib
 import json
 import datetime
 
+@login_required
 def schedule(request):
-    if not request.user.is_authenticated():
-        return redirect('/account/?next=%s' % (request.path))
+    if request.method == 'POST':
+        form = ScheduleForm(request.POST)
+        if form.is_valid():
+            term = form.cleaned_data['term']
     else:
-        if request.method == 'POST':
-            form = ScheduleForm(request.POST)
-            if form.is_valid():
-                term = form.cleaned_data['term']
+        if 'term' in request.GET:
+            term = Term.objects.get(value=request.GET['term'])
         else:
-            if 'term' in request.GET:
-                term = Term.objects.get(value=request.GET['term'])
+            profile = Profile.objects.get(user=request.user)
+            if profile.default_term:
+                term = profile.default_term
             else:
-                profile = Profile.objects.get(user=request.user)
-                if profile.default_term:
-                    term = profile.default_term
-                else:
-                    term = Term.objects.all()[0]
-            form = ScheduleForm()
-            form.fields['term'].initial = term
+                term = Term.objects.all()[0]
+        form = ScheduleForm()
+        form.fields['term'].initial = term
     query = ScheduleEntry.objects.filter(user=request.user, term=term)
     table = ScheduleTable(schedule_get_courses(query))
     hash = hashlib.md5(b'%s:%s' % (str(request.user.username), str(term.name))).hexdigest()[:15]
@@ -64,7 +62,6 @@ def schedule(request):
         'table': table,
         'form': form,
         'term': term,
-        'user': request.user,
         'authenticated': True,
         'by_id': False,
         'identifier': hash,
@@ -76,20 +73,28 @@ def schedule(request):
     }
     return render(request, 'schedule/course_schedule.html', context)
 
+@login_required
 def exam_schedule(request, termid):
-    if not request.user.is_authenticated():
-        return redirect('/account/?next=%s' % (request.path))
-    else:
-        term = Term.objects.get(value=termid)
-        query = ScheduleEntry.objects.filter(user=request.user, term=term)
-        exams = []
-        for entry in query:
-            course = schedule_get_course(entry)
-            exam = exam_for_course(course)
-            if exam:
-                start = exam.exam_start_time
-                end = exam.exam_end_time
-                exams.append({'course': course.course, 'title': course.title, 'date': exam.exam_date, 'start_time': start, 'end_time': end})
+    term = Term.objects.get(value=termid)
+    query = ScheduleEntry.objects.filter(user=request.user, term=term)
+    exams = []
+    first_exam = None
+    for entry in query:
+        course = schedule_get_course(entry)
+        exam = exam_for_course(course)
+        if exam:
+            start = exam.exam_start_time
+            end = exam.exam_end_time
+            exams.append({
+                'course': course.course,
+                'crn': course.crn,
+                'title': course.title,
+                'date': exam.exam_date,
+                'start_time': start,
+                'end_time': end
+            })
+            if not first_exam or exam.exam_date < first_exam:
+                first_exam = exam.exam_date
 
     hash = hashlib.md5(b'%s:%s' % (str(request.user.username), str(term.name))).hexdigest()[:15]
 
@@ -97,9 +102,10 @@ def exam_schedule(request, termid):
 
     RequestConfig(request).configure(table)
     context = {
+        'source': ExamSource.objects.get(term=term),
         'term': term,
         'table': table,
-        'user': request.user,
+        'first_exam': first_exam.strftime('%Y-%m-%d'),
         'identifier': hash,
         'authenticated': True,
     }

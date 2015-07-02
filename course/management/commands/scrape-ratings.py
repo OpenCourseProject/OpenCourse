@@ -13,7 +13,7 @@ class Command(BaseCommand):
         self.stdout.write('Gathering RMP links for all instructors...')
         new = 0
         for instructor in query:
-            if instructor.last_name != "Staff" and not instructor.rmp_link:
+            if instructor.last_name != "Staff" and not instructor.rmp_link and not instructor.no_update:
                 page = requests.get(SEARCH_URL + instructor.last_name)
                 tree = html.fromstring(page.text)
                 result = tree.xpath('//li[@class="listing PROFESSOR"]')

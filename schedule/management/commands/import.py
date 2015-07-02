@@ -29,8 +29,8 @@ class Command(BaseCommand):
                         break
                     else:
                         print(value)
-                        days = value.split(": ")[0]
-                        time = value.split(": ")[1]
+                        days = value.split(" ")[0]
+                        time = value.split(" ")[1]
                         course_start = datetime.strptime(time.split("-")[0], '%H%M').time()
                         course_end = datetime.strptime(time.split("-")[1], '%H%M').time()
                         exam = ExamEntry(term=term, days=days, course_start_time=course_start, course_end_time=course_end, exam_date=date, exam_start_time=exam_start, exam_end_time=exam_end)

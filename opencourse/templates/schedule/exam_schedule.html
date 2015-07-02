@@ -8,10 +8,6 @@
 <script src="/static/assets/js/moment.min.js"></script>
 <script src="/static/assets/js/fullcalendar.min.js"></script>
 <script src="/static/assets/js/facebook.js"></script>
-<meta property="og:site_name" content="CNU Open Course Project"/>
-<meta property="og:title" content="{{ term.name }} schedule for {{ user.first_name }} {{ user.last_name }}" />
-<meta property="fb:app_id" content="886841334691353" />
-<meta property="og:description" content="{{ social_desc }}" />
 <style>
   form h1, h5 {
       display: inline-block;
@@ -43,6 +39,7 @@ $(document).ready(function() {
       right:  'agendaWeek,month',
     },
     defaultView: 'agendaWeek',
+    defaultDate: '{{ first_exam }}',
     editable: false,
     hiddenDays: [0],
     allDaySlot: false,
@@ -69,7 +66,7 @@ $(document).ready(function() {
         <strong class="text-danger">Exam schedules are computed automatically.</strong>
         <br>
         Do not rely on this page to be accurate and ALWAYS double check your
-        exam schedule using the official PDF.
+        exam schedule using the <a href="{{ source.cnu_source }}">official PDF</a>.
       </h6>
     </h1>
   </div>

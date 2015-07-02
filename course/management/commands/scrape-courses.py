@@ -77,18 +77,17 @@ class Command(BaseCommand):
         if len(arr) > 1:
             first_name = arr[1]
 
-        instructor =  Instructor(first_name=first_name, last_name=last_name)
+        instructor = Instructor(first_name=first_name, last_name=last_name)
         # Add it to the database
         try:
-            obj = Instructor.objects.get(first_name=first_name, last_name=last_name)
-            opts = obj._meta
-            for f in opts.fields:
-                if f.name != 'id':
-                    setattr(obj, f.name, getattr(instructor, f.name))
-                obj.save()
-            instructor = obj
+            if first_name is None:
+                instructor = Instructor.objects.get(first_name=first_name, last_name=last_name)
+            else:
+                instructor = Instructor.objects.get(first_name__startswith=first_name, last_name=last_name)
         except Instructor.DoesNotExist:
             instructor.save()
+        except Instructor.MultipleObjectsReturned:
+            return instructor
         return instructor
 
     def parse_courses(self, term, page):

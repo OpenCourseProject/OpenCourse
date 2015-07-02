@@ -14,8 +14,9 @@ class Term(models.Model):
 class Instructor(models.Model):
     first_name = models.CharField(null=True, max_length=50, verbose_name="First Name")
     last_name = models.CharField(db_index=True, max_length=50, verbose_name="Last Name")
-    rmp_score = models.DecimalField(null=True, decimal_places=1, max_digits=2, verbose_name="Rating")
-    rmp_link = models.URLField(max_length=100, null=True, verbose_name="RateMyProfessor Link")
+    rmp_score = models.DecimalField(null=True, blank=True, decimal_places=1, max_digits=2, verbose_name="Rating")
+    rmp_link = models.URLField(null=True, blank=True, max_length=100, verbose_name="RateMyProfessor Link")
+    no_update = models.BooleanField(default=False)
 
     def __unicode__(self):
         name = self.last_name
