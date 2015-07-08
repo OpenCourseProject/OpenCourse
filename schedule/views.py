@@ -33,20 +33,26 @@ def schedule(request):
         form = ScheduleForm()
         form.fields['term'].initial = term
     query = ScheduleEntry.objects.filter(user=request.user, term=term)
-    table = ScheduleTable(schedule_get_courses(query))
+    courses = schedule_get_courses(query)
     hash = hashlib.md5(b'%s:%s' % (str(request.user.username), str(term.name))).hexdigest()[:15]
     share_url = "https://opencourseproject.com/schedule/" + hash + "/"
 
     credits_min = 0
     credits_max = 0
+    invalid_courses = []
     if len(query) > 0:
         term = query[0].term
         user = query[0].user
         for entry in query:
-            value = schedule_get_course(entry).hours
-            credits_min += int(value[:1])
-            if len(value) > 1:
-                credits_max += int(value[4:])
+            course = schedule_get_course(entry)
+            if course is None:
+                invalid_courses.append(entry)
+                courses.remove(course)
+            else:
+                value = course.hours
+                credits_min += int(value[:1])
+                if len(value) > 1:
+                    credits_max += int(value[4:])
     if credits_max > 0:
         credits_max = credits_min + credits_max
 
@@ -57,6 +63,7 @@ def schedule(request):
     except ExamSource.DoesNotExist:
         has_exams = False
 
+    table = ScheduleTable(courses)
     RequestConfig(request).configure(table)
     context = {
         'table': table,
@@ -69,6 +76,7 @@ def schedule(request):
         'share_url': share_url,
         'credits_min': credits_min,
         'credits_max': credits_max,
+        'invalid_courses': invalid_courses,
         'has_exams': has_exams,
     }
     return render(request, 'schedule/course_schedule.html', context)
@@ -77,24 +85,27 @@ def schedule(request):
 def exam_schedule(request, termid):
     term = Term.objects.get(value=termid)
     query = ScheduleEntry.objects.filter(user=request.user, term=term)
+    courses = schedule_get_courses(query)
     exams = []
     first_exam = None
-    for entry in query:
-        course = schedule_get_course(entry)
-        exam = exam_for_course(course)
-        if exam:
-            start = exam.exam_start_time
-            end = exam.exam_end_time
-            exams.append({
-                'course': course.course,
-                'crn': course.crn,
-                'title': course.title,
-                'date': exam.exam_date,
-                'start_time': start,
-                'end_time': end
-            })
-            if not first_exam or exam.exam_date < first_exam:
-                first_exam = exam.exam_date
+    for course in courses:
+        if course is None:
+            courses.remove(course)
+        else:
+            exam = exam_for_course(course)
+            if exam:
+                start = exam.exam_start_time
+                end = exam.exam_end_time
+                exams.append({
+                    'course': course.course,
+                    'crn': course.crn,
+                    'title': course.title,
+                    'date': exam.exam_date,
+                    'start_time': start,
+                    'end_time': end
+                })
+                if not first_exam or exam.exam_date < first_exam:
+                    first_exam = exam.exam_date
 
     hash = hashlib.md5(b'%s:%s' % (str(request.user.username), str(term.name))).hexdigest()[:15]
 
@@ -113,6 +124,7 @@ def exam_schedule(request, termid):
 
 def schedule_view(request, identifier):
     query = ScheduleEntry.objects.filter(identifier=identifier)
+    courses = schedule_get_courses(query)
     credits_min = 0
     credits_max = 0
     desc = None
@@ -121,20 +133,21 @@ def schedule_view(request, identifier):
         term = query[0].term
         user = query[0].user
         profile = Profile.objects.get(user=user)
-        for entry in query:
-            course = schedule_get_course(entry)
-            value = course.hours
-            desc += course.title + ", "
-            credits_min += int(value[:1])
-            if len(value) > 1:
-                credits_max += int(value[4:])
+        for course in courses:
+            if course is None:
+                courses.remove(course)
+            else:
+                value = course.hours
+                desc += course.title + ", "
+                credits_min += int(value[:1])
+                if len(value) > 1:
+                    credits_max += int(value[4:])
         desc = desc[:-2]
     else:
         raise Http404("Schedule does not exist")
 
     if credits_max > 0:
         credits_max = credits_min + credits_max
-    courses = schedule_get_courses(query)
     table = ScheduleTable(courses)
 
     RequestConfig(request).configure(table)
@@ -211,7 +224,10 @@ def exam_calendar(request):
         return HttpResponse('Method not allowed', 405)
 
 def schedule_get_course(entry):
-    return Course.objects.get(term=entry.term, crn=entry.course_crn)
+    try:
+        return Course.objects.get(term=entry.term, crn=entry.course_crn)
+    except Course.DoesNotExist:
+        return None
 
 def schedule_get_courses(entries):
     courses = []

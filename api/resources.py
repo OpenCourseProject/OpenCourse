@@ -2,6 +2,7 @@ from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
+from tastypie.validation import Validation
 from course.models import Course, Term, Instructor, MeetingTime, Attribute, Material, FollowEntry
 from schedule.models import ScheduleEntry
 
@@ -89,6 +90,22 @@ class MaterialResource(ModelResource):
             'course': ALL_WITH_RELATIONS,
         }
 
+class CRNValidation(Validation):
+    def is_valid(self, bundle, request=None):
+        if not bundle.data:
+            return {'__all__': 'No data provided.'}
+
+        errors = {}
+
+        term = bundle.data.get('term').split('/')[4]
+        course_crn = bundle.data.get('course_crn')
+        try:
+            Course.objects.get(term=term, crn=course_crn)
+        except Course.DoesNotExist:
+            errors['course_crn'] = ['Course does not exist for this term.']
+
+        return errors
+
 class ScheduleResource(ModelResource):
     term = fields.ToOneField(TermResource, 'term', full=True)
 
@@ -98,6 +115,7 @@ class ScheduleResource(ModelResource):
         allowed_methods = ['get', 'post', 'delete']
         authentication = ApiKeyAuthentication()
         authorization = Authorization()
+        validation = CRNValidation()
         filtering = {
             'course_crn': ALL,
             'term': ALL_WITH_RELATIONS,
@@ -118,6 +136,7 @@ class FollowResource(ModelResource):
         allowed_methods = ['get', 'post', 'delete']
         authentication = ApiKeyAuthentication()
         authorization = Authorization()
+        validation = CRNValidation()
         filtering = {
             'course_crn': ALL,
             'term': ALL_WITH_RELATIONS,
