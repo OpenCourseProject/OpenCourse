@@ -54,7 +54,8 @@ $(document).ready(function () {
         <li class="active"><a href="#project">The Project</a></li>
         <li><a href="#getting-started">Getting Started</a></li>
         <li><a href="#philosophy">Philosophy</a></li>
-        <li><a href="#security">Security</a></li>
+				<li><a href="#privacy">Privacy</a></li>
+				<li><a href="#security">Security</a></li>
         <li><a href="#extensibility">Extensibility</a></li>
       </ul>
     </div>
@@ -75,6 +76,10 @@ $(document).ready(function () {
             filing bug reports, or suggesting improvements, your support is greatly
             appreciated!
           </p>
+					<p>
+						This project is maintained by <a href="https://keybase.io/gravity">Adam Fendley</a> and is
+						unaffiliated with CNU or any specific university.
+					</p>
         </div>
       </div>
       <div class="panel panel-info" id="getting-started">
@@ -175,58 +180,147 @@ $(document).ready(function () {
             There is always the possibility that something breaks and isn't noticed.
             Please use this resource for its intended purpose: planning, researching,
             and as a supplement to official University systems. Do not entrust your
-            semester to any one website, ever.
+            semester to any one non-CNU website, ever.
           </p>
         </div>
       </div>
-      <div class="panel panel-default" id="security">
-        <div class="panel-heading">
-          <h3 class="panel-title">Security</h3>
-        </div>
-        <div class="panel-body">
-          <p>
-            Security is one of the most important goals of this project. Not all
-            people are concerned about the privacy of their schedule information,
-            but for those who are it's been made a priority. Here are some details
-            of what has been done to protect personal information:
-          </p>
-          <ul>
-            <li>
-              <strong>No accounts are created on this site.</strong> When you login
-              with your CNU account, you are using Google's OAuth systems which give
-              information about your account, like your email address, to the site
-              but never your password or any other personal information from CNU Live.
-              Logging in with your CNU account to this site does not give it access
-              to act on your behalf in any way.
-            </li>
-            <li>
-              <strong>The site is encrypted with an industry-standard certificate.</strong>
-              The lock icon in the upper left-hand corner of your URL bar will confirm
-              that this site is using SSL/TLS to restrict visibility to you and only
-              you. The information that you enter on this site and any data you get
-              back is unreadable even to eavesdroppers. The certificate used has an
-              <a href="https://www.ssllabs.com/ssltest/analyze.html?d=opencourseproject.com&s=104.18.51.176">A rating on SSL Labs</a>.
-            </li>
-            <li>
-              <strong>Any personal information provided by API requires a secret key.</strong>
-              If you're a developer using the <a href="/api/">API</a>, you will already
-              know that aside from general, open data (such as course listings, term
-              details, professor scores, etc.), a private and unique key is required
-              to read or write. For the non-developer, this means that even at the
-              most barebones level of data retrieval, your schedules are visible only
-              to your account and cannot be accessed through the database without
-              your explicit permission.
-            </li>
-            <li>
-              <strong>The source code is open.</strong> Aside from private keys used
-              to communicate with third-parties such as Google and Facebook, none of
-              the code that runs this website is proprietary. If you come across a
-              vulnerability or a problem in the code that has security implications,
-              please <a href="mailto:ad@mfendley.com" target="_top">email me</a>.
-            </li>
-          </ul>
-        </div>
-      </div>
+			<div class="panel panel-default" id="privacy">
+				<div class="panel-heading">
+					<h3 class="panel-title">Privacy</h3>
+				</div>
+				<div class="panel-body">
+					<p>
+						When using a third-party system such as this one, privacy of your
+						personal information is an important topic.
+					</p>
+					<strong>Personal Information</strong>
+					<p>
+						We believe that no more data than absolutely necessary should be
+						collected at all, a reason you would never be asked for your student ID
+						or anything similar. The following is the only personal information is
+						collected by using this site:
+					</p>
+					<ul>
+						<li>Email address
+							<ul>
+								<li>
+									This information is used to identify your account on the site.
+									Logging in with your CNU-provided Google account is an easier
+									process than creating a new account specifically for this website,
+									so it is used as a means of identification.
+								</li>
+								<li>
+									You will only recieve email communications from using this site
+									if you choose to opt-in to updates about a course or if an
+									important announcement needs to be made, though this is rare.
+									Additionally, if you report a bug or suggest an improvement we
+									might follow-up with you via email.
+								</li>
+								<li>
+									Your email address is never shared.
+								</li>
+							</ul>
+						</li>
+						<li>First and Last name
+							<ul>
+								<li>
+									This information is included in your email address and is used
+									to personalize information on site pages, especially on your
+									schedule that you share with others.
+								</li>
+								<li>
+									Name information is reported by your Google account and can be
+									changed by editing your personal information on the Google
+									account page.
+								</li>
+								<li>
+									Your name is only shared with those who you send your schedule.
+								</li>
+							</ul>
+						</li>
+					</ul>
+					<strong>User Content</strong>
+					<p>
+						Content can also be provided by you to improve your experience. This
+						could include adding your Learning Community for display on your
+						schedule, inputting your courses for a term, linking your Facebook
+						account to show friends in your classes, and so on.
+					</p>
+					<p>
+						This content is shared at your discretion, and you control how it
+						is sent. Your content, while not considered "secret" by man, is still
+						"private" and should be kept that way. Content you provide is only
+						viewed as necessary to fix problems with or improve the service,
+						especially when reported by a user. In some cases to improve the
+						service this content may be analyzed on an anonymized basis, such as
+						counting how many courses have been scheduled by all users on the
+						site to determine if the database needs to be upgraded.
+					</p>
+					<strong>Automatic Information</strong>
+					<p>
+						In addition to information related to your account, there is a minor
+						amount of data that is automatically generated when you use the service.
+						This specifically includes log files, which are generated by the web
+						server to keep track of pages which are visited and errors that occur.
+						Log files contain records such as the web request, IP
+						(Internet Protocol) address it is sent from, browser type, and
+						similar information.
+					</p>
+					<p>
+						Analyzing these files helps to understand the popularity of certain
+						features as well as where problems are occuring for users. These files
+						are never shared with anyone and are archived after several days.
+					</p>
+				</div>
+			</div>
+			<div class="panel panel-default" id="security">
+				<div class="panel-heading">
+					<h3 class="panel-title">Security</h3>
+				</div>
+				<div class="panel-body">
+					<p>
+						Security is one of the most important goals of this project. Not all
+						people are concerned about the privacy of their schedule information,
+						but for those who are it's been made a priority. Here are some details
+						of what has been done to protect personal information:
+					</p>
+					<ul>
+						<li>
+							<strong>No accounts are created on this site.</strong> When you login
+							with your CNU account, you are using Google's OAuth systems which give
+							information about your account, like your email address, to the site
+							but never your password or any other personal information from CNU Live.
+							Logging in with your CNU account to this site does not give it access
+							to act on your behalf in any way.
+						</li>
+						<li>
+							<strong>The site is encrypted with an industry-standard certificate.</strong>
+							The lock icon in the upper left-hand corner of your URL bar will confirm
+							that this site is using SSL/TLS to restrict visibility to you and only
+							you. The information that you enter on this site and any data you get
+							back is unreadable even to eavesdroppers. The certificate used has an
+							<a href="https://www.ssllabs.com/ssltest/analyze.html?d=opencourseproject.com&s=104.18.51.176">A rating on SSL Labs</a>.
+						</li>
+						<li>
+							<strong>Any personal information provided by API requires a secret key.</strong>
+							If you're a developer using the <a href="/api/">API</a>, you will already
+							know that aside from general, open data (such as course listings, term
+							details, professor scores, etc.), a private and unique key is required
+							to read or write. For the non-developer, this means that even at the
+							most barebones level of data retrieval, your schedules are visible only
+							to your account and cannot be accessed through the database without
+							your explicit permission.
+						</li>
+						<li>
+							<strong>The source code is open.</strong> Aside from private keys used
+							to communicate with third-parties such as Google and Facebook, none of
+							the code that runs this website is proprietary. If you come across a
+							vulnerability or a problem in the code that has security implications,
+							please <a href="mailto:ad@mfendley.com" target="_top">email me</a>.
+						</li>
+					</ul>
+				</div>
+			</div>
       <div class="panel panel-default" id="extensibility">
         <div class="panel-heading">
           <h3 class="panel-title">Extensibility</h3>
