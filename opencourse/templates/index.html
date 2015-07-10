@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 
+{% block head %}
+<meta property="og:description" content="A free and independent service for CNU students to research, plan, and share their schedules." />
+{% endblock %}
 {% block home-active %}active{% endblock %}
 {% block content %}
 <div class="container">
@@ -13,22 +16,20 @@
     </h1>
       {% if not request.user.is_authenticated %}
       <p class="lead">
-        The Open Course Project is an effort to overhaul course lookup and registration.
-        On Open Course you can:
+        A free and independent service for CNU students to research, plan, and share their schedules.
         <ul>
-          <li>Search and view courses by any criteria
+          <li>Search for courses using any criteria
           <li>See your exam schedule
           <li>Find Facebook friends in your classes
-          <li>See instructor details, including their RateMyProfessor scores
+          <li>Review instructor information, including RateMyProfessor scores
           <li>Create and share semester schedules
           <li>Follow courses and get updates on their status
         </ul>
       </p>
       <p>
-        By creating a system optimized for speed, clarity, and ease-of-use, this
-        website offers students at Christopher Newport University a brand new way to
-        plan your semester. To begin, Log In with your CNU account or simply click
-        Search to begin browsing classes.
+        Open Course is a non-official website that allows you to search and organize courses.
+        Course listings reflect CNU's official <a href="https://pulsar.cnu.edu/soc/socquery.aspx">Schedule of Courses</a>.
+        To begin, login with your CNU account or simply click Search to browse classes.
       </p>
       <p><a class="btn btn-primary btn-lg" href="/search/" role="button">Get Started</a></p>
       {% else %}

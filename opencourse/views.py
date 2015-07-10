@@ -14,6 +14,8 @@ def home(request):
         profile = Profile.objects.get(user=request.user)
         if not profile.facebook_id:
             todo.append(SafeString('<a href="/account/#facebook">Login with Facebook to find friends in your classes</a>'))
+        if not profile.learning_community:
+            todo.append(SafeString('<a href="/account/#profile">Add your Learning Community to share on your schedules</a>'))
         entries = ScheduleEntry.objects.filter(user=request.user)
         if len(entries) == 0:
             todo.append(SafeString('<a href="/search/">Start adding courses to your schedule</a>'))

@@ -37,6 +37,8 @@
     </script>
     {% endif %}
 
+    <meta property="og:site_name" content="Open Course Project"/>
+    <meta property="fb:app_id" content="886841334691353" />
     <!-- Begin custom header content -->
     {% block head %}{% endblock %}
   </head>
@@ -68,36 +70,7 @@
   	  </div>
       {% if request.user.is_authenticated %}
       <!-- Report Modal -->
-      <div class="modal fade" id="report" tabindex="-1" role="dialog" aria-labelledby="reportLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="reportLabel">Got a problem or a suggestion?</h4>
-            </div>
-            <div class="modal-body">
-              <p>
-                If you encounter a bug or have an improvement you'd like to share, please let us know here!
-                We'll follow up with you via email if it is required.
-              </p>
-              <form action="/report/" method="post">
-                {% csrf_token %}
-                {% for field in report_form.visible_fields %}
-                {{ field.label_tag }}
-                {{ field.errors }}
-                <p>
-                  {{ field }}
-                </p>
-                {% endfor %}
-                {% for field in report_form.hidden_fields %}
-                  {{ field }}
-                {% endfor %}
-                <button type="submit" class="btn btn-success">Submit</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
+      {% include "component/report-modal.html" %}
       {% endif %}
   	  <!-- Begin page content -->
   	  {% block content %}{% endblock %}
@@ -105,7 +78,7 @@
     <footer class="footer">
       <div class="container">
         <p class="text-muted">
-          Open Course Project is not affiliated with or supported by <a href="http://cnu.edu/">CNU</a>.
+          Open Course Project is an independent service not affiliated with or supported by <a href="http://cnu.edu/">CNU</a>. 
           <span class="pull-right">
             <a href="/about/">About</a> | <a href="/api/">API</a> | <a href="https://github.com/gravitylow/OpenCourse">GitHub</a>
           </span>
