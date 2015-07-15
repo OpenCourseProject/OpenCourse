@@ -9,7 +9,7 @@ var term = "{{ term.value }}"
 var apiKey = "{{ api_key.key }}"
 
 facebookCallback = function(response) {
-  if (response.status === 'connected') {
+  if (authenticated == 'True' && response.status === 'connected') {
     $.get('/friends/', {term: "{{ term.value }}", crn: "{{ course.crn }}"}, function(data) {
       if (data.length == 0) {
         return;

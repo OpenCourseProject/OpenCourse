@@ -22,6 +22,7 @@ def search(request):
     end = None
     instructor = None
     min_rating = None
+    attribute = None
     show_closed = True
     if request.method == 'POST':
         form = SearchForm(request.POST)
@@ -36,6 +37,7 @@ def search(request):
             form.fields['end'].initial = start
             instructor = form.cleaned_data['instructor']
             min_rating = form.cleaned_data['min_rating']
+            attribute = form.cleaned_data['attribute']
             show_closed = form.cleaned_data['show_closed']
     else:
         term = Term.objects.all()[0]
@@ -61,6 +63,8 @@ def search(request):
         query = query.filter(instructor__last_name__icontains=instructor)
     if min_rating:
         query = query.filter(instructor__rmp_score__gte=min_rating)
+    if attribute:
+        query = query.filter(attributes__icontains=attribute.value)
     if not show_closed:
         query = query.filter(seats__gt=0)
     table = CourseTable(query)
