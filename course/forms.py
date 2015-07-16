@@ -19,7 +19,7 @@ class SearchForm(forms.Form):
     end = forms.TimeField(label='End time', widget=SelectTimeWidget(minute_step=5, second_step=60, twelve_hr=True), required=False)
     instructor = forms.CharField(label='Instructor name', max_length=50, required=False)
     min_rating = forms.DecimalField(label='Instructor rating', decimal_places=1, max_digits=2, required=False)
-    attribute = AttributeChoiceField(label='Fulfills', queryset=Attribute.objects.all())
+    attribute = AttributeChoiceField(label='Fulfills', queryset=Attribute.objects.all(), required=False)
     show_closed = forms.BooleanField(label='Show closed courses', initial=True, required=False)
 
 class InstructorSuggestionForm(forms.Form):

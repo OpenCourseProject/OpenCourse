@@ -15,6 +15,7 @@ import logging
 logging.basicConfig()
 
 def search(request):
+    term = None
     crn = None
     course = None
     days = None
