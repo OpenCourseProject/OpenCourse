@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+{% block title %}{{ course.course }}: {{ course.title }}{% endblock %}
 {% block head %}
 <script src="/static/assets/js/facebook.js"></script>
 <script>
@@ -50,6 +51,7 @@ facebookCallback = function(response) {
 }
 </script>
 <script src="/static/assets/js/buttons.js"></script>
+<script src="/static/assets/js/pricefinder.js"></script>
 {% endblock %}
 
 {% block search-active %}active{% endblock %}
@@ -93,24 +95,25 @@ facebookCallback = function(response) {
         <ul class="list-group">
           {% for material in materials %}
           <li class="list-group-item">
+            <div class="pull-right">
+              <a href="http://chegg.com/search/{{ material.isbn }}/" data-toggle="tooltip" data-placement="bottom" title="Chegg">
+                <img src="/static/assets/img/chegg-icon.png" alt="Chegg" width="30" height="30">
+              </a>
+              <a href="http://www.amazon.com/s?url=search-alias%3Daps&amp;field-keywords={{ material.isbn }}" data-toggle="tooltip" data-placement="bottom" title="Amazon">
+                <img src="/static/assets/img/amazon-icon.png" alt="Amazon" width="30" height="30">
+              </a>
+              <a href="https://texts.com/books/{{ material.isbn }}" data-toggle="tooltip" data-placement="bottom" title="Texts.com">
+                <img src="/static/assets/img/texts-icon.png" alt="Texts.com" width="30" height="30">
+              </a>
+            </div>
             <h4 class="list-group-item-heading">
               {{ material.title }}
-              <div class="pull-right">
-                <a href="http://chegg.com/search/{{ material.isbn }}/">
-                  <img src="/static/assets/images/chegg-icon.png" width="30" height="30">
-                </a>
-                <a href="http://www.amazon.com/s?url=search-alias%3Daps&field-keywords={{ material.isbn }}">
-                  <img src="/static/assets/images/amazon-icon.png" width="30" height="30">
-                </a>
-              </div>
-              </h4>
-            <p class="list-group-item-text">
-              <ul class="list-unstyled">
-                <li><strong>ISBN</strong>: {{ material.isbn }}
-                <li><strong>Edition</strong>: {{ material.edition }}
-                <li><strong>Author</strong>: {{ material.author }}
-              </ul>
-            </p>
+            </h4>
+            <ul class="list-unstyled">
+              <li><strong>ISBN</strong>: {{ material.isbn }}</li>
+              <li><strong>Edition</strong>: {{ material.edition }}</li>
+              <li><strong>Author</strong>: {{ material.author }}</li>
+            </ul>
           </li>
           {% endfor %}
         </ul>

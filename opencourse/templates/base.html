@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Open Course Project</title>
+    <title>{% block title %}Open Course Project{% endblock %}</title>
 
     <!-- Bootstrap -->
     <link href="/static/assets/css/bootstrap.min.css" rel="stylesheet">
@@ -78,7 +78,7 @@
     <footer class="footer">
       <div class="container">
         <p class="text-muted">
-          Open Course Project is an independent service not affiliated with or supported by <a href="http://cnu.edu/">CNU</a>. 
+          Open Course Project is an independent service not affiliated with or supported by <a href="http://cnu.edu/">CNU</a>.
           <span class="pull-right">
             <a href="/about/">About</a> | <a href="/api/">API</a> | <a href="https://github.com/gravitylow/OpenCourse">GitHub</a>
           </span>
