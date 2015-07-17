@@ -2,15 +2,21 @@
 
 {% block title %}{{ course.course }}: {{ course.title }}{% endblock %}
 {% block head %}
+{% if request.user.is_authenticated %}
 <script src="/static/assets/js/facebook.js"></script>
 <script>
-var username = "{{ user.username }}"
-var authenticated = "{{ authenticated }}"
-var term = "{{ term.value }}"
-var apiKey = "{{ api_key.key }}"
-
+var api_username = "{{ api_username }}"
+var api_key = "{{ api_key }}"
+$(document).ready(function() {
+  $('a[name="material-google-link"]').each(function(i, obj) {
+    var link = $(this);
+    var query = link.data('query');
+    var href = "https://google.com/#q=" + encodeURIComponent(query);
+    link.attr('href', href);
+  });
+});
 facebookCallback = function(response) {
-  if (authenticated == 'True' && response.status === 'connected') {
+  if (response.status === 'connected') {
     $.get('/friends/', {term: "{{ term.value }}", crn: "{{ course.crn }}"}, function(data) {
       if (data.length == 0) {
         return;
@@ -51,83 +57,17 @@ facebookCallback = function(response) {
 }
 </script>
 <script src="/static/assets/js/buttons.js"></script>
-<script src="/static/assets/js/pricefinder.js"></script>
+{% endif %}
 {% endblock %}
 
 {% block search-active %}active{% endblock %}
 {% block content %}
 <!-- Suggestion Modal -->
-<div class="modal fade" id="instructor" tabindex="-1" role="dialog" aria-labelledby="instructorLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="instructorLabel">{{ course.instructor }}</h4>
-      </div>
-      <div class="modal-body">
-        <p>
-          We don't have a RateMyProfessor link for this instructor yet. If you know where it is, you can
-          help improve the site by adding it below! You might be able to find them from
-          <a href="http://www.ratemyprofessors.com/campusRatings.jsp?sid=219">CNU's RateMyProfessor page</a>.
-        </p>
-        <form method="post">
-          {% csrf_token %}
-          {{ suggestion_form }}
-          <button type="submit" class="btn btn-success">Add</button>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+{% if request.user.is_authenticated %}
+{% include "component/suggestion-modal.html" %}
+{% endif %}
 <!-- Materials Modal -->
-<div class="modal fade" id="materials" tabindex="-1" role="dialog" aria-labelledby="materialsLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="materialsLabel">Course Materials</h4>
-      </div>
-      <div class="modal-body">
-        {% if materials %}
-        <ul class="list-group">
-          {% for material in materials %}
-          <li class="list-group-item">
-            <div class="pull-right">
-              <a href="http://chegg.com/search/{{ material.isbn }}/" data-toggle="tooltip" data-placement="bottom" title="Chegg">
-                <img src="/static/assets/img/chegg-icon.png" alt="Chegg" width="30" height="30">
-              </a>
-              <a href="http://www.amazon.com/s?url=search-alias%3Daps&amp;field-keywords={{ material.isbn }}" data-toggle="tooltip" data-placement="bottom" title="Amazon">
-                <img src="/static/assets/img/amazon-icon.png" alt="Amazon" width="30" height="30">
-              </a>
-              <a href="https://texts.com/books/{{ material.isbn }}" data-toggle="tooltip" data-placement="bottom" title="Texts.com">
-                <img src="/static/assets/img/texts-icon.png" alt="Texts.com" width="30" height="30">
-              </a>
-            </div>
-            <h4 class="list-group-item-heading">
-              {{ material.title }}
-            </h4>
-            <ul class="list-unstyled">
-              <li><strong>ISBN</strong>: {{ material.isbn }}</li>
-              <li><strong>Edition</strong>: {{ material.edition }}</li>
-              <li><strong>Author</strong>: {{ material.author }}</li>
-            </ul>
-          </li>
-          {% endfor %}
-        </ul>
-        {% else %}
-        <strong>No required materials for this course.</strong>
-        {% endif %}
-        <p><a href="{{ course.bookstore_link }}">View on CNU Bookstore</a></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+{% include "component/materials-modal.html" %}
 <div class="container">
   {% if not authenticated %}
   <div class="alert alert-info" role="alert">
@@ -143,16 +83,16 @@ facebookCallback = function(response) {
   {% endif %}
   <div class="page-header">
     {% if authenticated %}
-    <button type="submit" name="follow-button" type="button" data-course-crn="{{ course.crn }}" class="btn btn-default pull-right">
+    <button type="submit" name="follow-button" type="button" data-term-id="{{ term.value }}" data-course-crn="{{ course.crn }}" class="btn btn-default pull-right">
       <span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Loading...
     </button>
     {% endif %}
-    <h1><strong>{{ course.course }}</strong>: {{ course.title }} {% if course.instructor %}<small>with {% if course.instructor.rmp_link %}<a href="{{ course.instructor.rmp_link }}" target="_blank">{% elif course.instructor.last_name != "Staff" %}<a href="#instructor" data-toggle="modal" data-target="#instructor">{% endif %}{{ course.instructor }}{% if course.instructor.rmp_link %} ({{ course.instructor.rmp_score }})</a>{% elif course.instructor.last_name != "Staff" %}</a>{% endif %}</small>{% endif %}</h1>
+    <h1><strong>{{ course.course }}</strong>: {{ course.title }} {% if course.instructor %}<small>with {% if course.instructor.rmp_link %}<a href="{{ course.instructor.rmp_link }}" target="_blank">{% elif course.instructor.last_name != "Staff" and request.user.is_authenticated %}<a href="#instructor" data-toggle="modal" data-target="#instructor">{% endif %}{{ course.instructor }}{% if course.instructor.rmp_link %} ({{ course.instructor.rmp_score }})</a>{% elif course.instructor.last_name != "Staff" %}</a>{% endif %}</small>{% endif %}</h1>
   </div>
   <div class="lead">
     <div class="well well-sm">
       {% if authenticated %}
-      <button type="submit" name="schedule-button" type="button" data-course-crn="{{ course.crn }}" class="btn btn-default pull-right">
+      <button type="submit" name="schedule-button" type="button" data-term-id="{{ term.value }}" data-course-crn="{{ course.crn }}" class="btn btn-default pull-right">
           <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Loading...
       </button>
       {% endif %}

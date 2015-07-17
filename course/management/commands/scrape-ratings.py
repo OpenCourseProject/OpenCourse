@@ -10,7 +10,7 @@ SEARCH_URL = BASE_URL + "/search.jsp?queryoption=HEADER&queryBy=teacherName&scho
 class Command(BaseCommand):
     def handle(self, *args, **options):
         query = Instructor.objects.all()
-        self.stdout.write('Gathering RMP links for all instructors...')
+        self.stdout.write('Gathering ratings for ' + str(query.count()) + ' instructors...')
         new = 0
         for instructor in query:
             if instructor.last_name != "Staff" and not instructor.rmp_link and not instructor.no_update:

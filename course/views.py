@@ -95,9 +95,6 @@ def course(request, term, crn):
     }
 
     if authenticated:
-        api_key = ApiKey.objects.get(user=request.user)
-        context['api_key'] = api_key
-
         if request.method == 'POST':
             form = InstructorSuggestionForm(request.POST)
             if form.is_valid():

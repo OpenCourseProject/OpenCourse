@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.utils.safestring import SafeString
 from django.http import Http404
 from schedule.models import ScheduleEntry, ExamEntry, ExamSource
+from schedule.utils import schedule_get_course, schedule_get_courses
 from course.models import Term, Course
 from account.models import Profile
 from django_tables2 import RequestConfig
@@ -222,15 +223,3 @@ def exam_calendar(request):
         return HttpResponse(exams, 201)
     else:
         return HttpResponse('Method not allowed', 405)
-
-def schedule_get_course(entry):
-    try:
-        return Course.objects.get(term=entry.term, crn=entry.course_crn)
-    except Course.DoesNotExist:
-        return None
-
-def schedule_get_courses(entries):
-    courses = []
-    for entry in entries:
-        courses.append(schedule_get_course(entry))
-    return courses

@@ -1,44 +1,45 @@
 $(document).ready(function() {
-  if (authenticated == 'True') {
-    $('button[name="schedule-button"]').each(function(i, obj) {
-      var button = $(this);
-      var course = button.attr('data-course-crn');
-      var params = {
-        'username': username,
-        'api_key': apiKey,
-        'term__value': term,
-        'course_crn': course,
-        'format': 'json',
-      }
-      $.get('/api/v1/schedule/', params, function(data) {
-        state = data.meta.total_count;
-        update_schedule_button(button, state);
-      });
+  $('button[name="schedule-button"]').each(function(i, obj) {
+    var button = $(this);
+    var term = button.data('term-id');
+    var course = button.data('course-crn');
+    var params = {
+      'username': api_username,
+      'api_key': api_key,
+      'term__value': term,
+      'course_crn': course,
+      'format': 'json',
+    }
+    $.get('/api/v1/schedule/', params, function(data) {
+      state = data.meta.total_count;
+      update_schedule_button(button, state);
     });
-    $('button[name="follow-button"]').each(function(i, obj) {
-      var button = $(this)
-      var course = button.attr('data-course-crn')
-      var params = {
-        'username': username,
-        'api_key': apiKey,
-        'term__value': term,
-        'course_crn': course,
-        'format': 'json',
-      }
-      $.get('/api/v1/follow/', params, function(data) {
-        state = data.meta.total_count;
-        update_follow_button(button, state);
-      });
+  });
+  $('button[name="follow-button"]').each(function(i, obj) {
+    var button = $(this);
+    var term = button.attr('data-term-id');
+    var course = button.attr('data-course-crn');
+    var params = {
+      'username': api_username,
+      'api_key': api_key,
+      'term__value': term,
+      'course_crn': course,
+      'format': 'json',
+    }
+    $.get('/api/v1/follow/', params, function(data) {
+      state = data.meta.total_count;
+      update_follow_button(button, state);
     });
-  }
+  });
 
   $('button[name="schedule-button"]').click(function() {
-    var button = $(this)
-    var course = button.attr('data-course-crn')
-    var state = button.attr('data-schedule-state')
+    var button = $(this);
+    var term = button.attr('data-term-id');
+    var course = button.attr('data-course-crn');
+    var state = button.attr('data-schedule-state');
     if (state == '0') {
       var headers = {
-        'Authorization': 'ApiKey ' + username + ':' + apiKey,
+        'Authorization': 'ApiKey ' + api_username + ':' + api_key,
       }
       var data = {
         'term': '/api/v1/term/' + term + '/',
@@ -61,8 +62,8 @@ $(document).ready(function() {
       });
     } else {
       var params = {
-        'username': username,
-        'api_key': apiKey,
+        'username': api_username,
+        'api_key': api_key,
         'term__value': term,
         'course_crn': course,
         'format': 'json',
@@ -70,7 +71,7 @@ $(document).ready(function() {
       $.get('/api/v1/schedule/', params, function(data) {
         uri = data.objects[0].resource_uri;
         headers = {
-          'Authorization': 'ApiKey ' + username + ':' + apiKey,
+          'Authorization': 'ApiKey ' + api_username + ':' + api_key,
         }
         $.ajax({
           url: uri,
@@ -85,12 +86,13 @@ $(document).ready(function() {
   });
 
   $('button[name="follow-button"]').click(function() {
-    var button = $(this)
-    var course = button.attr('data-course-crn')
-    var state = button.attr('data-follow-state')
+    var button = $(this);
+    var term = button.attr('data-term-id');
+    var course = button.attr('data-course-crn');
+    var state = button.attr('data-follow-state');
     if (state == '0') {
       var headers = {
-        'Authorization': 'ApiKey ' + username + ':' + apiKey,
+        'Authorization': 'ApiKey ' + api_username + ':' + api_key,
       }
       var data = {
         'term': '/api/v1/term/' + term + '/',
@@ -113,8 +115,8 @@ $(document).ready(function() {
       });
     } else {
       var params = {
-        'username': username,
-        'api_key': apiKey,
+        'username': api_username,
+        'api_key': api_key,
         'term__value': term,
         'course_crn': course,
         'format': 'json',
@@ -122,7 +124,7 @@ $(document).ready(function() {
       $.get('/api/v1/follow/', params, function(data) {
         uri = data.objects[0].resource_uri;
         headers = {
-          'Authorization': 'ApiKey ' + username + ':' + apiKey,
+          'Authorization': 'ApiKey ' + api_username + ':' + api_key,
         }
         $.ajax({
           url: uri,

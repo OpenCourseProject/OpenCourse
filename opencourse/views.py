@@ -3,13 +3,21 @@ from django.template import RequestContext
 from django.utils.safestring import SafeString
 from account.models import Profile
 from schedule.models import ScheduleEntry
-from course.models import FollowEntry
+from schedule.utils import schedule_get_course
+from course.models import Course, Term, FollowEntry
 from opencourse.models import Report
 from opencourse.forms import ReportForm
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
+from collections import OrderedDict
 
 def home(request):
     todo = []
+    current_term = Term.objects.get(value=201600)
+    query = ScheduleEntry.objects.filter(term_id=current_term.value).values('course_crn').annotate(Count('course_crn')).order_by('-course_crn__count')[:3]
+    popular_courses = OrderedDict()
+    for entry in query:
+        popular_courses[Course.objects.get(term=current_term, crn=entry['course_crn'])] = entry['course_crn__count']
     if request.user.is_authenticated():
         profile = Profile.objects.get(user=request.user)
         if not profile.facebook_id:
@@ -27,6 +35,8 @@ def home(request):
         todo.append(SafeString('<a href="#report" data-toggle="modal" data-target="#report">Send a suggestion or a bug report</a>'))
     context = {
         'todo': todo,
+        'current_term': current_term,
+        'popular_courses': popular_courses,
     }
     return render(request, 'index.html', context)
 

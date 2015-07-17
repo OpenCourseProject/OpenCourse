@@ -1,0 +1,56 @@
+<div class="modal fade" id="materials" tabindex="-1" role="dialog" aria-labelledby="materialsLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="materialsLabel">Course Materials</h4>
+      </div>
+      <div class="modal-body">
+        <p class="bg-danger">
+          Textbook listings are not finalized until <strong>July 24th</strong>.
+          It is highly advised that you wait until your material requirements are
+          verified by your professor to make purchases.
+        </p>
+        {% if materials %}
+        <ul class="list-group">
+          {% for material in materials %}
+          <li class="list-group-item">
+            <div class="pull-right">
+              {% if material.isbn %}
+              <a href="http://chegg.com/search/{{ material.isbn }}/" data-toggle="tooltip" data-placement="bottom" title="Chegg">
+                <img src="/static/assets/img/chegg-icon.png" alt="Chegg Logo" width="30" height="30">
+              </a>
+              <a href="http://www.amazon.com/s?url=search-alias%3Daps&amp;field-keywords={{ material.isbn }}" data-toggle="tooltip" data-placement="bottom" title="Amazon">
+                <img src="/static/assets/img/amazon-icon.png" alt="Amazon Logo" width="30" height="30">
+              </a>
+              <a href="https://texts.com/books/{{ material.isbn }}" data-toggle="tooltip" data-placement="bottom" title="Texts.com">
+                <img src="/static/assets/img/texts-icon.png" alt="Texts.com Logo" width="30" height="30">
+              </a>
+              {% else %}
+              <a name="material-google-link" href="#" data-query="{{ material.title }}" data-toggle="tooltip" data-placement="bottom" title="Search on Google">
+                <img src="/static/assets/img/google-icon.png" alt="Google Logo" width="30" height="30">
+              </a>
+              {% endif %}
+            </div>
+            <h4 class="list-group-item-heading">
+              {{ material.title }}
+            </h4>
+            <ul class="list-unstyled">
+              <li><strong>ISBN</strong>: {{ material.isbn }}</li>
+              <li><strong>Edition</strong>: {{ material.edition }}</li>
+              <li><strong>Author</strong>: {{ material.author }}</li>
+            </ul>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <strong>No required materials for this course.</strong>
+        {% endif %}
+        <p><a href="{{ course.bookstore_link }}">View on CNU Bookstore</a></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

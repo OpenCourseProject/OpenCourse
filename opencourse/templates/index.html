@@ -2,54 +2,86 @@
 
 {% block head %}
 <meta property="og:description" content="A free and independent service for CNU students to research, plan, and share their schedules." />
+{% if request.user.is_authenticated %}
+<script>
+var api_username = "{{ api_username }}"
+var api_key = "{{ api_key }}"
+</script>
+<script src="/static/assets/js/buttons.js"></script>
+{% endif %}
 {% endblock %}
 {% block home-active %}active{% endblock %}
 {% block content %}
 <div class="container">
   <div class="jumbotron">
+    {% if request.user.is_authenticated %}
     <h1>
-      {% if not request.user.is_authenticated %}
-      Welcome to Open Course
-      {% else %}
       Welcome, {{ request.user.first_name }}!
-      {% endif %}
     </h1>
-      {% if not request.user.is_authenticated %}
-      <p class="lead">
-        A free and independent service for CNU students to research, plan, and share their schedules.
-      </p>
-      <ul>
-        <li>Search for courses using any criteria</li>
-        <li>See your exam schedule</li>
-        <li>Find Facebook friends in your classes</li>
-        <li>Review instructor information, including RateMyProfessor scores</li>
-        <li>Create and share semester schedules</li>
-        <li>Follow courses and get updates on their status</li>
-      </ul>
-      <p>
-        Open Course is a non-official website that allows you to search and organize courses.
-        Course listings reflect CNU's official <a href="https://pulsar.cnu.edu/soc/socquery.aspx">Schedule of Courses</a>.
-        To begin, login with your CNU account or simply click Search to browse classes.
-      </p>
-      <p><a class="btn btn-primary btn-lg" href="/search/" role="button">Get Started</a></p>
-      {% else %}
-      <p class="lead">
-        Glad to have you here.
-      </p>
-      <p>
-        If you're new, you might want to read the
-        <a href="/about/#getting-started">Getting Started guide</a> to get your
-        courses synced from CNU Live.
-      </p>
-      {% if todo|length > 0 %}
-      Here's some stuff you can do to improve your experience:
-      <ul>
-        {% for value in todo %}
-        <li>{{ value }}</li>
+    <p>
+      If you're new, you might want to read the
+      <a href="/about/#getting-started">Getting Started guide</a> to get your
+      courses synced from CNU Live.
+    </p>
+    {% if todo|length > 0 %}
+    Here's some stuff you can do to improve your experience:
+    <ul>
+      {% for value in todo %}
+      <li>{{ value }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% else %}
+    <h1>
+      Welcome to Open Course
+    </h1>
+    <p class="lead">
+      A free and independent service for CNU students to research, plan, and share their schedules.
+    </p>
+    <ul>
+      <li>Search for courses using any criteria</li>
+      <li>See your exam schedule</li>
+      <li>Find Facebook friends in your classes</li>
+      <li>Review instructor information, including RateMyProfessor scores</li>
+      <li>Create and share semester schedules</li>
+      <li>Follow courses and get updates on their status</li>
+    </ul>
+    <p>
+      Open Course is a non-official website that allows you to search and organize courses.
+      Course listings reflect CNU's official <a href="https://pulsar.cnu.edu/soc/socquery.aspx">Schedule of Courses</a>.
+      To begin, login with your CNU account or simply click Search to browse classes.
+    </p>
+    <p><a class="btn btn-primary btn-lg" href="/search/" role="button">Get Started</a></p>
+    {% endif %}
+  </div>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{ current_term.name }}'s Most Popular Courses</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+        {% for key, value in popular_courses.iteritems %}
+        <li class="list-group-item">
+          {% if request.user.is_authenticated %}
+          <div class="pull-right">
+            <button type="submit" name="schedule-button" type="button" data-term-id="{{ key.term_id }}" data-course-crn="{{ key.crn }}" class="btn btn-default pull-right">
+              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Loading...
+            </button>
+          </div>
+          {% endif %}
+          <h4 class="list-group-item-heading">
+            <a href="https://opencourseproject.com/course/{{ key.term_id }}/{{ key.crn }}/">
+              {{ key.title }}
+            </a>
+            <small>with {{ key.instructor }}</small>
+          </h4>
+          <p class="list-group-item-text">
+            {{ value }} people taking it
+          </p>
+        </li>
         {% endfor %}
-      <ul>
-      {% endif %}
-      {% endif %}
+      </ul>
+    </div>
   </div>
 </div>
 {% endblock %}

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
+{% if request.user.is_authenticated %}
 <script src="/static/assets/js/facebook.js"></script>
 <script>
 var facebookCallback = function(response) {
@@ -17,7 +18,7 @@ var facebookCallback = function(response) {
   }
 }
 </script>
-<link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/iklkhbogomjhkakapieafljbldmhelep">
+{% endif %}
 {% endblock %}
 
 {% block content %}
