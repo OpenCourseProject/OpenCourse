@@ -132,20 +132,22 @@ $(document).ready(function () {
           </p>
           <p>
             Fortunately, this is made easy by the official
-            <a href="https://chrome.google.com/webstore/detail/iklkhbogomjhkakapieafljbldmhelep">Chrome Plugin</a>
-            which integrates with your schedule on CNU Live. You'll want to add
-            it to Chrome, either by clicking the link or just pressing the button:
+            <a href="https://chrome.google.com/webstore/detail/iklkhbogomjhkakapieafljbldmhelep">Google Chrome</a>
+						and <a href="https://addons.mozilla.org/en-US/firefox/addon/open-course/">Firefox</a> plugins
+            which integrate with your schedule on CNU Live. You'll want to add
+            it to your browser here:
           </p>
-          <button class="btn btn-success" onclick="chrome.webstore.install()" id="install-button">Add to Chrome</button>
+          <button class="btn btn-info" onclick="chrome.webstore.install()" id="install-button">Install Chrome plugin</button>
+					<a href="https://addons.mozilla.org/en-US/firefox/addon/open-course/" target="_blank"><button class="btn btn-success">Install Firefox addon</button></a>
           <br><br>
           {% if not request.user.is_authenticated %}
           <p class="text-danger">
-            You'll want to make sure you <a href="/account/">log in</a> before
-            you try to sync your courses.
+            Make sure you <a href="/account/">log in</a> before you try to sync
+						your courses.
           </p>
           {% endif %}
           <p class="bg-info">
-            If you're not using Google Chrome, you can still use this site.
+            If you're not using Google Chrome or Firefox, you can still use this site.
             Instead of syncing courses from CNU Live, you should use the <a href="/search/">search</a>
             function to find your courses, open them up, and hit the "Add to schedule" button.
           </p>
