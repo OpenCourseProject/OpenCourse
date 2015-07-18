@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.core.management import call_command
 from course.models import Course, Term, Instructor, FollowEntry, MeetingTime
+from opencourse.models import CourseUpdateLog
 from pyvirtualdisplay import Display
 from splinter import Browser
 from splinter.request_handler.status_code import HttpResponseError
@@ -192,4 +193,7 @@ class Command(BaseCommand):
                 course.save()
                 course.meeting_times = meeting_times
                 added += 1
+
+        # Create a log
+        CourseUpdateLog(courses_parsed=len(rows) - 1, courses_added=added, courses_updated=updated).save()
         self.stdout.write('-> Parsed ' + str(len(rows) - 1) + ' courses. ' + str(added) + ' added, ' + str(updated) + ' updated.')

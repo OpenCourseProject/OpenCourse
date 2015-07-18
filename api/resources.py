@@ -25,6 +25,17 @@ class InstructorResource(ModelResource):
             'first_name': ALL,
             'last_name': ALL,
             'rmp_score': ALL,
+            'rmp_link': ALL,
+        }
+
+class AttributeResource(ModelResource):
+    class Meta:
+        queryset = Attribute.objects.all()
+        resource_name = 'attribute'
+        allowed_methods = ['get']
+        filtering = {
+            'value': ALL,
+            'name': ALL,
         }
 
 class MeetingTimeResource(ModelResource):
@@ -48,29 +59,21 @@ class CourseResource(ModelResource):
         resource_name = 'course'
         allowed_methods = ['get']
         filtering = {
+            'term': ALL_WITH_RELATIONS,
             'crn': ALL,
+            'course': ALL,
+            'course_link': ALL,
             'section': ALL,
             'title': ALL,
-            'course': ALL,
+            'bookstore_link': ALL,
             'hours': ALL,
             'attribute': ALL,
             'ctype': ALL,
+            'meeting_times': ALL_WITH_RELATIONS,
             'location': ALL,
+            'instructor': ALL_WITH_RELATIONS,
             'seats': ALL,
             'status': ALL,
-            'term': ALL_WITH_RELATIONS,
-            'instructor': ALL_WITH_RELATIONS,
-            'meeting_times': ALL_WITH_RELATIONS,
-        }
-
-class AttributeResource(ModelResource):
-    class Meta:
-        queryset = Attribute.objects.all()
-        resource_name = 'attribute'
-        allowed_methods = ['get']
-        filtering = {
-            'value': ALL,
-            'name': ALL,
         }
 
 class MaterialResource(ModelResource):
@@ -81,13 +84,13 @@ class MaterialResource(ModelResource):
         resource_name = 'material'
         allowed_methods = ['get']
         filtering = {
+            'course': ALL_WITH_RELATIONS,
             'isbn': ALL,
             'title': ALL,
             'author': ALL,
             'publisher': ALL,
             'edition': ALL,
             'year': ALL,
-            'course': ALL_WITH_RELATIONS,
         }
 
 class CRNValidation(Validation):

@@ -73,17 +73,14 @@
         </li>
         <li>
           You can use <code>__gt</code> (greater than), <code>__lt</code> (less than),
-          <code>__contains</code>, <code>__startswith</code> or <code>__endswith</code>
-          modifiers to make advanced queries.
-          For instance, <code>https://opencourseproject.com/api/v1/course/?instructor__rmp_score__gt=3</code>
-          finds all courses where the instructor's RateMyProfessor score is 3.0
-          <strong>or higher</strong>.
+          <code>__gte</code> (greater than or equal to), <code>__lte</code> (less than or equal to),
+          <code>__contains</code>, <code>__icontains</code> (case-insensitive),
+          <code>__startswith</code> or <code>__endswith</code> modifiers to make
+          advanced queries.
+          For instance, <code>https://opencourseproject.com/api/v1/course/?instructor__rmp_score__gte=3</code>
+          finds all courses where the instructor's RateMyProfessor score is <strong>at least</strong> 3.0.
         </li>
       </ul>
-      <p>
-        Fields with the <span class="badge">No Filter</span> badge cannot be used
-        as filters in your queries.
-      </p>
     </div>
   </div>
   <div class="panel panel-default">
@@ -112,7 +109,7 @@
           This could be a single-character intitial if the full first name is not known.
         </li>
         <li><code>last_name</code>: the last name of the Instructor.</li>
-        <li><code>rmp_link</code>: the RateMyProfessor page for this Instructor, if known. <span class="badge">No Filter</span></li>
+        <li><code>rmp_link</code>: the RateMyProfessor page for this Instructor, if known.</li>
         <li><code>rmp_score</code>: the last RateMyProfessor rating for this Instructor, if known.</li>
       </ul>
     </div>
@@ -137,10 +134,10 @@
           </ul>
         </li>
         <li><code>course</code>: the course and course number of this Course. (ex: ACCT 201).</li>
-        <li><code>course_link</code>: the link to the Course on CNU's website. <span class="badge">No Filter</span></li>
+        <li><code>course_link</code>: the link to the Course on CNU's website.</li>
         <li><code>section</code>: the section of this Course.</li>
         <li><code>title</code>: the Course title.</li>
-        <li><code>bookstore_link</code>: the link to the Course on CNU's bookstore. <span class="badge">No Filter</span></li>
+        <li><code>bookstore_link</code>: the link to the Course on CNU's bookstore.</li>
         <li><code>hours</code>: the number of credit hours.</li>
         <li><code>attributes</code>: course Attributes. See the <strong>Attribute</strong> endpoint for details.</li>
         <li><code>ctype</code>: the type of course (ex: Lec, Lab, etc).</li>
@@ -158,6 +155,12 @@
           </ul>
         </li>
       </ul>
+      <p>
+        Course data is updated daily by
+        <a href="http://www.wolframalpha.com/input/?i=6+AM+EST+in+my+timezone">6 AM EST</a>.
+        If you are regularly querying courses, you can cache this data and assume
+        it is unchanged until at least this time.
+      </p>
     </div>
   </div>
   <div class="panel panel-default">

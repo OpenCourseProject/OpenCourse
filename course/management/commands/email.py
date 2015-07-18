@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth.models import User
 from course.models import Course, Term
+from opencourse.models import EmailLog
 
 class Command(BaseCommand):
     args = '<user_id term_id crn>'
@@ -26,3 +27,7 @@ class Command(BaseCommand):
         msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
         msg.attach_alternative(html_content, "text/html")
         msg.send()
+
+        # Create a log
+        EmailLog(user=user, course=course, title=subject, content=text_content).save()
+        self.stdout.write('-> Emailed ' + str(user))

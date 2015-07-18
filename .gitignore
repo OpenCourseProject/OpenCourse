@@ -2,3 +2,4 @@
 *.pyo
 *.log
 src/
+opencourse/static/assets/img/
