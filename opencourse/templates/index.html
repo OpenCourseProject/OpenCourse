@@ -2,13 +2,6 @@
 
 {% block head %}
 <meta property="og:description" content="A free and independent service for CNU students to research, plan, and share their schedules." />
-{% if request.user.is_authenticated %}
-<script>
-var api_username = "{{ api_username }}"
-var api_key = "{{ api_key }}"
-</script>
-<script src="/static/assets/js/buttons.js"></script>
-{% endif %}
 {% endblock %}
 {% block home-active %}active{% endblock %}
 {% block content %}
@@ -62,13 +55,6 @@ var api_key = "{{ api_key }}"
       <ul class="list-group">
         {% for key, value in popular_courses.iteritems %}
         <li class="list-group-item">
-          {% if request.user.is_authenticated %}
-          <div class="pull-right">
-            <button type="submit" name="schedule-button" type="button" data-term-id="{{ key.term_id }}" data-course-crn="{{ key.crn }}" class="btn btn-default pull-right">
-              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Loading...
-            </button>
-          </div>
-          {% endif %}
           <h4 class="list-group-item-heading">
             <a href="https://opencourseproject.com/course/{{ key.term_id }}/{{ key.crn }}/">
               {{ key.title }}
