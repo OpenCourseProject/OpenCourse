@@ -77,14 +77,15 @@ class CourseResource(ModelResource):
         }
 
 class MaterialResource(ModelResource):
-    course = fields.ToOneField(CourseResource, 'course')
+    term = fields.ToOneField(TermResource, 'term', full=True)
 
     class Meta:
         queryset = Material.objects.all()
         resource_name = 'material'
         allowed_methods = ['get']
         filtering = {
-            'course': ALL_WITH_RELATIONS,
+            'term': ALL_WITH_RELATIONS,
+            'course_crn': ALL,
             'isbn': ALL,
             'title': ALL,
             'author': ALL,

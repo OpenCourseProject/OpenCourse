@@ -40,6 +40,9 @@ class MeetingTime(models.Model):
     start_time = models.TimeField(db_index=True, null=True, verbose_name="Start")
     end_time = models.TimeField(db_index=True, null=True, verbose_name="End")
 
+    def __unicode__(self):
+        return "%s %s-%s" % (self.days, self.start_time, self.end_time)
+
 class Course(models.Model):
     term = models.ForeignKey(Term)
     crn = models.IntegerField(db_index=True, verbose_name="CRN")

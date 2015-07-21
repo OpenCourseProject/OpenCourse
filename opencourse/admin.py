@@ -1,9 +1,10 @@
 from django.contrib import admin
 from opencourse.models import Report, CourseUpdateLog, EmailLog
 
+@admin.register(CourseUpdateLog, EmailLog)
 class Admin(admin.ModelAdmin):
     readonly_fields = ('time_created',)
 
-admin.site.register(Report, Admin)
-admin.site.register(CourseUpdateLog, Admin)
-admin.site.register(EmailLog, Admin)
+@admin.register(Report)
+class ReportAdmin(Admin):
+    list_filter = ('responded', 'time_created',)

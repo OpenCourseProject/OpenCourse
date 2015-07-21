@@ -22,6 +22,9 @@ class Command(BaseCommand):
             self.parse_courses(term, html.fromstring(content))
             return
 
+        total_parsed = 0
+        total_added = 0
+        total_updated = 0
         # Visit URL
     	url = "https://pulsar.cnu.edu/soc/socquery.aspx"
         display = Display(visible=0, size=(1024, 768))
@@ -194,6 +197,9 @@ class Command(BaseCommand):
                 course.meeting_times = meeting_times
                 added += 1
 
-        # Create a log
-        CourseUpdateLog(courses_parsed=len(rows) - 1, courses_added=added, courses_updated=updated).save()
         self.stdout.write('-> Parsed ' + str(len(rows) - 1) + ' courses. ' + str(added) + ' added, ' + str(updated) + ' updated.')
+        total_parsed += len(rows) - 1
+        total_added += added
+        total_updated += updated
+    # Create a log
+    CourseUpdateLog(courses_parsed=total_parsed, courses_added=total_added, courses_updated=total_updated).save()
