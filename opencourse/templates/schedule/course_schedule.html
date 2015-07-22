@@ -46,6 +46,7 @@
     vertical-align: middle !important;
 }
 </style>
+{% if share %}
 <style type="text/css" media="print">
 @page {
   size: auto;
@@ -64,6 +65,7 @@
   opacity: 1 !important;
   visibility: visible !important
 }
+{% endif %}
 </style>
 <script>
 $(document).ready(function() {
@@ -116,11 +118,13 @@ $(document).ready(function() {
     {% endfor %}
   </div>
   {% endif %}
+  {% if share %}
   <div class="print-content" style="display: none;">
     <center>
-      <h1>Your {{ term.name }} schedule</h1>
+      <h1>Your <strong>{{ term.name }}</strong> schedule</h1>
     </center>
   </div>
+  {% endif %}
   <div class="well">
     {% if share %}
     <div class="pull-right">
@@ -174,9 +178,11 @@ $(document).ready(function() {
       <div role="tabpanel" class="tab-pane active" id="calendar-tab"><div id="calendar"></div></div>
     </div>
   </div>
+  {% if share %}
   <div class="print-content" style="display: none;">
     {% render_table print_table %}
   </div>
+  {% endif %}
 </div>
 <div id="fb-root"></div>
 {% endblock %}
