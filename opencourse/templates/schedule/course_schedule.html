@@ -33,6 +33,37 @@
 		max-width: 900px;
 		margin: 0 auto;
 	}
+  @media print {
+    .noprint {display:none !important;}
+    a:link:after, a:visited:after {
+      display: none;
+      content: "";
+  }
+}
+</style>
+<style media="screen" type="text/css">
+.fb_iframe_widget span {
+    vertical-align: middle !important;
+}
+</style>
+<style type="text/css" media="print">
+@page {
+  size: auto;
+}
+.container > .tabpanel, .container > .well, .nav, #list-tab, .pull-right, footer {
+  display: none;
+}
+.print-content {
+  display: block !important;
+}
+.pagebreak {
+  page-break-after: always;
+}
+#calendar-tab {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important
+}
 </style>
 <script>
 $(document).ready(function() {
@@ -42,6 +73,7 @@ $(document).ready(function() {
     editable: false,
     hiddenDays: [0],
     allDaySlot: false,
+    columnFormat: 'ddd',
     events: '/schedule/calendar/course/?identifier={{ identifier }}',
     loading: function(isLoading, view) {
       // Hacky fix to avoid calendar loading
@@ -84,9 +116,17 @@ $(document).ready(function() {
     {% endfor %}
   </div>
   {% endif %}
+  <div class="print-content" style="display: none;">
+    <center>
+      <h1>Your {{ term.name }} schedule</h1>
+    </center>
+  </div>
   <div class="well">
     {% if share %}
-    <div class="fb-share-button pull-right" data-href="{{ share_url }}" data-layout="button"></div>
+    <div class="pull-right">
+      <div class="fb-share-button" data-href="{{ share_url }}" data-layout="button"></div>
+      <button class="btn btn-default btn-xs" onclick="window.print()">Print</button>
+    </div>
     {% endif %}
     <h1>
       <form class="schedule-form" action="/schedule/" method="post">
@@ -133,6 +173,9 @@ $(document).ready(function() {
       <div role="tabpanel" class="tab-pane" id="list-tab"><br>{% render_table table %}</div>
       <div role="tabpanel" class="tab-pane active" id="calendar-tab"><div id="calendar"></div></div>
     </div>
+  </div>
+  <div class="print-content" style="display: none;">
+    {% render_table print_table %}
   </div>
 </div>
 <div id="fb-root"></div>

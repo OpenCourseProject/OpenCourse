@@ -14,6 +14,19 @@ class ScheduleTable(tables.Table):
         attrs = {"class": "table table-bordered table-striped table-hover"}
         fields = ("crn", "course", "section", "title", "hours", "llc", "ctype", "days", "start_time", "end_time", "location", "instructor", "seats")
 
+class SchedulePrintTable(tables.Table):
+    days = tables.Column(accessor='primary_meeting_time.days', order_by='meeting_times.days')
+    start_time = tables.Column(accessor='primary_meeting_time.start_time', order_by='meeting_times.start_time')
+    end_time = tables.Column(accessor='primary_meeting_time.end_time', order_by='meeting_times.end_time')
+
+    class Meta:
+        model = Course
+        template = "schedule/course_table.html"
+        order_by = "start_time"
+        empty_text = "No courses yet!"
+        attrs = {"class": "table table-bordered table-striped"}
+        fields = ("course", "title", "ctype", "days", "start_time", "end_time", "location", "instructor")
+
 class ExamTable(tables.Table):
     course = tables.Column()
     crn = tables.Column(verbose_name='CRN')

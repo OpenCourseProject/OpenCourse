@@ -6,7 +6,7 @@ from schedule.utils import schedule_get_course, schedule_get_courses
 from course.models import Term, Course
 from account.models import Profile
 from django_tables2 import RequestConfig
-from schedule.tables import ScheduleTable, ExamTable
+from schedule.tables import ScheduleTable, SchedulePrintTable, ExamTable
 from schedule.forms import ScheduleForm
 from course.utils import exam_for_course
 from django.http import HttpResponse
@@ -65,9 +65,12 @@ def schedule(request):
         has_exams = False
 
     table = ScheduleTable(courses)
+    print_table = SchedulePrintTable(courses)
     RequestConfig(request).configure(table)
+    RequestConfig(request).configure(print_table)
     context = {
         'table': table,
+        'print_table': print_table,
         'form': form,
         'term': term,
         'authenticated': True,

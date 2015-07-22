@@ -28,6 +28,32 @@
 		max-width: 900px;
 		margin: 0 auto;
 	}
+  @media print {
+    .noprint {display:none !important;}
+    a:link:after, a:visited:after {
+      display: none;
+      content: "";
+  }
+}
+</style>
+<style type="text/css" media="print">
+@page {
+  size: auto;
+}
+.container > .tabpanel, .container > .well, .nav, .pull-right, footer {
+  display: none;
+}
+.print-content {
+  display: block !important;
+}
+.pagebreak {
+  page-break-before: always;
+}
+#calendar-tab {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
 </style>
 <script>
 var switched = false;
@@ -59,7 +85,20 @@ $(document).ready(function() {
 {% block schedule-active %}active{% endblock %}
 {% block content %}
 <div class="container">
+  <div class="print-content" style="display: none;">
+    <center>
+      <h1>UNOFFICIAL {{ term.name }} exam schedule</h1>
+      <p>
+        This listing is automatically computed and is not an official
+        exam schedule. Do not rely on it to be accurate and always
+        double-check using the official schedule listed at http://cnu.edu/registrar/
+      </p>
+    </center>
+  </div>
   <div class="well">
+    <div class="pull-right">
+      <button class="btn btn-default btn-xs" onclick="window.print()">Print</button>
+    </div>
     <h1>
       Your <strong>{{ term.name }}</strong> exam schedule
       <h6>
@@ -77,7 +116,7 @@ $(document).ready(function() {
     </ul>
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane" id="list-tab"><br>{% render_table table %}</div>
-      <div role="tabpanel" class="tab-pane active" id="calendar-tab"><div id="calendar"></div></div>
+      <div role="tabpanel" class="tab-pane active" id="calendar-tab"><div class="pagebreak"></div><div id="calendar"></div></div>
     </div>
   </div>
 </div>
