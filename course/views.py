@@ -1,5 +1,6 @@
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
+from django.core.mail import mail_admins
 from course.models import Course, Term, FollowEntry, Material, InstructorLinkSuggestion
 from schedule.models import ScheduleEntry, ExamEntry, ExamSource
 from django_tables2 import RequestConfig
@@ -10,9 +11,6 @@ from course.utils import exam_for_course
 from django.contrib.auth.decorators import login_required
 from tastypie.models import ApiKey
 import json
-import logging
-
-logging.basicConfig()
 
 def search(request):
     term = None
@@ -101,6 +99,10 @@ def course(request, term, crn):
                 link = form.cleaned_data['link']
                 suggestion = InstructorLinkSuggestion(instructor=course.instructor, user=user, link=link)
                 suggestion.save()
+                # Send mail
+                subject = "Instructor link suggestion created"
+                message = "{} created a new suggestion for {}: {}".format(request.user.username, course.instructor, link)
+                mail_admins(subject, message)
         else:
             context['suggestion_form'] = InstructorSuggestionForm()
 

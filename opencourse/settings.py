@@ -8,6 +8,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # reconstruction. Details of information have been noted where redactions have
 # been made.
 
+# ADMINS scrubbed
+
 # SECRET_KEY scrubbed
 
 # SOCIAL_AUTH_GOOGLE_OAUTH2_KEY scrubbed
@@ -30,7 +32,28 @@ DEBUG = False
 
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['opencourseproject.com']
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/var/www/opencourseproject.com/opencourse/opencourse/logs/app.log',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
+ALLOWED_HOSTS = [
+    'opencourseproject.com',
+]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SESSION_COOKIE_SECURE = True
@@ -74,6 +97,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.common.BrokenLinkEmailsMiddleware',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -118,6 +142,8 @@ EMAIL_USE_TLS = True
 # EMAIL_PORT scrubbed
 # EMAIL_HOST_USER scrubbed
 # EMAIL_HOST_PASSWORD scrubbed
+SERVER_EMAIL = 'admin@opencourseproject.com'
+EMAIL_SUBJECT_PREFIX = '[OpenCourse] '
 
 LANGUAGE_CODE = 'en-us'
 

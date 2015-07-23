@@ -12,7 +12,7 @@ Course Details
 * Section: {course_section}
 * Instructor: {course_instructor}
 
-View on OpenCourse ( course_link )
+View on OpenCourse ( {course_link} )
 
 To stop receiving emails about this course,
-unfollow it here ( course_link ).
+unfollow it here ( {course_link} ).

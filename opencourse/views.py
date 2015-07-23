@@ -1,6 +1,7 @@
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.utils.safestring import SafeString
+from django.core.mail import mail_admins
 from account.models import Profile
 from schedule.models import ScheduleEntry
 from schedule.utils import schedule_get_course
@@ -8,6 +9,7 @@ from course.models import Course, Term, FollowEntry
 from opencourse.models import Report
 from opencourse.forms import ReportForm
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_protect
 from django.db.models import Count
 from collections import OrderedDict
 
@@ -54,26 +56,30 @@ def report(request):
             description = form.cleaned_data['description']
             report = Report(user=request.user, url=url, description=description)
             report.save()
+            # Send mail
+            subject = "Report created"
+            message = "{} created a new report on {}: {}".format(request.user.username, url, description)
+            mail_admins(subject, message)
             context = {
                 'report': report,
             }
             return render(request, 'report.html', context)
     return redirect('/')
 
+@csrf_protect
 def error_500(request):
-    context = RequestContext(request)
     if request.path == '/complete/google-oauth2/':
-        response = render_to_response('account/500_login.html', {}, context)
+        response = render(request, 'account/500_login.html', {})
     else:
-        response = render_to_response('500.html', {}, context)
+        response = render(request, '500.html', {})
     response.status_code = 500
     return response
 
+@csrf_protect
 def error_404(request):
-    context = RequestContext(request)
     if request.path.startswith('/schedule/'):
-        response = render_to_response('schedule/404.html', {}, context)
+        response = render(request, 'schedule/404.html', {})
     else:
-        response = render_to_response('404.html', {}, context)
+        response = render(request, '404.html', {})
     response.status_code = 404
     return response
