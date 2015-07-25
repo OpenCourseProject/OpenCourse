@@ -1,411 +1,492 @@
 {% extends "base.html" %}
-
+{% block head %}
+<style>
+#top-link-block.affix-top {
+    position: absolute;
+    bottom: -82px;
+    left: 10px;
+}
+#top-link-block.affix {
+    position: fixed;
+    bottom: 18px;
+    left: 10px;
+}
+ul.nav-tabs {
+	margin-top: 20px;
+	border-radius: 4px;
+	border: 1px solid #ddd;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+}
+ul.nav-tabs li {
+	margin: 0;
+	border-top: 1px solid #ddd;
+}
+ul.nav-tabs li:first-child {
+	border-top: none;
+}
+ul.nav-tabs li a {
+	margin: 0;
+	padding: 8px 16px;
+	border-radius: 0;
+}
+ul.nav-tabs li.active a, ul.nav-tabs li.active a:hover {
+	color: #fff;
+	background: #0088cc;
+	border: 1px solid #0088cc;
+}
+ul.nav-tabs li:first-child a {
+	border-radius: 4px 4px 0 0;
+}
+ul.nav-tabs li:last-child a {
+	border-radius: 0 0 4px 4px;
+}
+ul.nav-tabs.affix {
+	top: 30px;
+}
+</style>
+<script>
+$(document).ready(function () {
+  $('body').scrollspy({ target: '#scrollSpy' })
+  if ( ($(window).height() + 100) < $(document).height() ) {
+      $('#top-link-block').removeClass('hidden').affix({
+          offset: {top:900}
+      });
+  }
+});
+</script>
+{% endblock %}
 {% block content %}
 <div class="container">
   <div class="page-header">
-    <h1><strong>OpenCourse API</strong></h1>
+    <h1><img src="/static/assets/img/logo/opencourse-full.png" alt="Open Course Logo" height="70"> <strong>API</strong></h1>
   </div>
-  <div class="lead">
-    <div class="well well-sm">
-      <p>
-        The "Open" in Open Course Project means devotion to free information and
-        Open Source technologies. The data that is compiled to service
-        this website is regularly extracted directly from various CNU websites,
-        but it's provided centrally using RESTful API standards to any
-        interested students or third parties.
-      </p>
-      <p>
-        If you are creating your own service or even a personal application
-        using course, term, or instructor data, you are welcomed to use the API
-        detailed on this page.
-        General API endpoints are keyless and anonymous for now. If you're
-        interested in using it for your projects, please don't abuse it.
-        Otherwise I'll have to buy a bike lock.
-      </p>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title"><strong>API Functionality</strong></h3>
-    </div>
-    <div class="panel-body">
-      <ul>
-        <li>
-          All queries should be directed to the API URL:
-          <code>https://opencourseproject.com/api/v1/</code>
-        </li>
-        <li>
-          API queries can be returned in your choice of
-          <code>json</code>, <code>xml</code>, or <code>yaml</code> format.
-          To specify, use the <code>Accept</code> header in your GET
-          request:
-          <pre>curl -H "Accept: application/json" https://opencourseproject.com/api/v1/course/</pre>
-          Alternatively, you may append <code>?format=json</code> to the end
-          of the url.
-        </li>
-        <li>
-          Large sets of data will be paginated with a limit of 20 objects per
-          page. Each result will contain a <code>meta</code> object which has
-          <code>limit</code> and a <code>next</code> URI which you may navigate
-          to in order to get to the next page of data.
-        </li>
-        <li>
-          To avoid pagination, you can append <code>?limit=0</code> to the end
-          of the url. It is requested that you avoid this unless absolutely
-          necessary to avoid large I/O spikes. When possible, use filters so
-          that your queries don't result in data sets needing to be paginated
-          in the first place.
-        </li>
-        <li>
-          To filter objects, use field names in the query. For instance,
-          <code>https://opencourseproject.com/api/v1/course/?days=MWF</code>
-          finds all courses which meet Monday, Wednesday, and Friday. You
-          can further filter objects, for instance
-          <code>https://opencourseproject.com/api/v1/course/?days=MWF&meeting_times__start_time=10:00:00</code>
-          finds all courses which meet Monday, Wednesday, and Friday at 10am.
-        </li>
-        <li>
-          See the endpoint details for information about which fields you can
-          use to filter your queries. If you'd like to filter on a sub-object,
-          you can use the <code>__</code> (double underscore) accessor.
-          For instance, <code>https://opencourseproject.com/api/v1/course/?instructor__rmp_score=3</code>
-          finds all courses where the instructor's RateMyProfessor score is 3.0.
-        </li>
-        <li>
-          You can use <code>__gt</code> (greater than), <code>__lt</code> (less than),
-          <code>__gte</code> (greater than or equal to), <code>__lte</code> (less than or equal to),
-          <code>__contains</code>, <code>__icontains</code> (case-insensitive),
-          <code>__startswith</code> or <code>__endswith</code> modifiers to make
-          advanced queries.
-          For instance, <code>https://opencourseproject.com/api/v1/course/?instructor__rmp_score__gte=3</code>
-          finds all courses where the instructor's RateMyProfessor score is <strong>at least</strong> 3.0.
-        </li>
+  <span id="top-link-block" class="hidden">
+    <a href="#top" class="well well-sm" onclick="$('html,body').animate({scrollTop:0},'slow');return false;">
+        <i class="glyphicon glyphicon-chevron-up"></i> Back to Top
+    </a>
+</span>
+  <div class="row">
+    <div class="col-xs-3" id="scrollSpy">
+      <ul class="nav nav-tabs nav-stacked">
+        <li><a href="#functionality"><strong>API Functionality</strong></a></li>
+				<li><a href="#get-term">GET /term/</a></li>
+				<li><a href="#get-instructor">GET /instructor/</a></li>
+        <li><a href="#get-course">GET /course/</a></li>
+        <li><a href="#get-material">GET /material/</a></li>
+        <li><a href="#get-attribute">GET /attribute/</a></li>
+        <li><a href="#private-endpoints"><strong>Private Endpoints</strong></a></li>
+        <li><a href="#get-schedule">GET /schedule/</a></li>
+        <li><a href="#post-schedule">POST /schedule/</a></li>
+        <li><a href="#delete-schedule">DELETE /schedule/</a></li>
+        <li><a href="#get-follow">GET /follow/</a></li>
+        <li><a href="#post-follow">POST /follow/</a></li>
+        <li><a href="#delete-follow">DELETE /follow/</a></li>
+        <li><a href="#resources"><strong>Non-API Resources</strong></a></li>
       </ul>
     </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title"><samp>GET /term/</samp></h3>
-    </div>
-    <div class="panel-body">
-      <p>A <strong>Term</strong> represents a semester where classes are offered.</p>
-      Fields:
-      <ul>
-        <li><code>value</code>: a Term ID which is unique for this Term.</li>
-        <li><code>name</code>: the name of this Term.</li>
-      </ul>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title"><samp>GET /instructor/</samp></h3>
-    </div>
-    <div class="panel-body">
-      <p>An <strong>Instructor</strong> represents a professor who teaches a course.</p>
-      Fields:
-      <ul>
-        <li>
-          <code>first_name</code>: the first name of the Instructor.
-          This could be a single-character intitial if the full first name is not known.
-        </li>
-        <li><code>last_name</code>: the last name of the Instructor.</li>
-        <li><code>rmp_link</code>: the RateMyProfessor page for this Instructor, if known.</li>
-        <li><code>rmp_score</code>: the last RateMyProfessor rating for this Instructor, if known.</li>
-      </ul>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title"><samp>GET /course/</samp></h3>
-    </div>
-    <div class="panel-body">
-      <p>A <strong>Course</strong> represents a class that is offered in a specified term.</p>
-      Fields:
-      <ul>
-        <li><code>term</code>: the <strong>Term</strong> object in which this Course is offered.</li>
-        <li>
-          <code>crn</code>: the Course Registration Number of this Course.
-          <ul>
-            <li>
-              <strong>WARNING: </strong> CRNs are not necessarily unique.
-              To query a specific Course you must offer a <strong>Term</strong>
-              ID value <i>and</i> a CRN value.
-            </li>
-          </ul>
-        </li>
-        <li><code>course</code>: the course and course number of this Course. (ex: ACCT 201).</li>
-        <li><code>course_link</code>: the link to the Course on CNU's website.</li>
-        <li><code>section</code>: the section of this Course.</li>
-        <li><code>title</code>: the Course title.</li>
-        <li><code>bookstore_link</code>: the link to the Course on CNU's bookstore.</li>
-        <li><code>hours</code>: the number of credit hours.</li>
-        <li><code>attributes</code>: course Attributes. See the <strong>Attribute</strong> endpoint for details.</li>
-        <li><code>ctype</code>: the type of course (ex: Lec, Lab, etc).</li>
-        <li><code>location</code>: the building and room number of this Course, if any.</li>
-        <li><code>instructor</code>: the <strong>Instructor</strong> object of this Course, if any.</li>
-        <li><code>seats</code>: the seats left.</li>
-        <li><code>status</code>: Open or Closed, depending on how many seats are left.</li>
-        <li>
-          <code>meeting_times</code>: the days and times this Course meets (there could be several).
-          <ul>
-            <li>Meeting times have the following fields:</li>
-            <li><code>days</code>: the days (MW, TR, MWF, etc.) for which this meeting time applies.</li>
-            <li><code>start_time</code>: the timecode in HH:MM:SS format that the meeting time starts.</li>
-            <li><code>end_time</code>: the timecode in HH:MM:SS format that the meeting time ends.</li>
-          </ul>
-        </li>
-      </ul>
-      <p>
-        Course data is updated daily by
-        <a href="http://www.wolframalpha.com/input/?i=6+AM+EST+in+my+timezone">6 AM EST</a>.
-        If you are regularly querying courses, you can cache this data and assume
-        it is unchanged until at least this time.
-      </p>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title"><samp>GET /material/</samp></h3>
-    </div>
-    <div class="panel-body">
-      <p>
-        A <strong>Material</strong> represents a required text for a Course.
-      </p>
-      Fields:
-      <ul>
-        <li>
-          <code>course</code>: the <strong>Course</strong> to which this Material belongs.
-          <ul>
-            <li>
-              To avoid unnecessarily long query results, the Course which this
-              Material belongs to is summed up with a URI to the location which
-              can provide you with the Course information. See the Course endpoint
-              for more details on Courses.
-            </li>
-          </ul>
-        </li>
-        <li><code>isbn</code>: the ISBN number for the text.</li>
-        <li><code>title</code>: the title of the text.</li>
-        <li><code>author</code>: the author of the text.</li>
-        <li><code>publisher</code>: the publisher of the text.</li>
-        <li><code>edition</code>: the edition of the text.</li>
-        <li><code>year</code>: the publishing year of the text.</li>
-      </ul>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title"><samp>GET /attribute/</samp></h3>
-    </div>
-    <div class="panel-body">
-      <p>
-        An <strong>Attribute</strong> represents a course classification that
-        meets University requirements for a specific field. This could include
-        courses in a Liberal Learning Foundation, Area of Inquiry, courses that
-        are Writing Intensive, or Honors courses.
-      </p>
-      Fields:
-      <ul>
-        <li><code>value</code>: an Attribute ID.</li>
-        <li><code>name</code>: the full name of this Attribute.</li>
-      </ul>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title"><strong>Private Endpoints</strong></h3>
-    </div>
-    <div class="panel-body">
-      <p>
-        The following endpoints are considered "private" and require you to use
-        your account API key to access them. In addition to GETting information
-        from the API you may also add and remove data to/from these endpoints
-        using POST and DELETE respectively.
-      </p>
-      {% if api_key %}
-      <div class="input-group">
-        <span class="input-group-addon" id="basic-addon1">Your API Key</span>
-        <input type="text" class="form-control" value="{{ api_key.key }}" aria-describedby="basic-addon1">
+    <div class="col-xs-9">
+      <div class="panel panel-primary">
+        <div class="panel-body">
+          <p>
+            The "Open" in Open Course Project means devotion to free information and
+            Open Source technologies. The data that is compiled to service
+            this website is regularly extracted directly from various CNU websites,
+            but it's provided centrally using RESTful API standards to any
+            interested students or third parties.
+          </p>
+          <p>
+            If you are creating your own service or even a personal application
+            using course, term, or instructor data, you are welcomed to use the API
+            detailed on this page.
+            General API endpoints are keyless and anonymous for now. If you're
+            interested in using it for your projects, please don't abuse it.
+            Otherwise I'll have to buy a bike lock.
+          </p>
+        </div>
       </div>
-      <br>
-      <p>
-        <strong>WARNING: Do not share your key with anyone.</strong>
-        <br>
-        Your username is <strong>{{ user.username }}</strong>. Your API key is
-        tied to your username and allows you to query private information stored
-        on this site. If you lose privacy of your key, please
-        <a href="#report" data-toggle="modal" data-target="#report">contact us</a> to reset it.
-      </p>
-      <p>
-        To specify your key, use the <code>Authorization</code> header in your
-        GET request:
-        <pre>curl -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" https://opencourseproject.com/api/v1/schedule/</pre>
-        Alternatively, you may append <code>?username={{ user.username }}&api_key={{ api_key.key }}</code>
-        to the end of the url.
-      </p>
-      {% else %}
-      <a href="/account/">Log In</a> and return to this page to find your key.
-      {% endif %}
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title"><samp>GET /schedule/</samp></h3>
-    </div>
-    <div class="panel-body">
-      <p>
-        A <strong>Schedule</strong> is a listing of courses that you have
-        added to a Term.
-      </p>
-      Fields:
-      <ul>
-        <li><code>term</code>: the Term which the courses are scheduled for.</li>
-        <li><code>course_crn</code>: the course CRN.</li>
-      </ul>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title"><samp>POST /schedule/</samp></h3>
-    </div>
-    <div class="panel-body">
-      <p>
-        To add a course to your schedule with this API, simply send a POST
-        request where the body includes the following items:
-      </p>
-      <ul>
-        <li><code>term</code>: the Term resource to add this course to.</li>
-        <li><code>course_crn</code>: the course CRN.</li>
-      </ul>
-      <p>
-        For example, to add <a href="https://opencourseproject.com/course/201600/5984/">this</a>
-        course (CRN: <strong>5984</strong>) to your Fall Semester 2015 (Term ID: <strong>201600</strong>) schedule,
-        send the following request:
-        <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X POST --data '{"term": "/api/v1/term/201600/", "course_crn": "5984"}' https://opencourseproject.com/api/v1/schedule/</pre>
-        A successful POST returns <code>HTTP 201 CREATED</code>.
-      </p>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title"><samp>DELETE /schedule/</samp></h3>
-    </div>
-    <div class="panel-body">
-      <p>
-        To delete a course from your schedule, specify it with the <code>resource_url</code>
-        given from your GET schedule query request.
-      </p>
-      <p>
-        For example, if you want to delete the following item from your schedule:
-        <code>{"course_crn": 5984, "id": 1, "resource_uri": "/api/v1/schedule/1/", "term": {"name": "Fall Semester 2015", "resource_uri": "/api/v1/term/201600/", "value": 201600}}</code>
-        send the following request:
-        <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X DELETE  https://opencourseproject.com/api/v1/schedule/1/</pre>
-        A successful DELETE returns <code>HTTP 204 NO CONTENT</code>.
-      </p>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title"><samp>GET /follow/</samp></h3>
-    </div>
-    <div class="panel-body">
-      <p>
-        A <strong>Follow</strong> is a listing of courses that you have
-        decided to follow and recieve status updates for.
-      </p>
-      Fields:
-      <ul>
-        <li><code>term</code>: the Term which the courses are scheduled for.</li>
-        <li><code>course_crn</code>: the course CRN.</li>
-      </ul>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title"><samp>POST /follow/</samp></h3>
-    </div>
-    <div class="panel-body">
-      <p>
-        To start following a course with this API, simply send a POST
-        request where the body includes the following items:
-      </p>
-      <ul>
-        <li><code>term</code>: the Term resource that the course belongs to.</li>
-        <li><code>course_crn</code>: the course CRN.</li>
-      </ul>
-      <p>
-        For example, to follow <a href="https://opencourseproject.com/course/201600/5984/">this</a>
-        course (CRN: <strong>5984</strong>) which belongs to Fall Semester 2015 (Term ID: <strong>201600</strong>),
-        send the following request:
-        <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X POST --data '{"term": "/api/v1/term/201600/", "course_crn": "5984"}' https://opencourseproject.com/api/v1/follow/</pre>
-        A successful POST returns <code>HTTP 201 CREATED</code>.
-      </p>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title"><samp>DELETE /follow/</samp></h3>
-    </div>
-    <div class="panel-body">
-      <p>
-        To stop following a course, specify it with the <code>resource_url</code>
-        given from your GET schedule query request.
-      </p>
-      <p>
-        For example, if you want to delete the following item from your schedule:
-        <code>{"course_crn": 5984, "id": 1, "resource_uri": "/api/v1/follow/1/", "term": {"name": "Fall Semester 2015", "resource_uri": "/api/v1/term/201600/", "value": 201600}}</code>
-        send the following request:
-        <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X DELETE  https://opencourseproject.com/api/v1/follow/1/</pre>
-        A successful DELETE returns <code>HTTP 204 NO CONTENT</code>.
-      </p>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title"><strong>Non-API Resources</strong></h3>
-    </div>
-    <div class="panel-body">
-      In addition to RESTful API methods, raw assets compiled to populate this
-      service are available to anyone interested.
-    </div>
-    <ul class="list-group">
-      <li class="list-group-item">
-        <strong>Exam schedule</strong> information is created using spreadsheet
-        files and are downloadable at
-        <code>https://opencourseproject.com/static/assets/xl/exam_schedule_TERM.xlsx</code>
-        where TERM is a valid Term ID (ex: <a href="https://opencourseproject.com/static/assets/xl/exam_schedule_201600.xlsx">201600</a> for Fall Semester 2015). See the details
-        of the <strong>Term</strong> endpoint for more information on Term IDs.
+    <div class="panel panel-default" id="functionality">
+      <div class="panel-heading">
+        <h3 class="panel-title"><strong>API Functionality</strong></h3>
+      </div>
+      <div class="panel-body">
         <ul>
           <li>
-            Exam spreadsheets are created by hand for each term using the tables
-            extracted from the official CNU-provided PDF using the fantastic
-            <a href="http://tabula.technology/">Tabula</a> to reduce risk of
-            human transcription errors.
+            All queries should be directed to the API URL:
+            <code>https://opencourseproject.com/api/v1/</code>
           </li>
           <li>
-            Not all current Terms will have an exam spreadsheet. Spreadsheets
-            are created for all Spring and Fall semesters when the official
-            schedule is posted to the CNU website.
+            API queries can be returned in your choice of
+            <code>json</code>, <code>xml</code>, or <code>yaml</code> format.
+            To specify, use the <code>Accept</code> header in your GET
+            request:
+            <pre>curl -H "Accept: application/json" https://opencourseproject.com/api/v1/course/</pre>
+            Alternatively, you may append <code>?format=json</code> to the end
+            of the url.
           </li>
           <li>
-            Data is organized by sheet, the name of the sheet being the exam day
-            in the format <code>mm-dd-yyyy</code> that the cells apply to.
+            Large sets of data will be paginated with a limit of 20 objects per
+            page. Each result will contain a <code>meta</code> object which has
+            <code>limit</code> and a <code>next</code> URI which you may navigate
+            to in order to get to the next page of data.
           </li>
           <li>
-            The first cell in each column is the exam period in the format
-            <code>hh:mm-hh:mm</code> where the first time is the start time and
-            the second is the end time.
+            To avoid pagination, you can append <code>?limit=0</code> to the end
+            of the url. It is requested that you avoid this unless absolutely
+            necessary to avoid large I/O spikes. When possible, use filters so
+            that your queries don't result in data sets needing to be paginated
+            in the first place.
           </li>
           <li>
-            Each following cell in a column contains the applicable courses that
-            will have an exam during the period, in the format
-            <code>DAY hh:mm-hh:mm</code> where DAY could be any combination of
-            M, T, W, R, F, MW, T/R, etc. and the times are start and end times
-            of the course as explained above.
+            To filter objects, use field names in the query. For instance,
+            <code>https://opencourseproject.com/api/v1/course/?days=MWF</code>
+            finds all courses which meet Monday, Wednesday, and Friday. You
+            can further filter objects, for instance
+            <code>https://opencourseproject.com/api/v1/course/?days=MWF&meeting_times__start_time=10:00:00</code>
+            finds all courses which meet Monday, Wednesday, and Friday at 10am.
+          </li>
+          <li>
+            See the endpoint details for information about which fields you can
+            use to filter your queries. If you'd like to filter on a sub-object,
+            you can use the <code>__</code> (double underscore) accessor.
+            For instance, <code>https://opencourseproject.com/api/v1/course/?instructor__rmp_score=3</code>
+            finds all courses where the instructor's RateMyProfessor score is 3.0.
+          </li>
+          <li>
+            You can use <code>__gt</code> (greater than), <code>__lt</code> (less than),
+            <code>__gte</code> (greater than or equal to), <code>__lte</code> (less than or equal to),
+            <code>__contains</code>, <code>__icontains</code> (case-insensitive),
+            <code>__startswith</code> or <code>__endswith</code> modifiers to make
+            advanced queries.
+            For instance, <code>https://opencourseproject.com/api/v1/course/?instructor__rmp_score__gte=3</code>
+            finds all courses where the instructor's RateMyProfessor score is <strong>at least</strong> 3.0.
           </li>
         </ul>
-      </li>
-    </ul>
+      </div>
+    </div>
+    <div class="panel panel-default" id="get-term">
+      <div class="panel-heading">
+        <h3 class="panel-title"><samp>GET /term/</samp></h3>
+      </div>
+      <div class="panel-body">
+        <p>A <strong>Term</strong> represents a semester where classes are offered.</p>
+        Fields:
+        <ul>
+          <li><code>value</code>: a Term ID which is unique for this Term.</li>
+          <li><code>name</code>: the name of this Term.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel panel-default" id="get-instructor">
+      <div class="panel-heading">
+        <h3 class="panel-title"><samp>GET /instructor/</samp></h3>
+      </div>
+      <div class="panel-body">
+        <p>An <strong>Instructor</strong> represents a professor who teaches a course.</p>
+        Fields:
+        <ul>
+          <li>
+            <code>first_name</code>: the first name of the Instructor.
+            This could be a single-character intitial if the full first name is not known.
+          </li>
+          <li><code>last_name</code>: the last name of the Instructor.</li>
+          <li><code>rmp_link</code>: the RateMyProfessor page for this Instructor, if known.</li>
+          <li><code>rmp_score</code>: the last RateMyProfessor rating for this Instructor, if known.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel panel-default" id="get-course">
+      <div class="panel-heading">
+        <h3 class="panel-title"><samp>GET /course/</samp></h3>
+      </div>
+      <div class="panel-body">
+        <p>A <strong>Course</strong> represents a class that is offered in a specified term.</p>
+        Fields:
+        <ul>
+          <li><code>term</code>: the <strong>Term</strong> object in which this Course is offered.</li>
+          <li>
+            <code>crn</code>: the Course Registration Number of this Course.
+            <ul>
+              <li>
+                <strong>WARNING: </strong> CRNs are not necessarily unique.
+                To query a specific Course you must offer a <strong>Term</strong>
+                ID value <i>and</i> a CRN value.
+              </li>
+            </ul>
+          </li>
+          <li><code>course</code>: the course and course number of this Course. (ex: ACCT 201).</li>
+          <li><code>course_link</code>: the link to the Course on CNU's website.</li>
+          <li><code>section</code>: the section of this Course.</li>
+          <li><code>title</code>: the Course title.</li>
+          <li><code>bookstore_link</code>: the link to the Course on CNU's bookstore.</li>
+          <li><code>hours</code>: the number of credit hours.</li>
+          <li><code>attributes</code>: course Attributes. See the <strong>Attribute</strong> endpoint for details.</li>
+          <li><code>ctype</code>: the type of course (ex: Lec, Lab, etc).</li>
+          <li><code>location</code>: the building and room number of this Course, if any.</li>
+          <li><code>instructor</code>: the <strong>Instructor</strong> object of this Course, if any.</li>
+          <li><code>seats</code>: the seats left.</li>
+          <li><code>status</code>: Open or Closed, depending on how many seats are left.</li>
+          <li>
+            <code>meeting_times</code>: the days and times this Course meets (there could be several).
+            <ul>
+              <li>Meeting times have the following fields:</li>
+              <li><code>days</code>: the days (MW, TR, MWF, etc.) for which this meeting time applies.</li>
+              <li><code>start_time</code>: the timecode in HH:MM:SS format that the meeting time starts.</li>
+              <li><code>end_time</code>: the timecode in HH:MM:SS format that the meeting time ends.</li>
+            </ul>
+          </li>
+        </ul>
+        <p>
+          Course data is updated daily by
+          <a href="http://www.wolframalpha.com/input/?i=6+AM+EST+in+my+timezone">6 AM EST</a>.
+          If you are regularly querying courses, you can cache this data and assume
+          it is unchanged until at least this time.
+        </p>
+      </div>
+    </div>
+    <div class="panel panel-default" id="get-material">
+      <div class="panel-heading">
+        <h3 class="panel-title"><samp>GET /material/</samp></h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          A <strong>Material</strong> represents a required text for a Course.
+        </p>
+        Fields:
+        <ul>
+          <li>
+            <code>course</code>: the <strong>Course</strong> to which this Material belongs.
+            <ul>
+              <li>
+                To avoid unnecessarily long query results, the Course which this
+                Material belongs to is summed up with a URI to the location which
+                can provide you with the Course information. See the Course endpoint
+                for more details on Courses.
+              </li>
+            </ul>
+          </li>
+          <li><code>isbn</code>: the ISBN number for the text.</li>
+          <li><code>title</code>: the title of the text.</li>
+          <li><code>author</code>: the author of the text.</li>
+          <li><code>publisher</code>: the publisher of the text.</li>
+          <li><code>edition</code>: the edition of the text.</li>
+          <li><code>year</code>: the publishing year of the text.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel panel-default" id="get-attribute">
+      <div class="panel-heading">
+        <h3 class="panel-title"><samp>GET /attribute/</samp></h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          An <strong>Attribute</strong> represents a course classification that
+          meets University requirements for a specific field. This could include
+          courses in a Liberal Learning Foundation, Area of Inquiry, courses that
+          are Writing Intensive, or Honors courses.
+        </p>
+        Fields:
+        <ul>
+          <li><code>value</code>: an Attribute ID.</li>
+          <li><code>name</code>: the full name of this Attribute.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel panel-default" id="private-endpoints">
+      <div class="panel-heading">
+        <h3 class="panel-title"><strong>Private Endpoints</strong></h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          The following endpoints are considered "private" and require you to use
+          your account API key to access them. In addition to GETting information
+          from the API you may also add and remove data to/from these endpoints
+          using POST and DELETE respectively.
+        </p>
+        {% if api_key %}
+        <div class="input-group">
+          <span class="input-group-addon" id="basic-addon1">Your API Key</span>
+          <input type="text" class="form-control" value="{{ api_key.key }}" aria-describedby="basic-addon1">
+        </div>
+        <br>
+        <p>
+          <strong>WARNING: Do not share your key with anyone.</strong>
+          <br>
+          Your username is <strong>{{ user.username }}</strong>. Your API key is
+          tied to your username and allows you to query private information stored
+          on this site. If you lose privacy of your key, please
+          <a href="#report" data-toggle="modal" data-target="#report">contact us</a> to reset it.
+        </p>
+        <p>
+          To specify your key, use the <code>Authorization</code> header in your
+          GET request:
+          <pre>curl -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" https://opencourseproject.com/api/v1/schedule/</pre>
+          Alternatively, you may append <code>?username={{ user.username }}&api_key={{ api_key.key }}</code>
+          to the end of the url.
+        </p>
+        {% else %}
+        <a href="/account/">Log In</a> and return to this page to find your key.
+        {% endif %}
+      </div>
+    </div>
+    <div class="panel panel-default" id="get-schedule">
+      <div class="panel-heading">
+        <h3 class="panel-title"><samp>GET /schedule/</samp></h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          A <strong>Schedule</strong> is a listing of courses that you have
+          added to a Term.
+        </p>
+        Fields:
+        <ul>
+          <li><code>term</code>: the Term which the courses are scheduled for.</li>
+          <li><code>course_crn</code>: the course CRN.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel panel-default" id="post-schedule">
+      <div class="panel-heading">
+        <h3 class="panel-title"><samp>POST /schedule/</samp></h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          To add a course to your schedule with this API, simply send a POST
+          request where the body includes the following items:
+        </p>
+        <ul>
+          <li><code>term</code>: the Term resource to add this course to.</li>
+          <li><code>course_crn</code>: the course CRN.</li>
+        </ul>
+        <p>
+          For example, to add <a href="https://opencourseproject.com/course/201600/5984/">this</a>
+          course (CRN: <strong>5984</strong>) to your Fall Semester 2015 (Term ID: <strong>201600</strong>) schedule,
+          send the following request:
+          <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X POST --data '{"term": "/api/v1/term/201600/", "course_crn": "5984"}' https://opencourseproject.com/api/v1/schedule/</pre>
+          A successful POST returns <code>HTTP 201 CREATED</code>.
+        </p>
+      </div>
+    </div>
+    <div class="panel panel-default" id="delete-schedule">
+      <div class="panel-heading">
+        <h3 class="panel-title"><samp>DELETE /schedule/</samp></h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          To delete a course from your schedule, specify it with the <code>resource_url</code>
+          given from your GET schedule query request.
+        </p>
+        <p>
+          For example, if you want to delete the following item from your schedule:
+          <code>{"course_crn": 5984, "id": 1, "resource_uri": "/api/v1/schedule/1/", "term": {"name": "Fall Semester 2015", "resource_uri": "/api/v1/term/201600/", "value": 201600}}</code>
+          send the following request:
+          <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X DELETE  https://opencourseproject.com/api/v1/schedule/1/</pre>
+          A successful DELETE returns <code>HTTP 204 NO CONTENT</code>.
+        </p>
+      </div>
+    </div>
+    <div class="panel panel-default" id="get-follow">
+      <div class="panel-heading">
+        <h3 class="panel-title"><samp>GET /follow/</samp></h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          A <strong>Follow</strong> is a listing of courses that you have
+          decided to follow and recieve status updates for.
+        </p>
+        Fields:
+        <ul>
+          <li><code>term</code>: the Term which the courses are scheduled for.</li>
+          <li><code>course_crn</code>: the course CRN.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel panel-default" id="post-follow">
+      <div class="panel-heading">
+        <h3 class="panel-title"><samp>POST /follow/</samp></h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          To start following a course with this API, simply send a POST
+          request where the body includes the following items:
+        </p>
+        <ul>
+          <li><code>term</code>: the Term resource that the course belongs to.</li>
+          <li><code>course_crn</code>: the course CRN.</li>
+        </ul>
+        <p>
+          For example, to follow <a href="https://opencourseproject.com/course/201600/5984/">this</a>
+          course (CRN: <strong>5984</strong>) which belongs to Fall Semester 2015 (Term ID: <strong>201600</strong>),
+          send the following request:
+          <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X POST --data '{"term": "/api/v1/term/201600/", "course_crn": "5984"}' https://opencourseproject.com/api/v1/follow/</pre>
+          A successful POST returns <code>HTTP 201 CREATED</code>.
+        </p>
+      </div>
+    </div>
+    <div class="panel panel-default" id="delete-follow">
+      <div class="panel-heading">
+        <h3 class="panel-title"><samp>DELETE /follow/</samp></h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          To stop following a course, specify it with the <code>resource_url</code>
+          given from your GET schedule query request.
+        </p>
+        <p>
+          For example, if you want to delete the following item from your schedule:
+          <code>{"course_crn": 5984, "id": 1, "resource_uri": "/api/v1/follow/1/", "term": {"name": "Fall Semester 2015", "resource_uri": "/api/v1/term/201600/", "value": 201600}}</code>
+          send the following request:
+          <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X DELETE  https://opencourseproject.com/api/v1/follow/1/</pre>
+          A successful DELETE returns <code>HTTP 204 NO CONTENT</code>.
+        </p>
+      </div>
+    </div>
+    <div class="panel panel-default" id="resources">
+      <div class="panel-heading">
+        <h3 class="panel-title"><strong>Non-API Resources</strong></h3>
+      </div>
+      <div class="panel-body">
+        In addition to RESTful API methods, raw assets compiled to populate this
+        service are available to anyone interested.
+      </div>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <strong>Exam schedule</strong> information is created using spreadsheet
+          files and are downloadable at
+          <code>https://opencourseproject.com/static/assets/xl/exam_schedule_TERM.xlsx</code>
+          where TERM is a valid Term ID (ex: <a href="https://opencourseproject.com/static/assets/xl/exam_schedule_201600.xlsx">201600</a> for Fall Semester 2015). See the details
+          of the <strong>Term</strong> endpoint for more information on Term IDs.
+          <ul>
+            <li>
+              Exam spreadsheets are created by hand for each term using the tables
+              extracted from the official CNU-provided PDF using the fantastic
+              <a href="http://tabula.technology/">Tabula</a> to reduce risk of
+              human transcription errors.
+            </li>
+            <li>
+              Not all current Terms will have an exam spreadsheet. Spreadsheets
+              are created for all Spring and Fall semesters when the official
+              schedule is posted to the CNU website.
+            </li>
+            <li>
+              Data is organized by sheet, the name of the sheet being the exam day
+              in the format <code>mm-dd-yyyy</code> that the cells apply to.
+            </li>
+            <li>
+              The first cell in each column is the exam period in the format
+              <code>hh:mm-hh:mm</code> where the first time is the start time and
+              the second is the end time.
+            </li>
+            <li>
+              Each following cell in a column contains the applicable courses that
+              will have an exam during the period, in the format
+              <code>DAY hh:mm-hh:mm</code> where DAY could be any combination of
+              M, T, W, R, F, MW, T/R, etc. and the times are start and end times
+              of the course as explained above.
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 {% endblock %}
