@@ -52,7 +52,7 @@ LOGGING = {
 }
 
 ALLOWED_HOSTS = [
-    'opencourseproject.com',
+    '.opencourseproject.com',
 ]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

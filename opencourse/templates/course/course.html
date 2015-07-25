@@ -3,7 +3,7 @@
 {% block title %}{{ course.course }}: {{ course.title }}{% endblock %}
 {% block head %}
 <meta property="og:title" content="{{ course.course }}: {{ course.title }}" />
-<meta property="og:description" content="{% if course.instructor %}With {{ course.instructor.first_name }} {{ course.instructor.last_name }} f{% else %}F{% endif %}or {{ course.term }}" />
+<meta property="og:description" content="{% if course.instructor %}With {{ course.instructor.full_name }} f{% else %}F{% endif %}or {{ course.term }}" />
 {% if request.user.is_authenticated %}
 <script src="/static/assets/js/facebook.js"></script>
 <script>

@@ -26,7 +26,7 @@ class Instructor(models.Model):
 
     @property
     def full_name(self):
-        return first_name + " " + last_name
+        return self.first_name + " " + self.last_name
 
 class Attribute(models.Model):
     value = models.CharField(max_length=10, verbose_name="Attribute Value")
