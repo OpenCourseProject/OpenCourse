@@ -14,14 +14,18 @@ from django.db.models import Count
 from collections import OrderedDict
 
 def home(request):
-    todo = []
     current_term = Term.objects.get(value=201600)
     query = ScheduleEntry.objects.filter(term_id=current_term.value).values('course_crn').annotate(Count('course_crn')).order_by('-course_crn__count')[:3]
     popular_courses = OrderedDict()
+    context = {
+        'current_term': current_term,
+        'popular_courses': popular_courses,
+    }
     for entry in query:
         popular_courses[Course.objects.get(term=current_term, crn=entry['course_crn'])] = entry['course_crn__count']
     if request.user.is_authenticated():
         profile = Profile.objects.get(user=request.user)
+        todo = []
         if not profile.facebook_id:
             todo.append(SafeString('<a href="/account/#facebook">Login with Facebook to find friends in your classes</a>'))
         if not profile.learning_community:
@@ -35,11 +39,8 @@ def home(request):
         if len(entries) == 0:
             todo.append(SafeString('<a href="/search/">Follow a course to get status updates</a>'))
         todo.append(SafeString('<a href="#report" data-toggle="modal" data-target="#report">Send a suggestion or a bug report</a>'))
-    context = {
-        'todo': todo,
-        'current_term': current_term,
-        'popular_courses': popular_courses,
-    }
+        context['todo'] = todo
+        context['first_name'] = profile.preferred_name if profile.preferred_name else request.user.first_name
     return render(request, 'index.html', context)
 
 def about(request):

@@ -75,6 +75,7 @@ $(document).ready(function() {
     editable: false,
     hiddenDays: [0],
     allDaySlot: false,
+    scrollTime: '08:00:00',
     columnFormat: 'ddd',
     events: '/schedule/calendar/course/?identifier={{ identifier }}',
     loading: function(isLoading, view) {
@@ -156,7 +157,7 @@ $(document).ready(function() {
         {% endif %}
         {% else %}
         <strong>{{ term.name }}</strong> schedule for
-        <strong>{{ schedule_user.first_name }} {{ schedule_user.last_name }}</strong>
+        <strong>{{ schedule_name }}</strong>
         {% if schedule_profile.learning_community %}
         <br>
         <small {% if profile and profile.learning_community and profile.learning_community == schedule_profile.learning_community %}class="text-success" title="You and {{ schedule_user.first_name }} are both in this LC"{% endif %}>Learning Community: {{ schedule_profile.learning_community }}</small>

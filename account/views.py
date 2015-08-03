@@ -15,8 +15,10 @@ def account(request):
             if form.is_valid():
                 default_term = form.cleaned_data['default_term']
                 learning_community = form.cleaned_data['learning_community']
+                preferred_name = form.cleaned_data['preferred_name']
                 profile.default_term = default_term
                 profile.learning_community = learning_community
+                profile.preferred_name = preferred_name
                 profile.save()
         else:
             form = ProfileForm()
@@ -24,6 +26,10 @@ def account(request):
                 form.fields['default_term'].initial = profile.default_term
             if profile.learning_community:
                 form.fields['learning_community'].initial = profile.learning_community
+            if profile.preferred_name:
+                form.fields['preferred_name'].initial = profile.preferred_name
+            else:
+                form.fields['preferred_name'].initial = request.user.first_name
     else:
         if 'next' in request.GET:
             next = request.GET['next']

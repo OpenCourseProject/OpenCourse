@@ -137,6 +137,7 @@ def schedule_view(request, identifier):
         term = query[0].term
         user = query[0].user
         profile = Profile.objects.get(user=user)
+        name = (profile.preferred_name if profile.preferred_name else user.first_name) + " " + user.last_name
         for course in courses:
             if course is None:
                 courses.remove(course)
@@ -162,6 +163,7 @@ def schedule_view(request, identifier):
         'term': term,
         'schedule_user': user,
         'schedule_profile': profile,
+        'schedule_name': name,
         'by_id': True,
         'identifier': identifier,
         'credits_min': credits_min,
