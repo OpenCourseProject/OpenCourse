@@ -3,11 +3,15 @@ from django.http import HttpResponse
 from django.contrib.auth import logout as auth_logout
 from account.models import Profile
 from account.forms import ProfileForm
+from course.models import FollowEntry
+from course.utils import follow_get_courses
 from django.contrib.auth.decorators import login_required
 
 def account(request):
-    form = None
-    next = None
+    context = {
+        'user': request.user,
+        'authenticated': request.user.is_authenticated(),
+        }
     if request.user.is_authenticated():
         profile = Profile.objects.get(user=request.user)
         if request.method == 'POST':
@@ -30,15 +34,13 @@ def account(request):
                 form.fields['preferred_name'].initial = profile.preferred_name
             else:
                 form.fields['preferred_name'].initial = request.user.first_name
+        context['form'] = form
+        follows = FollowEntry.objects.filter(user=request.user)
+        if len(follows) > 0:
+            context['followed_courses'] = follow_get_courses(follows)
     else:
         if 'next' in request.GET:
-            next = request.GET['next']
-    context = {
-        'user': request.user,
-        'authenticated': request.user.is_authenticated(),
-        'form': form,
-        'next': next,
-    }
+            context['next'] = request.GET['next']
     return render(request, 'account/account.html', context)
 
 @login_required

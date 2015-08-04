@@ -19,7 +19,7 @@ class CourseUpdateLog(models.Model):
     courses_updated = models.IntegerField()
 
     def __unicode__(self):
-        return 'Update at %s: %i new courses' % (self.time_created.strftime("%m-%d-%y"), self.courses_added)
+        return 'Update at %s: %i new courses / %i' % (self.time_created.strftime("%m-%d-%y"), self.courses_added, self.courses_parsed)
 
 class EmailLog(models.Model):
     time_created = models.DateTimeField(auto_now_add=True)

@@ -24,3 +24,12 @@ def exam_for_course(course):
         return exams[0]
     else:
         return None
+
+def follow_get_course(follow):
+    return Course.objects.get(term=follow.term, crn=follow.course_crn)
+
+def follow_get_courses(follows):
+    courses = []
+    for follow in follows:
+        courses.append(follow_get_course(follow))
+    return courses

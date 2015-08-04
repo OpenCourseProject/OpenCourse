@@ -13,6 +13,10 @@ from time import sleep
 class Command(BaseCommand):
     help = 'Scrapes the CNU courses'
 
+    total_parsed = 0
+    total_added = 0
+    total_updated = 0
+
     def handle(self, *args, **options):
         # If present, will allow debugging of scrape without visiting webpage
         test_data = None
@@ -21,10 +25,6 @@ class Command(BaseCommand):
             term = Term.objects.all()[0]
             self.parse_courses(term, html.fromstring(content))
             return
-
-        total_parsed = 0
-        total_added = 0
-        total_updated = 0
         # Visit URL
     	url = "https://pulsar.cnu.edu/soc/socquery.aspx"
         display = Display(visible=0, size=(1024, 768))
@@ -71,6 +71,8 @@ class Command(BaseCommand):
 
         browser.quit()
         display.stop()
+        # Create a log
+        CourseUpdateLog(courses_parsed=self.total_parsed, courses_added=self.total_added, courses_updated=self.total_updated).save()
         self.stdout.write('Successfully scraped courses')
 
     def parse_instructor(self, content):
@@ -198,8 +200,6 @@ class Command(BaseCommand):
                 added += 1
 
         self.stdout.write('-> Parsed ' + str(len(rows) - 1) + ' courses. ' + str(added) + ' added, ' + str(updated) + ' updated.')
-        total_parsed += len(rows) - 1
-        total_added += added
-        total_updated += updated
-    # Create a log
-    CourseUpdateLog(courses_parsed=total_parsed, courses_added=total_added, courses_updated=total_updated).save()
+        self.total_parsed += len(rows) - 1
+        self.total_added += added
+        self.total_updated += updated
