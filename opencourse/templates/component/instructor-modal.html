@@ -1,0 +1,109 @@
+<div class="modal fade" id="instructor" tabindex="-1" role="dialog" aria-labelledby="instructorLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="instructorLabel">{{ course.instructor }}</h4>
+      </div>
+      <div class="modal-body">
+        {% if course.instructor.position %}
+        <p>
+          {{ course.instructor.full_name }} is <strong>{{ course.instructor.position }}</strong>.
+        </p?>
+        {% endif %}
+        <div class="row">
+          <div class="col-md-6">
+            <div class="thumbnail">
+              {% if course.instructor.rmp_link %}
+              <a href="{{ course.instructor.rmp_link }}" target="_blank">
+              {% endif %}
+              <img src="/static/assets/img/rmp-icon.png" alt="RateMyProfessors logo">
+              {% if course.instructor.rmp_link %}
+              </a>
+              {% endif %}
+              <div class="caption">
+                <h3>RateMyProfessors</h3>
+                {% if course.instructor.rmp_link %}
+                <p>
+                  {{ course.instructor.full_name }} has a <strong>{{ course.instructor.rmp_score }}</strong> on RateMyProfessors.
+                </p>
+                <p><a href="{{ course.instructor.rmp_link }}" target="_blank" class="btn btn-primary" role="button">View Page</a></p>
+                {% else %}
+                <p>
+                We don't have a RateMyProfessor link for this instructor yet.
+                {% if authenticated %}
+                If you know where it is, you can help improve the site by adding it!
+                You might be able to find the instructor's link on
+                <a href="http://www.ratemyprofessors.com/campusRatings.jsp?sid=219">CNU's RateMyProfessor page</a>.
+                </p>
+                <form method="post">
+                  {% csrf_token %}
+                  <div class="fieldWrapper">
+                    {{ suggestion_form.rmp_link.errors }}
+                    <label for="{{ suggestion_form.rmp_link.id_for_label }}">RateMyProfessor URL:</label>
+                    {{ suggestion_form.rmp_link }}
+                  </div>
+                  <button type="submit" class="btn btn-success">Add</button>
+                </form>
+                {% else %}
+                </p>
+                {% endif %}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="thumbnail">
+              {% if course.instructor.email_address %}
+              <a href="mailto:{{ course.instructor.email_address }}">
+              {% endif %}
+              <img src="/static/assets/img/email-icon.png" alt="Email logo">
+              </a>
+              <div class="caption">
+                <h3>Contact</h3>
+                {% if authenticated %}
+                {% if course.instructor.email_address %}
+                <p>
+                  Click below to email {{ course.instructor.full_name }} ({{ course.instructor.email_address }}).
+                </p>
+                <p><a href="mailto:{{ course.instructor.email_address }}" class="btn btn-primary" role="button">Email</a></p>
+                {% else %}
+                <p>
+                  We don't have an email address for this instructor yet.
+                  If you know where it is, you can help improve the site by adding it!
+                  You might be able to find the instructor's email on
+                  <a href="http://cnu.edu/academics/academicdepartments/index.asp">their academic department page</a>.
+                </p>
+                <form method="post">
+                  {% csrf_token %}
+                  <div class="fieldWrapper">
+                    {{ suggestion_form.email_address.errors }}
+                    <label for="{{ suggestion_form.email_address.id_for_label }}">Professor Email:</label>
+                    {{ suggestion_form.email_address }}
+                  </div>
+                  <button type="submit" class="btn btn-success">Add</button>
+                </form>
+                {% endif %}
+                {% else %}
+                You must be logged in to view contact information.
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% if authenticated %}
+        {% if course.instructor.rmp_link or course.instructor.email_address %}
+        <p>
+          <a href="#" name="instructor-report">
+            Click to report a problem with this information.
+          </a>
+        </p>
+        {% endif %}
+        {% endif %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

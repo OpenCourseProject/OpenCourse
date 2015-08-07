@@ -1,7 +1,7 @@
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import mail_admins
-from course.models import Course, Term, FollowEntry, Material, InstructorLinkSuggestion
+from course.models import Course, Term, FollowEntry, Material, InstructorSuggestion
 from schedule.models import ScheduleEntry, ExamEntry, ExamSource
 from django_tables2 import RequestConfig
 from course.tables import CourseTable
@@ -90,21 +90,23 @@ def course(request, term, crn):
         'authenticated': authenticated,
         'user': user,
         'materials': materials,
+        'suggestion_form': InstructorSuggestionForm(),
     }
 
     if authenticated:
         if request.method == 'POST':
             form = InstructorSuggestionForm(request.POST)
             if form.is_valid():
-                link = form.cleaned_data['link']
-                suggestion = InstructorLinkSuggestion(instructor=course.instructor, user=user, link=link)
-                suggestion.save()
-                # Send mail
-                subject = "Instructor link suggestion created"
-                message = "{} created a new suggestion for {}: {}".format(request.user.username, course.instructor, link)
-                mail_admins(subject, message)
-        else:
-            context['suggestion_form'] = InstructorSuggestionForm()
+                email_address = form.cleaned_data['email_address']
+                rmp_link = form.cleaned_data['rmp_link']
+                if email_address or rmp_link:
+                    suggestion = InstructorSuggestion(instructor=course.instructor, user=user, email_address=email_address, rmp_link=rmp_link)
+                    suggestion.save()
+                    # Send mail
+                    subject = "Instructor suggestion created"
+                    message = "{} created a new suggestion for {}: {}, {}".format(request.user.username, course.instructor, email_address, rmp_link)
+                    mail_admins(subject, message)
+                    context['suggestion_message'] = "Thanks! Your suggestion has been submitted and is awaiting approval."
 
     primary = course.primary_meeting_time
     secondary = course.secondary_meeting_times

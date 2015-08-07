@@ -1,5 +1,5 @@
 from django.contrib import admin
-from course.models import Course, Term, Instructor, FollowEntry, Attribute, InstructorLinkSuggestion
+from course.models import Course, Term, Instructor, FollowEntry, Attribute, InstructorSuggestion
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
@@ -11,9 +11,6 @@ class CourseInline(admin.StackedInline):
 @admin.register(Instructor)
 class InstructorAdmin(admin.ModelAdmin):
     search_fields = ['last_name']
-    inlines = [
-        CourseInline,
-    ]
 
 @admin.register(FollowEntry)
 class FollowEntryAdmin(admin.ModelAdmin):
@@ -21,4 +18,4 @@ class FollowEntryAdmin(admin.ModelAdmin):
 
 admin.site.register(Term)
 admin.site.register(Attribute)
-admin.site.register(InstructorLinkSuggestion)
+admin.site.register(InstructorSuggestion)

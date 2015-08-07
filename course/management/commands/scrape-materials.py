@@ -2,13 +2,20 @@ from django.core.management.base import BaseCommand, CommandError
 from course.models import Course, Material
 from lxml import html
 import requests
+from time import sleep
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
         query = Course.objects.all()
         self.stdout.write('Gathering materials for ' + str(query.count()) + ' courses...')
+        total = len(query)
+        count = 0
         for course in query:
+            count += 1
             if course.bookstore_link:
+                self.stdout.write('-> Sleeping for 1s...')
+                sleep(1)
+                self.stdout.write('-> Scraping ' + str(count) + '/' + str(total))
                 page = requests.get(course.bookstore_link)
                 tree = html.fromstring(page.text)
                 materials = []

@@ -16,6 +16,10 @@ $(document).ready(function() {
     var href = "https://google.com/#q=" + encodeURIComponent(query);
     link.attr('href', href);
   });
+  $('a[name="instructor-report"]').click(function() {
+    $('#instructor').modal('hide');
+    $('#report').modal('show');
+  });
 });
 facebookCallback = function(response) {
   if (response.status === 'connected') {
@@ -64,10 +68,8 @@ facebookCallback = function(response) {
 
 {% block search-active %}active{% endblock %}
 {% block content %}
-<!-- Suggestion Modal -->
-{% if request.user.is_authenticated %}
-{% include "component/suggestion-modal.html" %}
-{% endif %}
+<!-- Instructor Modal -->
+{% include "component/instructor-modal.html" %}
 <!-- Materials Modal -->
 {% include "component/materials-modal.html" %}
 <div class="container">
@@ -83,13 +85,35 @@ facebookCallback = function(response) {
     Click <strong>Get Updates</strong> to be notified if it opens.
   </div>
   {% endif %}
+  {% if suggestion_message %}
+  <div class="alert alert-success" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    {{ suggestion_message }}
+  </div>
+  {% endif %}
   <div class="page-header">
     {% if authenticated %}
     <button type="submit" name="follow-button" type="button" data-term-id="{{ term.value }}" data-course-crn="{{ course.crn }}" class="btn btn-default pull-right">
       <span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Loading...
     </button>
     {% endif %}
-    <h1><strong>{{ course.course }}</strong>: {{ course.title }} {% if course.instructor %}<small>with {% if course.instructor.rmp_link %}<a href="{{ course.instructor.rmp_link }}" target="_blank">{% elif course.instructor.last_name != "Staff" and request.user.is_authenticated %}<a href="#instructor" data-toggle="modal" data-target="#instructor">{% endif %}{{ course.instructor }}{% if course.instructor.rmp_link %} ({{ course.instructor.rmp_score }})</a>{% elif course.instructor.last_name != "Staff" %}</a>{% endif %}</small>{% endif %}</h1>
+    <div class="course-details">
+      <h1>
+        <strong>{{ course.course }}</strong>: {{ course.title }}
+        {% if course.instructor %}<small>with
+        {% if course.instructor.last_name != "Staff" %}
+        <a href="#instructor" data-toggle="modal" data-target="#instructor">
+        {% endif %}
+        {{ course.instructor }}
+        {% if course.instructor.rmp_link %}
+        ({{ course.instructor.rmp_score }})</a>
+        {% elif course.instructor.last_name != "Staff" %}
+        </a>
+        {% endif %}
+        </small>
+        {% endif %}
+      </h1>
+    </div>
   </div>
   <div class="lead">
     <div class="well well-sm">

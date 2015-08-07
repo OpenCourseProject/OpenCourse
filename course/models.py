@@ -14,8 +14,10 @@ class Term(models.Model):
 class Instructor(models.Model):
     first_name = models.CharField(null=True, max_length=50, verbose_name="First Name")
     last_name = models.CharField(db_index=True, max_length=50, verbose_name="Last Name")
-    rmp_score = models.DecimalField(null=True, blank=True, decimal_places=1, max_digits=2, verbose_name="Rating")
-    rmp_link = models.URLField(null=True, blank=True, max_length=100, verbose_name="RateMyProfessor Link")
+    email_address = models.EmailField(null=True, blank=True, default=None)
+    rmp_score = models.DecimalField(null=True, blank=True, default=None, decimal_places=1, max_digits=2, verbose_name="Rating")
+    rmp_link = models.URLField(null=True, blank=True, default=None, max_length=100, verbose_name="RateMyProfessor Link")
+    position = models.CharField(null=True, blank=True, default=None, max_length=100, verbose_name="Position")
     no_update = models.BooleanField(default=False)
 
     def __unicode__(self):
@@ -52,11 +54,11 @@ class Course(models.Model):
     title = models.CharField(max_length=50, verbose_name="Title")
     bookstore_link = models.URLField(max_length=200, verbose_name="Bookstore Link")
     hours = models.CharField(max_length=5, verbose_name="Hours")
-    attributes = models.CharField(max_length=10, verbose_name="Attributes")
+    attributes = models.CharField(max_length=10, verbose_name="Attributes", null=True, blank=True)
     ctype = models.CharField(max_length=10, verbose_name="Type")
-    meeting_times = models.ManyToManyField(MeetingTime)
-    location = models.CharField(max_length=20, null=True, verbose_name="Location")
-    instructor = models.ForeignKey(Instructor, null=True, verbose_name="Instructor")
+    meeting_times = models.ManyToManyField(MeetingTime, blank=True)
+    location = models.CharField(max_length=20, null=True, blank=True, verbose_name="Location")
+    instructor = models.ForeignKey(Instructor, null=True, blank=True, verbose_name="Instructor")
     seats = models.IntegerField(db_index=True, verbose_name="Seats Left")
     status = models.IntegerField(verbose_name="Status")
 
@@ -111,11 +113,12 @@ class Material(models.Model):
     def __unicode__(self):
         return self.title
 
-class InstructorLinkSuggestion(models.Model):
+class InstructorSuggestion(models.Model):
     instructor = models.ForeignKey(Instructor)
     user = models.ForeignKey(User)
     time_created = models.DateTimeField(auto_now_add=True)
-    link = models.URLField()
+    email_address = models.EmailField(blank=True, null=True)
+    rmp_link = models.URLField(blank=True, null=True)
 
     def __unicode__(self):
         return str(self.instructor)

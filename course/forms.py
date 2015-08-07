@@ -23,4 +23,5 @@ class SearchForm(forms.Form):
     show_closed = forms.BooleanField(label='Show closed courses', initial=True, required=False)
 
 class InstructorSuggestionForm(forms.Form):
-    link = forms.URLField(label='RateMyProfessor URL')
+    email_address = forms.EmailField(label='Professor Email', required=False)
+    rmp_link = forms.URLField(label='RateMyProfessor URL', required=False)
