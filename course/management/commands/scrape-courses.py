@@ -93,7 +93,7 @@ class Command(BaseCommand):
         except Instructor.DoesNotExist:
             instructor.save()
         except Instructor.MultipleObjectsReturned:
-            return instructor
+            return None
         return instructor
 
     def parse_courses(self, term, page):
@@ -176,6 +176,8 @@ class Command(BaseCommand):
             # Add it to the database
             try:
                 obj = Course.objects.get(term=term, crn=crn)
+                if not course.instructor:
+                    course.instructor = obj.instructor
                 opts = obj._meta
                 status_update = False
                 for f in opts.fields:
