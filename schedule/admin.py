@@ -1,7 +1,7 @@
 from django.contrib import admin
-from schedule.models import ScheduleEntry, ExamEntry, ExamSource
+from schedule.models import ScheduleEntry, ScheduleTransaction, ExamEntry, ExamSource
 
-@admin.register(ScheduleEntry)
+@admin.register(ScheduleEntry, ScheduleTransaction)
 class ScheduleEntryAdmin(admin.ModelAdmin):
     search_fields = ['course_crn', 'user__username']
 

@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.core.management import call_command
+from django.db import transaction
 from course.models import Course, Term, Instructor, FollowEntry, MeetingTime
 from opencourse.models import CourseUpdateLog
 from pyvirtualdisplay import Display
@@ -8,6 +9,7 @@ from splinter.request_handler.status_code import HttpResponseError
 from lxml import html
 import json
 import datetime
+import reversion
 from time import sleep
 
 class Command(BaseCommand):
@@ -184,19 +186,15 @@ class Command(BaseCommand):
                     if f.name != 'id':
                         old_attr = getattr(obj, f.name)
                         new_attr = getattr(course, f.name)
+                        if old_attr != new_attr:
+                            updated += 1
                         setattr(obj, f.name, new_attr)
                         if f.name == 'status':
                             if old_attr != new_attr:
                                 status_update = True
                 obj.meeting_times = meeting_times
-                obj.save()
-                updated += 1
-
-                # Send status emails
-                if status_update:
-                    follows = FollowEntry.objects.filter(term=obj.term, course_crn=obj.crn)
-                    for follow in follows:
-                        call_command('email', str(follow.user.id), str(obj.term.value), str(obj.crn))
+                with transaction.atomic(), reversion.create_revision():
+                    obj.save()
             except Course.DoesNotExist:
                 course.save()
                 course.meeting_times = meeting_times

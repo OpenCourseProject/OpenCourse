@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import signals
 from course.models import Course, Term
 import hashlib
 
@@ -24,6 +25,15 @@ class ScheduleEntry(models.Model):
         self.identifier = self.generate_hash()
         super(ScheduleEntry, self).save(*args, **kwargs)
 
+class ScheduleTransaction(models.Model):
+    user = models.ForeignKey(User)
+    term = models.ForeignKey(Term)
+    course_crn = models.IntegerField()
+    action = models.CharField(max_length=4)
+
+    def __unicode__(self):
+        return "%s %d" % (self.action, self.course_crn)
+
 class ExamEntry(models.Model):
     term = models.ForeignKey(Term)
     days = models.CharField(db_index=True, max_length=50)
@@ -47,3 +57,12 @@ class ExamSource(models.Model):
 
     def __unicode__(self):
         return self.term.name
+
+def create_add_transaction(sender, instance, created, **kwargs):
+    ScheduleTransaction(user=instance.user, term=instance.term, course_crn=instance.course_crn, action="ADD").save()
+
+def create_drop_transaction(sender, instance, created, **kwargs):
+    ScheduleTransaction(user=instance.user, term=instance.term, course_crn=instance.course_crn, action="DROP").save()
+
+signals.post_save.connect(create_add_transaction, sender=ScheduleEntry)
+signals.post_delete.connect(create_drop_transaction, sender=ScheduleEntry)

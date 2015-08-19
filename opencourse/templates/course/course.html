@@ -192,6 +192,25 @@ facebookCallback = function(response) {
       <p class="list-group-item-text">{% if exam %}<div class="pull-right">(Computed automatically - please <a href="{{ exam_source.cnu_source }}">double-check</a>)</div><strong>{{ exam.exam_date }}</strong> from <strong>{{ exam.exam_start_time }}</strong> - <strong>{{ exam.exam_end_time }}</strong>{% elif exam_source %}Unavailable - please check the <a href="{{ exam_source.cnu_source }}">official schedule.</a>{% else %}Unavailable.{% endif %}</p>
     </li>
   </ul>
+  {% if changes %}
+  <div class="panel panel-default">
+    <div class="panel-heading">Recent Changes</div>
+    <div class="panel-body" style="overflow-y: scroll;max-height: 300px;">
+      {% for version, items in changes.items %}
+      {% if items %}
+      <strong>{{ version.revision.date_created }}</strong>:
+      <ul>
+        {% for change in items %}
+        <li>
+          {{ change }}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
 </div>
 <div id="fb-root"></div>
 {% endblock %}

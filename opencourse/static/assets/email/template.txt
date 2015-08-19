@@ -1,8 +1,8 @@
-*******************************
-{course} for {term} is {status}
-*******************************
+***************************
+{course} for {term}
+***************************
 
-{description}
+{detail_list}
 
 --------------
 Course Details
@@ -15,4 +15,4 @@ Course Details
 View on OpenCourse ( {course_link} )
 
 To stop receiving emails about this course,
-unfollow it here ( {course_link} ).
+unfollow it here ( {follow_link} ).

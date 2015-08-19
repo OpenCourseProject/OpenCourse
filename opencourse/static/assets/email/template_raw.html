@@ -3,7 +3,7 @@
 <head>
   <meta name="viewport" content="width=device-width" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Really Simple HTML Email Template</title>
+  <title>Open Course Project Update</title>
   <style>
   /* -------------------------------------
   GLOBAL
@@ -180,32 +180,27 @@
   <!-- body -->
   <table class="body-wrap" bgcolor="#f6f6f6">
     <tr>
-      <td></td>
       <td class="container" bgcolor="#FFFFFF">
 
         <!-- content -->
         <div class="content">
-          <table>
-            <tr>
-              <td>
-                <h1>{course} for {term} is {status}</h1>
-                <p>{description}</p>
-                <h2>Course Details</h2>
-                <ul>
-                  <li>CRN: {course_crn}</li>
-                  <li>Section: {course_section}</li>
-                  <li>Instructor: {course_instructor}</li>
-                </ul>
-                <table>
-                  <tr>
-                    <td class="padding">
-                      <p><a href="{course_link}" class="btn-primary">View on OpenCourse</a></p>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
+            <h1><strong>{course}</strong> for {term}</h1>
+            <li>
+              {detail_list}
+            </li>
+            <h2>Course Details</h2>
+            <ul>
+              <li>CRN: {course_crn}</li>
+              <li>Section: {course_section}</li>
+              <li>Instructor: {course_instructor}</li>
+            </ul>
+            <table>
+              <tr>
+                <td class="padding">
+                  <p><a href="{course_link}" class="btn-primary">View on OpenCourse</a></p>
+                </td>
+              </tr>
+            </table>
         </div>
         <!-- /content -->
 
@@ -226,7 +221,7 @@
           <table>
             <tr>
               <td align="center">
-                <p>To stop receiving emails about this course, <a href="{course_link}"><unsubscribe>unfollow it here</unsubscribe></a>.
+                <p>To stop receiving emails about this course, <a href="{follow_link}"><unsubscribe>unfollow it here</unsubscribe></a>.
                 </p>
               </td>
             </tr>

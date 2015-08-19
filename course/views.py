@@ -1,16 +1,19 @@
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import mail_admins
+from django.utils.safestring import SafeString
 from course.models import Course, Term, FollowEntry, Material, InstructorSuggestion
 from schedule.models import ScheduleEntry, ExamEntry, ExamSource
 from django_tables2 import RequestConfig
 from course.tables import CourseTable
 from course.forms import SearchForm, InstructorSuggestionForm
 from account.models import Profile
-from course.utils import exam_for_course
+from course.utils import exam_for_course, create_changelog
 from django.contrib.auth.decorators import login_required
 from tastypie.models import ApiKey
 import json
+import reversion
+from collections import OrderedDict
 
 def search(request):
     term = None
@@ -92,6 +95,15 @@ def course(request, term, crn):
         'materials': materials,
         'suggestion_form': InstructorSuggestionForm(),
     }
+
+    version_list = reversion.get_for_object(course)
+    if len(version_list) > 1:
+        revisions = OrderedDict()
+        for i in range(0, len(version_list)-1):
+            new_version = version_list[i]
+            old_version = version_list[i+1]
+            revisions[new_version] = create_changelog(old_version, new_version)
+        context['changes'] = revisions
 
     if authenticated:
         if request.method == 'POST':

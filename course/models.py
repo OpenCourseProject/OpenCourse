@@ -3,6 +3,7 @@ from django.db import connection
 from django.contrib.auth.models import User
 from django.db.models import Q
 import json
+import reversion
 
 class Term(models.Model):
     value = models.IntegerField(unique=True, primary_key=True, verbose_name ="Term Value")
@@ -11,6 +12,7 @@ class Term(models.Model):
     def __unicode__(self):
         return self.name
 
+@reversion.register
 class Instructor(models.Model):
     first_name = models.CharField(null=True, max_length=50, verbose_name="First Name")
     last_name = models.CharField(db_index=True, max_length=50, verbose_name="Last Name")
@@ -43,8 +45,9 @@ class MeetingTime(models.Model):
     end_time = models.TimeField(db_index=True, null=True, verbose_name="End")
 
     def __unicode__(self):
-        return "%s %s-%s" % (self.days, self.start_time, self.end_time)
+        return "%s, %s - %s" % (self.days, self.start_time.strftime('%I:%M %p'), self.end_time.strftime('%I:%M %p'))
 
+@reversion.register
 class Course(models.Model):
     term = models.ForeignKey(Term)
     crn = models.IntegerField(db_index=True, verbose_name="CRN")
@@ -56,7 +59,7 @@ class Course(models.Model):
     hours = models.CharField(max_length=5, verbose_name="Hours")
     attributes = models.CharField(max_length=10, verbose_name="Attributes", null=True, blank=True)
     ctype = models.CharField(max_length=10, verbose_name="Type")
-    meeting_times = models.ManyToManyField(MeetingTime, blank=True)
+    meeting_times = models.ManyToManyField(MeetingTime, blank=True, verbose_name="Meeting Time")
     location = models.CharField(max_length=20, null=True, blank=True, verbose_name="Location")
     instructor = models.ForeignKey(Instructor, null=True, blank=True, verbose_name="Instructor")
     seats = models.IntegerField(db_index=True, verbose_name="Seats Left")

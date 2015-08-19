@@ -1,15 +1,16 @@
+import reversion
 from django.contrib import admin
 from course.models import Course, Term, Instructor, FollowEntry, Attribute, InstructorSuggestion
 
 @admin.register(Course)
-class CourseAdmin(admin.ModelAdmin):
+class CourseAdmin(reversion.VersionAdmin):
     search_fields = ['crn', 'course', 'title']
 
 class CourseInline(admin.StackedInline):
     model = Course
 
 @admin.register(Instructor)
-class InstructorAdmin(admin.ModelAdmin):
+class InstructorAdmin(reversion.VersionAdmin):
     search_fields = ['last_name']
 
 @admin.register(FollowEntry)
