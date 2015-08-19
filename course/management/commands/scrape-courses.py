@@ -181,20 +181,20 @@ class Command(BaseCommand):
                 if not course.instructor:
                     course.instructor = obj.instructor
                 opts = obj._meta
+                changed = False
                 status_update = False
                 for f in opts.fields:
                     if f.name != 'id':
                         old_attr = getattr(obj, f.name)
                         new_attr = getattr(course, f.name)
                         if old_attr != new_attr:
+                            changed = True
                             updated += 1
-                        setattr(obj, f.name, new_attr)
-                        if f.name == 'status':
-                            if old_attr != new_attr:
-                                status_update = True
+                            setattr(obj, f.name, new_attr)
                 obj.meeting_times = meeting_times
-                with transaction.atomic(), reversion.create_revision():
-                    obj.save()
+                if changed:
+                    with transaction.atomic(), reversion.create_revision():
+                        obj.save()
             except Course.DoesNotExist:
                 course.save()
                 course.meeting_times = meeting_times

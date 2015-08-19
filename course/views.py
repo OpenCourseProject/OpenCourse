@@ -102,7 +102,9 @@ def course(request, term, crn):
         for i in range(0, len(version_list)-1):
             new_version = version_list[i]
             old_version = version_list[i+1]
-            revisions[new_version] = create_changelog(old_version, new_version)
+            changes = create_changelog(old_version, new_version)
+            if changes:
+                revisions[new_version] = changes
         context['changes'] = revisions
 
     if authenticated:
