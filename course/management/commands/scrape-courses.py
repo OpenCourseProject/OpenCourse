@@ -191,7 +191,9 @@ class Command(BaseCommand):
                             changed = True
                             updated += 1
                             setattr(obj, f.name, new_attr)
-                obj.meeting_times = meeting_times
+                if obj.meeting_times != meeting_times:
+                    changed = True
+                    obj.meeting_times = meeting_times
                 if changed:
                     with transaction.atomic(), reversion.create_revision():
                         obj.save()
