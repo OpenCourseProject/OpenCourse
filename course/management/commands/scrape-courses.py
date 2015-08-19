@@ -188,6 +188,7 @@ class Command(BaseCommand):
                         if f.name == 'status':
                             if old_attr != new_attr:
                                 status_update = True
+                obj.meeting_times = meeting_times
                 obj.save()
                 updated += 1
 
