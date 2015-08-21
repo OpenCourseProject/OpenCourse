@@ -21,8 +21,6 @@ SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/account/error/'
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
-    'access_type': 'offline',
-    'prompt': 'select_account',
     'hd': 'cnu.edu',
 }
 
@@ -44,6 +42,9 @@ LOGGING = {
         },
     },
     'loggers': {
+        'opencourse': {
+            'handlers': ['file'],
+        },
         'django.request': {
             'handlers': ['file'],
             'level': 'DEBUG',

@@ -1,9 +1,6 @@
 from django.conf.urls import patterns, url
 
 from schedule import views
-from schedule.models import ScheduleEntry
-from django.db.models import signals
-from schedule.signals import handlers
 
 urlpatterns = patterns('',
     url(r'^$', views.schedule, name='schedule'),
@@ -12,7 +9,3 @@ urlpatterns = patterns('',
     url(r'^calendar/exam/$', views.exam_calendar, name='exam calendar events'),
     url(r'^(?P<identifier>(\w+))/$', views.schedule_view, name='view schedule'),
 )
-
-# Signal connections
-signals.post_save.connect(handlers.create_add_transaction, sender=ScheduleEntry)
-signals.pre_delete.connect(handlers.create_drop_transaction, sender=ScheduleEntry)

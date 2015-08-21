@@ -1,5 +1,5 @@
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.mail import mail_admins
 from django.utils.safestring import SafeString
 from course.models import Course, CourseVersion, Term, FollowEntry, Material, InstructorSuggestion

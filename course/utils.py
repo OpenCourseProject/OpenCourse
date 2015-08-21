@@ -1,4 +1,4 @@
-from course.models import Course, CourseVersion, FollowEntry, MeetingTime
+from course.models import Course, CourseVersion, Instructor, FollowEntry, MeetingTime
 from schedule.models import ExamEntry
 from django.db.models import Q
 from django.utils.safestring import SafeString

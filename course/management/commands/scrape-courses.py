@@ -9,6 +9,8 @@ from lxml import html
 import json
 import datetime
 from time import sleep
+import logging
+logger = logging.getLogger('opencourse')
 
 class Command(BaseCommand):
     help = 'Scrapes the CNU courses'
@@ -151,8 +153,7 @@ class Command(BaseCommand):
                             time = obj
                         except MeetingTime.DoesNotExist:
                             time.save()
-                        # We store a list of PKs to cut down on queries
-                        meeting_times.append(time.id)
+                        meeting_times.append(time)
 
             location = row.getchildren()[9].text.strip()
             if location == 'ARR':
@@ -180,18 +181,23 @@ class Command(BaseCommand):
                     course.instructor = obj.instructor
                 opts = obj._meta
                 changed = False
-                status_update = False
                 for f in opts.fields:
-                    if f.name != 'id':
+                    if f.name not in ['id', 'meeting_times']:
                         old_attr = getattr(obj, f.name)
                         new_attr = getattr(course, f.name)
                         if old_attr != new_attr:
+                            logger.debug('Changed value ' + f.name + ': ' + str(old_attr) + ' -> ' + str(new_attr))
+                            self.stdout.write('Changed value ' + f.name + ': ' + str(old_attr) + ' -> ' + str(new_attr))
                             changed = True
                             setattr(obj, f.name, new_attr)
-                if obj.meeting_times != meeting_times:
+                if len([item for item in obj.meeting_times.all() if item not in meeting_times]) > 0:
+                    logger.debug('Changed meeting times ' + str(obj.meeting_times.all()) + ' -> ' + str(meeting_times))
+                    self.stdout.write('Changed meeting times ' + str(obj.meeting_times.all()) + ' -> ' + str(meeting_times))
                     changed = True
                     obj.meeting_times = meeting_times
                 if changed:
+                    logger.debug('Course listed as changed: /' + str(obj.term.value) + '/' + str(obj.crn))
+                    self.stdout.write('Course listed as changed: /' + str(obj.term.value) + '/' + str(obj.crn))
                     updated += 1
                     obj.save()
             except Course.DoesNotExist:

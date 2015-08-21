@@ -1,8 +1,6 @@
 from django.db import models
-from django.db.models import signals
 from django.contrib.auth.models import User
 from course.models import Term
-from tastypie.models import ApiKey
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
@@ -13,17 +11,3 @@ class Profile(models.Model):
 
     def __unicode__(self):
         return self.user.username
-
-def create_user(sender, instance, created, **kwargs):
-    # Create user profile if it doesn't exist
-    try:
-        Profile.objects.get(user=instance)
-    except Profile.DoesNotExist:
-        Profile(user=instance).save()
-    # Create an API key if it doesn't exist
-    try:
-        ApiKey.objects.get(user=instance)
-    except ApiKey.DoesNotExist:
-        ApiKey.objects.create(user=instance)
-
-signals.post_save.connect(create_user, sender=User)
