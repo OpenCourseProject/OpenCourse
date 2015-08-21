@@ -1,4 +1,4 @@
-from course.models import Course, FollowEntry, MeetingTime
+from course.models import Course, CourseVersion, FollowEntry, MeetingTime
 from schedule.models import ExamEntry
 from django.db.models import Q
 from django.utils.safestring import SafeString
@@ -38,8 +38,8 @@ def follow_get_courses(follows):
 
 def create_changelog(old_version, new_version):
     changes = []
-    for field, value in new_version.field_dict.iteritems():
-        old_value = old_version.field_dict[field]
+    for field, value in new_version.field_list().iteritems():
+        old_value = old_version.field_list()[field]
         new_value = value
         if old_value != new_value:
             if field == 'status':
@@ -48,13 +48,15 @@ def create_changelog(old_version, new_version):
             if field == 'meeting_times':
                 old_value = ", ".join([str(i) for i in MeetingTime.objects.filter(id__in=old_value)])
                 new_value = ", ".join([str(i) for i in MeetingTime.objects.filter(id__in=new_value)])
-                pass
-            field_name = Course._meta.get_field_by_name(field)[0].verbose_name
-            changes.append(SafeString(field_name + ' changed from <strong>' + str(old_value) +  '</strong> to <strong>' + str(new_value) + '</strong>'))
+            if field == 'instructor':
+                old_value = Instructor.objects.get(id=old_value)
+                new_value = Instructor.objects.get(id=new_value)
+            verbose_name = Course._meta.get_field_by_name(field)[0].verbose_name
+            changes.append(SafeString(verbose_name + ' changed from <strong>' + str(old_value) +  '</strong> to <strong>' + str(new_value) + '</strong>'))
     return changes
 
 def course_create_changelog(course):
-    version_list = reversion.get_for_object(course)
+    version_list = CourseVersion.objects.find(course)
     if len(version_list) > 1:
         new_version = version_list[0]
         old_version = version_list[1]

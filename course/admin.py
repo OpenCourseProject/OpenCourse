@@ -1,6 +1,6 @@
 import reversion
 from django.contrib import admin
-from course.models import Course, Term, Instructor, FollowEntry, Attribute, InstructorSuggestion
+from course.models import Course, CourseVersion, Term, Instructor, FollowEntry, Attribute, InstructorSuggestion
 
 @admin.register(Course)
 class CourseAdmin(reversion.VersionAdmin):
@@ -17,6 +17,7 @@ class InstructorAdmin(reversion.VersionAdmin):
 class FollowEntryAdmin(admin.ModelAdmin):
     search_fields = ['course_crn', 'user__username']
 
+admin.site.register(CourseVersion)
 admin.site.register(Term)
 admin.site.register(Attribute)
 admin.site.register(InstructorSuggestion)

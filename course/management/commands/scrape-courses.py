@@ -1,6 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.core.management import call_command
-from django.db import transaction
 from course.models import Course, Term, Instructor, FollowEntry, MeetingTime
 from opencourse.models import CourseUpdateLog
 from pyvirtualdisplay import Display
@@ -9,7 +8,6 @@ from splinter.request_handler.status_code import HttpResponseError
 from lxml import html
 import json
 import datetime
-import reversion
 from time import sleep
 
 class Command(BaseCommand):
@@ -189,14 +187,13 @@ class Command(BaseCommand):
                         new_attr = getattr(course, f.name)
                         if old_attr != new_attr:
                             changed = True
-                            updated += 1
                             setattr(obj, f.name, new_attr)
                 if obj.meeting_times != meeting_times:
                     changed = True
                     obj.meeting_times = meeting_times
                 if changed:
-                    with transaction.atomic(), reversion.create_revision():
-                        obj.save()
+                    updated += 1
+                    obj.save()
             except Course.DoesNotExist:
                 course.save()
                 course.meeting_times = meeting_times

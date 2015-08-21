@@ -2,6 +2,7 @@ from django.db import models
 from django.db import connection
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.core import serializers
 import json
 import reversion
 
@@ -94,6 +95,31 @@ class Course(models.Model):
             return times[1:]
         else:
             return None
+
+class CourseVersionManager(models.Manager):
+    def create(self, course):
+        data = serializers.serialize('json', [course])
+        return CourseVersion(term=course.term, course_crn=course.crn, data=data)
+
+    def find(self, course):
+        return self.filter(term=course.term, course_crn=course.crn).order_by('-time_created')
+
+class CourseVersion(models.Model):
+    term = models.ForeignKey(Term)
+    course_crn = models.IntegerField()
+    time_created = models.DateTimeField(auto_now_add=True)
+    data = models.TextField()
+    objects = CourseVersionManager()
+
+    def get_course(self):
+        return Course.objects.get(term=self.term, crn=self.course_crn)
+
+    def field_list(self):
+        des = json.loads(self.data)
+        return des[0]['fields']
+
+    def __unicode__(self):
+        return str(self.get_course()) + ' at ' + str(self.time_created)
 
 class FollowEntry(models.Model):
     user = models.ForeignKey(User)

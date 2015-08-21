@@ -198,7 +198,7 @@ facebookCallback = function(response) {
     <div class="panel-body" style="overflow-y: scroll;max-height: 300px;">
       {% for version, items in changes.items %}
       {% if items %}
-      <strong>{{ version.revision.date_created }}</strong>:
+      <strong>{{ version.time_created }}</strong>:
       <ul>
         {% for change in items %}
         <li>

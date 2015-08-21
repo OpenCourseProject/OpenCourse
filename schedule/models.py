@@ -57,12 +57,3 @@ class ExamSource(models.Model):
 
     def __unicode__(self):
         return self.term.name
-
-def create_add_transaction(sender, instance, created, **kwargs):
-    ScheduleTransaction(user=instance.user, term=instance.term, course_crn=instance.course_crn, action="ADD").save()
-
-def create_drop_transaction(sender, instance, created, **kwargs):
-    ScheduleTransaction(user=instance.user, term=instance.term, course_crn=instance.course_crn, action="DROP").save()
-
-signals.post_save.connect(create_add_transaction, sender=ScheduleEntry)
-signals.post_delete.connect(create_drop_transaction, sender=ScheduleEntry)

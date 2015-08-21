@@ -1,9 +1,9 @@
 from django.conf.urls import patterns, url
 
 from course import views
+from course.models import Course
 from django.db.models import signals
 from course.signals import handlers
-from reversion.models import Version
 
 urlpatterns = patterns('',
     url(r'^search/$', views.search, name='search'),
@@ -12,4 +12,4 @@ urlpatterns = patterns('',
 )
 
 # Signal connections
-signals.post_save.connect(handlers.send_follow_email, sender=Version)
+signals.post_save.connect(handlers.version_course, sender=Course)
