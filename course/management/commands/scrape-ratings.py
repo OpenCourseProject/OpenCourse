@@ -3,10 +3,12 @@ from course.models import Instructor
 from lxml import html
 import requests
 import decimal
+import kronos
 
 BASE_URL = "http://www.ratemyprofessors.com"
 SEARCH_URL = BASE_URL + "/search.jsp?queryoption=HEADER&queryBy=teacherName&schoolName=Christopher+Newport+University&query="
 
+@kronos.register('0 1 * * *')
 class Command(BaseCommand):
     def handle(self, *args, **options):
         query = Instructor.objects.all()

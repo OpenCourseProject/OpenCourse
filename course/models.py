@@ -50,6 +50,12 @@ class MeetingTime(models.Model):
 
 @reversion.register
 class Course(models.Model):
+    OPEN = 1
+    CLOSED = 0
+    STATUS_CHOICES = (
+        (OPEN, 'Open'),
+        (CLOSED, 'Closed'),
+    )
     term = models.ForeignKey(Term)
     crn = models.IntegerField(db_index=True, verbose_name="CRN")
     course = models.CharField(db_index=True, max_length=50, verbose_name="Course")
@@ -64,7 +70,7 @@ class Course(models.Model):
     location = models.CharField(max_length=20, null=True, blank=True, verbose_name="Location")
     instructor = models.ForeignKey(Instructor, null=True, blank=True, verbose_name="Instructor")
     seats = models.IntegerField(db_index=True, verbose_name="Seats Left")
-    status = models.IntegerField(verbose_name="Status")
+    status = models.IntegerField(verbose_name="Status", choices=STATUS_CHOICES)
 
     class Meta:
         verbose_name = "course"

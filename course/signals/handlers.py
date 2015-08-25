@@ -25,6 +25,8 @@ def send_follow_email(course):
     for change in changes:
         detail_list = detail_list + '<li>' + change + '</li>'
     text_detail_list = ", ".join(changes)
+    if len(changes) == 0 or len(detail_list) == 0:
+        return
     text_content = text_template.format(course=course.title, term=term.name, detail_list=text_detail_list, course_crn=course.crn, course_section=course.section, course_instructor=str(course.instructor), course_link=course_link, follow_link=follow_link)
     html_content = email_template.format(course=course.title, term=term.name, detail_list=detail_list, course_crn=course.crn, course_section=course.section, course_instructor=str(course.instructor), course_link=course_link, follow_link=follow_link)
 

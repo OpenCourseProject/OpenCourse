@@ -92,6 +92,7 @@ INSTALLED_APPS = (
     'django_tables2',
     'tastypie',
     'djangosecure',
+    'kronos',
     # Custom Apps
     'opencourse',
     'course',

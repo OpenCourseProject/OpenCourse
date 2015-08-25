@@ -26,13 +26,19 @@ class ScheduleEntry(models.Model):
         super(ScheduleEntry, self).save(*args, **kwargs)
 
 class ScheduleTransaction(models.Model):
+    ADD = 1
+    DROP = 0
+    ACTION_CHOICES = (
+        (ADD, 'ADD'),
+        (DROP, 'DROP'),
+    )
     user = models.ForeignKey(User)
     term = models.ForeignKey(Term)
     course_crn = models.IntegerField()
-    action = models.CharField(max_length=4)
+    action = models.IntegerField(choices=ACTION_CHOICES)
 
     def __unicode__(self):
-        return "%s %d" % (self.action, self.course_crn)
+        return "%s %d" % (dict(self.ACTION_CHOICES)[self.action], self.course_crn)
 
 class ExamEntry(models.Model):
     term = models.ForeignKey(Term)

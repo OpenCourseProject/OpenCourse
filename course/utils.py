@@ -43,8 +43,8 @@ def create_changelog(old_version, new_version):
         new_value = value
         if old_value != new_value:
             if field == 'status':
-                old_value = 'OPEN' if old_value == 1 else 'CLOSED'
-                new_value = 'OPEN' if new_value == 1 else 'CLOSED'
+                old_value = dict(Course._meta.get_field('status').choices)[old_value]
+                new_value = dict(Course._meta.get_field('status').choices)[new_value]
             if field == 'meeting_times':
                 old_value = ", ".join([str(i) for i in MeetingTime.objects.filter(id__in=old_value)])
                 new_value = ", ".join([str(i) for i in MeetingTime.objects.filter(id__in=new_value)])

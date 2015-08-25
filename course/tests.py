@@ -1,5 +1,5 @@
 from django.test import TestCase
-from course.models import Term, Instructor, Attribute, MeetingTime, Course
+from course.models import Term, Instructor, Attribute, MeetingTime, Course, CourseVersion
 from datetime import time
 
 class TermTestCase(TestCase):
@@ -48,8 +48,8 @@ class CourseTestCase(TestCase):
         hours = "3"
         attributes = "ABCD  SI"
         ctype = "Lec"
-        location = "DOME 100"
-        instructor = Instructor.objects.create(first_name="Joe", last_name="Instructor", rmp_score=5.0, rmp_link="http://google.com")
+        location = "ROOM 217"
+        instructor = Instructor.objects.create(first_name="Joe", last_name="Instructor", rmp_score=6.0, rmp_link="http://google.com")
         seats = 1
         status = 1
         course = Course.objects.create(term=term, crn=crn, course=course, course_link=course_link, section=section, title=title, bookstore_link=bookstore_link, hours=hours, attributes=attributes, ctype=ctype, location=location, instructor=instructor, seats=seats, status=status)
@@ -66,6 +66,13 @@ class CourseTestCase(TestCase):
         term = Term.objects.get(value=42)
         course = Course.objects.get(term=term, crn=1234)
         self.assertEqual(str(course), "ALPH 101: Understanding the Alphabet")
+
+    def test_course_version(self):
+        term = Term.objects.get(value=42)
+        course = Course.objects.get(term=term, crn=1234)
+        versions = CourseVersion.objects.find(course)
+        self.assertEqual(len(versions), 2)
+        self.assertEqual(versions[0].get_course(), course)
 
     def test_attributes(self):
         attr1 = Attribute.objects.get(value="ABCD")
