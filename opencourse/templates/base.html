@@ -39,7 +39,9 @@
 
     <meta property="og:site_name" content="Open Course Project"/>
     <meta property="fb:app_id" content="886841334691353" />
+    {% block og-image %}
     <meta property="og:image" content="https://opencourseproject.com/static/assets/img/logo/opencourse-logo.png" />
+    {% endblock %}
     <!-- Begin custom header content -->
     {% block head %}{% endblock %}
   </head>
@@ -81,7 +83,7 @@
         <p class="text-muted">
           Open Course Project is an independent service not affiliated with or supported by <a href="http://cnu.edu/">CNU</a>.
           <span class="pull-right">
-            <a href="/about/">About</a> | <a href="/api/">API</a> | <a href="https://github.com/OpenCourseProject">GitHub</a>
+            <a href="/about/">About</a> | <a href="/api/">API</a> | <a href="/updates/">Updates</a>
           </span>
         </p>
       </div>

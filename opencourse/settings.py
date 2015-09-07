@@ -99,6 +99,7 @@ INSTALLED_APPS = (
     'schedule',
     'account',
     'api',
+    'updates',
 )
 
 MIDDLEWARE_CLASSES = (

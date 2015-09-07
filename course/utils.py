@@ -49,8 +49,14 @@ def create_changelog(old_version, new_version):
                 old_value = ", ".join([str(i) for i in MeetingTime.objects.filter(id__in=old_value)])
                 new_value = ", ".join([str(i) for i in MeetingTime.objects.filter(id__in=new_value)])
             if field == 'instructor':
-                old_value = Instructor.objects.get(id=old_value)
-                new_value = Instructor.objects.get(id=new_value)
+                try:
+                    old_value = Instructor.objects.get(id=old_value)
+                except Instructor.DoesNotExist:
+                    old_value = None
+                try:
+                    new_value = Instructor.objects.get(id=new_value)
+                except Instructor.DoesNotExist:
+                    new_value = None
             verbose_name = Course._meta.get_field_by_name(field)[0].verbose_name
             changes.append(SafeString(verbose_name + ' changed from <strong>' + str(old_value) +  '</strong> to <strong>' + str(new_value) + '</strong>'))
     return changes

@@ -29,5 +29,6 @@ urlpatterns = patterns('',
     url(r'^schedule/', include('schedule.urls', namespace="schedule")),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^account/', include('account.urls', namespace="account")),
+    url(r'^updates/', include('updates.urls', namespace="updates")),
     url('', include('social.apps.django_app.urls', namespace='social')),
 )
