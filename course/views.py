@@ -2,7 +2,7 @@ from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.mail import mail_admins
 from django.utils.safestring import SafeString
-from course.models import Course, CourseVersion, Term, FollowEntry, Material, InstructorSuggestion
+from course.models import Course, CourseVersion, Term, FollowEntry, Material, InstructorSuggestion, QueryLog
 from schedule.models import ScheduleEntry, ExamEntry, ExamSource
 from django_tables2 import RequestConfig
 from course.tables import CourseTable
@@ -11,7 +11,6 @@ from account.models import Profile
 from course.utils import exam_for_course, create_changelog
 from django.contrib.auth.decorators import login_required
 from tastypie.models import ApiKey
-import json
 from collections import OrderedDict
 
 def search(request):
@@ -51,25 +50,36 @@ def search(request):
         form = SearchForm()
         form.fields['term'].initial = term
     query = Course.objects.filter(term=term)
+    log = {}
     if crn:
         query = query.filter(crn=crn)
+        log['crn'] = str(crn)
     if course:
         query = query.filter(course__icontains=course)
+        log['course'] = course
     if days:
         for day in list(days):
             query = query.filter(meeting_times__days__icontains=day)
+        log['days'] = days
     if start:
         query = query.filter(meeting_times__start_time=start)
+        log['start'] = str(start)
     if end:
         query = query.filter(meeting_times__end_time=end)
+        log['end'] = str(end)
     if instructor:
         query = query.filter(instructor__last_name__icontains=instructor)
+        log['instructor'] = instructor
     if min_rating:
         query = query.filter(instructor__rmp_score__gte=min_rating)
+        log['min_rating'] = str(min_rating)
     if attribute:
         query = query.filter(attributes__icontains=attribute.value)
+        log['attribute'] = str(attribute.value)
     if not show_closed:
         query = query.filter(seats__gt=0)
+    log['show_closed'] = show_closed
+    QueryLog.objects.create(user=request.user, term=term, data=log, result=query).save()
     table = CourseTable(query)
 
     RequestConfig(request).configure(table)

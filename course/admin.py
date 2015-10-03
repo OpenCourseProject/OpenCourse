@@ -1,5 +1,5 @@
 from django.contrib import admin
-from course.models import Course, CourseVersion, Term, Instructor, FollowEntry, Attribute, InstructorSuggestion
+from course.models import Course, CourseVersion, Term, Instructor, FollowEntry, Attribute, InstructorSuggestion, QueryLog
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
@@ -20,3 +20,4 @@ admin.site.register(CourseVersion)
 admin.site.register(Term)
 admin.site.register(Attribute)
 admin.site.register(InstructorSuggestion)
+admin.site.register(QueryLog)
