@@ -6,7 +6,7 @@ from account.models import Profile
 from schedule.models import ScheduleEntry
 from schedule.utils import schedule_get_course
 from course.models import Course, Term, FollowEntry
-from opencourse.models import Report
+from opencourse.models import Report, Alert
 from opencourse.forms import ReportForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
@@ -17,9 +17,11 @@ def home(request):
     current_term = Term.objects.get(value=201600)
     query = ScheduleEntry.objects.filter(term_id=current_term.value).values('course_crn').annotate(Count('course_crn')).order_by('-course_crn__count')[:3]
     popular_courses = OrderedDict()
+    alerts = Alert.objects.all()
     context = {
         'current_term': current_term,
         'popular_courses': popular_courses,
+        'alerts': alerts,
     }
     for entry in query:
         popular_courses[Course.objects.get(term=current_term, crn=entry['course_crn'])] = entry['course_crn__count']

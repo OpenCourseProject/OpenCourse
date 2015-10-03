@@ -9,9 +9,13 @@ import reversion
 class Term(models.Model):
     value = models.IntegerField(unique=True, primary_key=True, verbose_name ="Term Value")
     name = models.CharField(max_length=50, verbose_name="Term Name")
+    priority = models.IntegerField(null=True, blank=True)
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        ordering = ['-priority', '-value']
 
 @reversion.register
 class Instructor(models.Model):
