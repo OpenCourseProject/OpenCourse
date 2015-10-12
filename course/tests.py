@@ -36,31 +36,9 @@ class AttributeTestCase(TestCase):
 
 class CourseTestCase(TestCase):
     def setUp(self):
+        create_dummy_course()
         Attribute.objects.create(value="ABCD", name="Alphabet Literacy")
         Attribute.objects.create(value="SI", name="Swimming Intensive")
-        term = Term.objects.create(value=42, name="The Answer")
-        crn = 1234
-        course = "ALPH 101"
-        course_link = "http://google.com"
-        section = "1"
-        title = "Understanding the Alphabet"
-        bookstore_link = "http://google.com"
-        hours = "3"
-        attributes = "ABCD  SI"
-        ctype = "Lec"
-        location = "ROOM 217"
-        instructor = Instructor.objects.create(first_name="Joe", last_name="Instructor", rmp_score=6.0, rmp_link="http://google.com")
-        seats = 1
-        status = 1
-        course = Course.objects.create(term=term, crn=crn, course=course, course_link=course_link, section=section, title=title, bookstore_link=bookstore_link, hours=hours, attributes=attributes, ctype=ctype, location=location, instructor=instructor, seats=seats, status=status)
-        start_time = time(10, 00)
-        end_time = time(11, 15)
-        meeting_times = []
-        meeting_times.append(MeetingTime.objects.create(days="MW", start_time=start_time, end_time=end_time))
-        end_time = time(10, 50)
-        meeting_times.append(MeetingTime.objects.create(days="F", start_time=start_time, end_time=end_time))
-        course.meeting_times = meeting_times
-        course.save()
 
     def test_course_named_correctly(self):
         term = Term.objects.get(value=42)
@@ -98,3 +76,49 @@ class CourseTestCase(TestCase):
         end_time = time(10, 50)
         courses = Course.objects.filter(meeting_times__days="F", meeting_times__end_time=end_time).distinct()
         self.assertEqual(1, len(courses))
+
+class VersioningTestCase(TestCase):
+    def setUp(self):
+        create_dummy_course()
+
+    def test_versioning_change(self):
+        term = Term.objects.get(value=42)
+        course = Course.objects.get(term=term, crn=1234)
+        course.location = "MARS 101"
+        course.save()
+        versions = CourseVersion.objects.find(course)
+        self.assertEqual(3, len(versions))
+        version = versions[0]
+        self.assertEqual("ROOM 217", version.field_list()['location'])
+        self.assertEqual([], version.field_list()['meeting_times'])
+        version = versions[1]
+        self.assertEqual("ROOM 217", version.field_list()['location'])
+        self.assertEqual([i.id for i in course.meeting_times.all()], version.field_list()['meeting_times'])
+        version = versions[2]
+        self.assertEqual("MARS 101", version.field_list()['location'])
+
+def create_dummy_course():
+        term = Term.objects.create(value=42, name="The Answer")
+        crn = 1234
+        course = "ALPH 101"
+        course_link = "http://google.com"
+        section = "1"
+        title = "Understanding the Alphabet"
+        bookstore_link = "http://google.com"
+        hours = "3"
+        attributes = "ABCD  SI"
+        ctype = "Lec"
+        location = "ROOM 217"
+        instructor = Instructor.objects.create(first_name="Joe", last_name="Instructor", rmp_score=6.0, rmp_link="http://google.com")
+        seats = 1
+        status = 1
+        course = Course.objects.create(term=term, crn=crn, course=course, course_link=course_link, section=section, title=title, bookstore_link=bookstore_link, hours=hours, attributes=attributes, ctype=ctype, location=location, instructor=instructor, seats=seats, status=status)
+        start_time = time(10, 00)
+        end_time = time(11, 15)
+        meeting_times = []
+        meeting_times.append(MeetingTime.objects.create(days="MW", start_time=start_time, end_time=end_time))
+        end_time = time(10, 50)
+        meeting_times.append(MeetingTime.objects.create(days="F", start_time=start_time, end_time=end_time))
+        course.meeting_times = meeting_times
+        course.save()
+        return course
