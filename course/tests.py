@@ -1,7 +1,10 @@
-from django.test import TestCase
-from course.models import Term, Instructor, Attribute, MeetingTime, Course, CourseVersion
+from django.test import TestCase, Client
+from django.test.utils import setup_test_environment
+from django.contrib.auth.models import User
+from course.models import Term, Instructor, Attribute, MeetingTime, Course, CourseVersion, QueryLog, InstructorSuggestion
 from course.utils import create_changelog
 from datetime import time
+from lxml import html
 
 class TermTestCase(TestCase):
     def setUp(self):
@@ -131,6 +134,114 @@ class VersioningTestCase(TestCase):
             'Meeting Time changed from none to MW, 10:00 AM - 11:15 AM, F, 10:00 AM - 10:50 AM'
         ]
         self.assertEqual(expected, changes)
+
+class WebSearchTestCase(TestCase):
+    def setUp(self):
+        create_dummy_course()
+        user = User.objects.create_user('ironman', 'ironman@gmail.com', 'imironman123')
+
+    def test_search(self):
+        c = Client()
+        response = c.get('/search/', secure=True)
+        self.assertEqual(200, response.status_code)
+
+    def test_search_by_term(self):
+        c = Client()
+        term = Term.objects.get(value=42)
+        data = {
+            'term': term.value
+        }
+        response = c.get('/search/', {'term': term.value}, secure=True)
+        self.assertEqual(200, response.status_code)
+
+    def test_search_by_course(self):
+        c = Client()
+        term = Term.objects.get(value=42)
+        course = Course.objects.get(term=term, crn=1234)
+        data = {
+            'term': term.value,
+            'crn': course.crn,
+        }
+        response = c.post('/search/', data, secure=True)
+        self.assertEqual(200, response.status_code)
+        page = html.fromstring(response.content)
+        course_list = page.xpath(".//tbody/tr")
+        self.assertEqual(1, len(course_list))
+
+    def test_search_property(self):
+        c = Client()
+        term = Term.objects.get(value=42)
+        course = Course.objects.get(term=term, crn=1234)
+        values = [
+            {'course': course.course},
+            {'days': course.primary_meeting_time.days},
+            {'start_hour': '10', 'start_minute': '00', 'start_meridiem': 'a.m.'},
+            {'end_hour': '11', 'end_minute': '15', 'end_meridiem': 'a.m.'},
+            {'instructor': course.instructor.last_name},
+            {'min_rating': course.instructor.rmp_score},
+        ]
+        for data in values:
+            data['term'] = str(term.value)
+            response = c.post('/search/', data, secure=True)
+            self.assertEqual(200, response.status_code)
+            page = html.fromstring(response.content)
+            course_list = page.xpath(".//tbody/tr")
+            self.assertEqual(1, len(course_list))
+
+    def test_search_logs(self):
+        c = Client()
+        term = Term.objects.get(value=42)
+        course = Course.objects.get(term=term, crn=1234)
+        data = {
+            'term': term.value,
+            'crn': course.crn,
+        }
+        response = c.post('/search/', data, secure=True)
+        self.assertEqual(200, response.status_code)
+        logs = QueryLog.objects.all()
+        self.assertEqual(1, len(logs))
+        self.assertEqual(str(course.crn), logs[0].field_list()['crn'])
+
+    def test_course_page(self):
+        c = Client()
+        term = Term.objects.get(value=42)
+        course = Course.objects.get(term=term, crn=1234)
+        response = c.get('/course/' + str(term.value) + '/' + str(course.crn) + '/', secure=True)
+        self.assertEqual(200, response.status_code)
+        page = html.fromstring(response.content)
+        details = page.xpath(".//ul[@class='list-group']/li/p/text()")
+        self.assertEqual(term.name, details[0])
+        self.assertEqual(str(course.crn), details[1])
+
+    def test_instructor_suggestion_unauthorized(self):
+        c = Client()
+        term = Term.objects.get(value=42)
+        course = Course.objects.get(term=term, crn=1234)
+        data = {
+            'email_address': 'joe.instructor@cnu.edu',
+            'rmp_link': 'http://ratemyprofessors.com/'
+        }
+        response = c.post('/course/' + str(term.value) + '/' + str(course.crn) + '/', data, secure=True)
+        suggestions = InstructorSuggestion.objects.all()
+        self.assertEqual(0, len(suggestions))
+        self.assertEqual('Unauthorized', response.content)
+
+    def test_instructor_suggestion(self):
+        c = Client()
+        c.login(username='ironman', password='imironman123')
+        term = Term.objects.get(value=42)
+        course = Course.objects.get(term=term, crn=1234)
+        data = {
+            'email_address': 'joe.instructor@cnu.edu',
+            'rmp_link': 'http://ratemyprofessors.com/'
+        }
+        response = c.post('/course/' + str(term.value) + '/' + str(course.crn) + '/', data, secure=True)
+        self.assertEqual(200, response.status_code)
+        suggestions = InstructorSuggestion.objects.all()
+        self.assertEqual(1, len(suggestions))
+        self.assertEqual(course.instructor, suggestions[0].instructor)
+        self.assertEqual('joe.instructor@cnu.edu', suggestions[0].email_address)
+        self.assertEqual('http://ratemyprofessors.com/', suggestions[0].rmp_link)
 
 def create_dummy_course():
         term = Term.objects.create(value=42, name="The Answer")

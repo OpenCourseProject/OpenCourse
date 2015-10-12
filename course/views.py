@@ -79,6 +79,7 @@ def search(request):
     if not show_closed:
         query = query.filter(seats__gt=0)
         log['show_closed'] = show_closed
+    query = query.distinct()
     QueryLog.objects.create(user=request.user if request.user.is_authenticated() else None, term=term, data=log, result=query).save()
     table = CourseTable(query)
 
@@ -118,8 +119,8 @@ def course(request, term, crn):
                 versions[new_version] = changelog
         context['changes'] = versions
 
-    if authenticated:
-        if request.method == 'POST':
+    if request.method == 'POST':
+        if authenticated:
             form = InstructorSuggestionForm(request.POST)
             if form.is_valid():
                 email_address = form.cleaned_data['email_address']
@@ -132,6 +133,8 @@ def course(request, term, crn):
                     message = "{} created a new suggestion for {}: {}, {}".format(request.user.username, course.instructor, email_address, rmp_link)
                     mail_admins(subject, message)
                     context['suggestion_message'] = "Thanks! Your suggestion has been submitted and is awaiting approval."
+        else:
+            return HttpResponse('Unauthorized', 401)
 
     primary = course.primary_meeting_time
     secondary = course.secondary_meeting_times

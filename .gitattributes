@@ -1,2 +1,4 @@
 opencourse/settings filter=private
-
+opencourse/settings/common.py filter=private
+opencourse/settings/development.py filter=private
+opencourse/settings/production.py filter=private
