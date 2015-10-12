@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
+<script src="/static/assets/js/alerts.js"></script>
 <meta property="og:description" content="A free and independent service for CNU students to research, plan, and share their schedules." />
 {% endblock %}
 {% block home-active %}active{% endblock %}
@@ -9,7 +10,7 @@
   {% for alert in alerts %}
   {% if alert.is_active %}
   <div class="alert alert-{{ alert.style }}" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <button type="button" class="close" data-dismiss="alert" data-alert="{{ alert.id}}" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     {{ alert.message | safe }}
   </div>
   {% endif %}

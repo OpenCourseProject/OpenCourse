@@ -168,7 +168,7 @@ class QueryLogManager(models.Manager):
         return QueryLog(user=user, term=term, data=data_json, results=len(result))
 
 class QueryLog(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, null=True)
     term = models.ForeignKey(Term)
     time_created = models.DateTimeField(auto_now_add=True)
     data = models.TextField()

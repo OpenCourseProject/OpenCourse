@@ -78,8 +78,8 @@ def search(request):
         log['attribute'] = str(attribute.value)
     if not show_closed:
         query = query.filter(seats__gt=0)
-    log['show_closed'] = show_closed
-    QueryLog.objects.create(user=request.user, term=term, data=log, result=query).save()
+        log['show_closed'] = show_closed
+    QueryLog.objects.create(user=request.user if request.user.is_authenticated() else None, term=term, data=log, result=query).save()
     table = CourseTable(query)
 
     RequestConfig(request).configure(table)

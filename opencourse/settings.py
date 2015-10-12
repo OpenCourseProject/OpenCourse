@@ -10,6 +10,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # ADMINS scrubbed
 
+MANAGERS = ADMINS
+
 # SECRET_KEY scrubbed
 
 # SOCIAL_AUTH_GOOGLE_OAUTH2_KEY scrubbed
@@ -40,6 +42,11 @@ LOGGING = {
             'filename': '/var/www/opencourseproject.com/opencourse/opencourse/logs/app.log',
             'formatter': 'verbose',
         },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'verbose',
+        },
     },
     'loggers': {
         'opencourse': {
@@ -65,6 +72,8 @@ LOGGING = {
 ALLOWED_HOSTS = [
     '.opencourseproject.com',
 ]
+
+SESSION_COOKIE_DOMAIN = '.opencourseproject.com'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SESSION_COOKIE_SECURE = True
