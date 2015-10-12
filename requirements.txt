@@ -1,0 +1,16 @@
+# Install with: `pip install -r requirements.txt`
+
+Django == 1.8.2
+MySQL-python == 1.2.5
+pytz >= 2014.9
+django-tables2 >= 0.16.0
+django-tastypie >= 0.12.1
+lxml >= 3.4.2
+defusedxml >= 0.4.1
+PyYAML >= 3.10
+xlrd >= 0.9.3
+splinter == 0.7.2
+python-social-auth == 0.2.10
+django-secure == 1.0.1
+django-kronos == 0.8
+Markdown == 2.6.2
