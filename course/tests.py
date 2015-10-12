@@ -1,5 +1,6 @@
 from django.test import TestCase
 from course.models import Term, Instructor, Attribute, MeetingTime, Course, CourseVersion
+from course.utils import create_changelog
 from datetime import time
 
 class TermTestCase(TestCase):
@@ -96,6 +97,40 @@ class VersioningTestCase(TestCase):
         self.assertEqual([i.id for i in course.meeting_times.all()], version.field_list()['meeting_times'])
         version = versions[2]
         self.assertEqual("MARS 101", version.field_list()['location'])
+
+    def test_data(self):
+        term = Term.objects.get(value=42)
+        course = Course.objects.get(term=term, crn=1234)
+        versions = CourseVersion.objects.find(course)
+        version = versions[len(versions) - 1]
+        for value in version.field_list():
+            attr1 = getattr(course, value)
+            attr2 = version.field_list()[value]
+            if value == 'term':
+                attr1 = attr1.value
+            if value == 'instructor':
+                attr1 = attr1.id
+            if value == 'meeting_times':
+                attr1 = [i.id for i in attr1.all()]
+            self.assertEqual(attr1, attr2)
+
+    def test_changelog(self):
+        term = Term.objects.get(value=42)
+        course = Course.objects.get(term=term, crn=1234)
+        course.status = 0
+        course.save()
+        instructor = Instructor.objects.create(first_name="Bill", last_name="Gates", rmp_score=1.0, rmp_link="http://microsoft.com")
+        course.instructor = instructor
+        course.save()
+        versions = CourseVersion.objects.find(course)
+        changes = create_changelog(versions[0], versions[len(versions) - 1], True)
+        self.assertEqual(3, len(changes))
+        expected = [
+            'Status changed from Open to Closed',
+            'Instructor changed from Instructor, Joe to Gates, Bill',
+            'Meeting Time changed from none to MW, 10:00 AM - 11:15 AM, F, 10:00 AM - 10:50 AM'
+        ]
+        self.assertEqual(expected, changes)
 
 def create_dummy_course():
         term = Term.objects.create(value=42, name="The Answer")

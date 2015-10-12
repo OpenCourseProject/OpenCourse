@@ -36,7 +36,7 @@ def follow_get_courses(follows):
         courses.append(follow_get_course(follow))
     return courses
 
-def create_changelog(old_version, new_version):
+def create_changelog(old_version, new_version, plaintext=False):
     changes = []
     for field, value in new_version.field_list().iteritems():
         old_value = old_version.field_list()[field]
@@ -58,7 +58,12 @@ def create_changelog(old_version, new_version):
                 except Instructor.DoesNotExist:
                     new_value = None
             verbose_name = Course._meta.get_field_by_name(field)[0].verbose_name
-            changes.append(SafeString(verbose_name + ' changed from <strong>' + str(old_value) +  '</strong> to <strong>' + str(new_value) + '</strong>'))
+            if old_value == '':
+                old_value = 'none'
+            if new_value == '':
+                new_value = 'none'
+            string = verbose_name + ' changed from ' + str(old_value) +  ' to ' + str(new_value) if plaintext else SafeString(verbose_name + ' changed from <strong>' + str(old_value) +  '</strong> to <strong>' + str(new_value) + '</strong>')
+            changes.append(string)
     return changes
 
 def course_create_changelog(course):
