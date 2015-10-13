@@ -126,6 +126,8 @@ TEMPLATE_CONTEXT_PROCESSORS = DEFAULT_SETTINGS.TEMPLATE_CONTEXT_PROCESSORS + (
     'django.contrib.auth.context_processors.auth',
     'opencourse.context.report',
     'opencourse.context.api',
+    'opencourse.context.school_info',
+    'opencourse.context.domain',    
 )
 
 ROOT_URLCONF = 'opencourse.urls'
@@ -142,13 +144,17 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_ROOT = BASE_DIR + '/opencourse/static/'
+SCHOOL_NAME = 'Christopher Newport University'
+SCHOOL_ABBREVIATION = 'CNU'
+SCHOOL_WEBSITE = 'http://cnu.edu'
+
+STATIC_ROOT = BASE_DIR + '/static/'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, '/opencourse/static/'),
+    os.path.join(BASE_DIR, '/static/'),
 )
 
 TEMPLATE_DIRS = (
-    BASE_DIR + '/opencourse/templates/',
+    BASE_DIR + '/templates/',
 )

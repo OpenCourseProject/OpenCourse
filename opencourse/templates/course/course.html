@@ -76,7 +76,7 @@ facebookCallback = function(response) {
   {% if not authenticated %}
   <div class="alert alert-info" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    Log in with your CNU account to schedule or get updates about this course.
+    Log in with your {{ school_abbr }} account to schedule or get updates about this course.
   </div>
   {% elif course.seats == 0 %}
   <div class="alert alert-danger" role="alert">

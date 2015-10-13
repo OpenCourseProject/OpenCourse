@@ -36,7 +36,7 @@ def schedule(request):
     query = ScheduleEntry.objects.filter(user=request.user, term=term)
     courses = schedule_get_courses(query)
     hash = hashlib.md5(b'%s:%s' % (str(request.user.username), str(term.name))).hexdigest()[:15]
-    share_url = "https://opencourseproject.com/schedule/" + hash + "/"
+    share_url = request.build_absolute_uri('/schedule/' + hash + '/')
 
     credits_min = 0
     credits_max = 0

@@ -1,5 +1,6 @@
 from opencourse.forms import ReportForm
 from tastypie.models import ApiKey
+from django.conf import settings
 
 def report(request):
     return {'report_form': ReportForm()}
@@ -12,3 +13,16 @@ def api(request):
         }
     else:
         return {}
+
+def school_info(request):
+    return {
+        'school_name': settings.SCHOOL_NAME,
+        'school_abbr': settings.SCHOOL_ABBREVIATION,
+        'school_website': settings.SCHOOL_WEBSITE,
+    }
+
+def domain(request):
+    return {
+        'domain': request.get_host(),
+        'domain_full': 'https://' if request.is_secure() else 'http://' + request.get_host()
+    }

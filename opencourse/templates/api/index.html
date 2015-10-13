@@ -112,14 +112,14 @@ $(document).ready(function () {
         <ul>
           <li>
             All queries should be directed to the API URL:
-            <code>https://opencourseproject.com/api/v1/</code>
+            <code>{{ domain_full }}/api/v1/</code>
           </li>
           <li>
             API queries can be returned in your choice of
             <code>json</code>, <code>xml</code>, or <code>yaml</code> format.
             To specify, use the <code>Accept</code> header in your GET
             request:
-            <pre>curl -H "Accept: application/json" https://opencourseproject.com/api/v1/course/</pre>
+            <pre>curl -H "Accept: application/json" {{ domain_full }}/api/v1/course/</pre>
             Alternatively, you may append <code>?format=json</code> to the end
             of the url.
           </li>
@@ -138,17 +138,17 @@ $(document).ready(function () {
           </li>
           <li>
             To filter objects, use field names in the query. For instance,
-            <code>https://opencourseproject.com/api/v1/course/?days=MWF</code>
+            <code>{{ domain_full }}/api/v1/course/?days=MWF</code>
             finds all courses which meet Monday, Wednesday, and Friday. You
             can further filter objects, for instance
-            <code>https://opencourseproject.com/api/v1/course/?days=MWF&meeting_times__start_time=10:00:00</code>
+            <code>{{ domain_full }}/api/v1/course/?days=MWF&meeting_times__start_time=10:00:00</code>
             finds all courses which meet Monday, Wednesday, and Friday at 10am.
           </li>
           <li>
             See the endpoint details for information about which fields you can
             use to filter your queries. If you'd like to filter on a sub-object,
             you can use the <code>__</code> (double underscore) accessor.
-            For instance, <code>https://opencourseproject.com/api/v1/course/?instructor__rmp_score=3</code>
+            For instance, <code>{{ domain_full }}/api/v1/course/?instructor__rmp_score=3</code>
             finds all courses where the instructor's RateMyProfessor score is 3.0.
           </li>
           <li>
@@ -157,7 +157,7 @@ $(document).ready(function () {
             <code>__contains</code>, <code>__icontains</code> (case-insensitive),
             <code>__startswith</code> or <code>__endswith</code> modifiers to make
             advanced queries.
-            For instance, <code>https://opencourseproject.com/api/v1/course/?instructor__rmp_score__gte=3</code>
+            For instance, <code>{{ domain_full }}/api/v1/course/?instructor__rmp_score__gte=3</code>
             finds all courses where the instructor's RateMyProfessor score is <strong>at least</strong> 3.0.
           </li>
         </ul>
@@ -319,7 +319,7 @@ $(document).ready(function () {
         <p>
           To specify your key, use the <code>Authorization</code> header in your
           GET request:
-          <pre>curl -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" https://opencourseproject.com/api/v1/schedule/</pre>
+          <pre>curl -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" {{ domain_full }}/api/v1/schedule/</pre>
           Alternatively, you may append <code>?username={{ user.username }}&api_key={{ api_key.key }}</code>
           to the end of the url.
         </p>
@@ -358,10 +358,10 @@ $(document).ready(function () {
           <li><code>course_crn</code>: the course CRN.</li>
         </ul>
         <p>
-          For example, to add <a href="https://opencourseproject.com/course/201600/5984/">this</a>
+          For example, to add <a href="/course/201600/5984/">this</a>
           course (CRN: <strong>5984</strong>) to your Fall Semester 2015 (Term ID: <strong>201600</strong>) schedule,
           send the following request:
-          <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X POST --data '{"term": "/api/v1/term/201600/", "course_crn": "5984"}' https://opencourseproject.com/api/v1/schedule/</pre>
+          <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X POST --data '{"term": "/api/v1/term/201600/", "course_crn": "5984"}' {{ domain_full }}/api/v1/schedule/</pre>
           A successful POST returns <code>HTTP 201 CREATED</code>.
         </p>
       </div>
@@ -379,7 +379,7 @@ $(document).ready(function () {
           For example, if you want to delete the following item from your schedule:
           <code>{"course_crn": 5984, "id": 1, "resource_uri": "/api/v1/schedule/1/", "term": {"name": "Fall Semester 2015", "resource_uri": "/api/v1/term/201600/", "value": 201600}}</code>
           send the following request:
-          <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X DELETE  https://opencourseproject.com/api/v1/schedule/1/</pre>
+          <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X DELETE  {{ domain_full }}/api/v1/schedule/1/</pre>
           A successful DELETE returns <code>HTTP 204 NO CONTENT</code>.
         </p>
       </div>
@@ -414,10 +414,10 @@ $(document).ready(function () {
           <li><code>course_crn</code>: the course CRN.</li>
         </ul>
         <p>
-          For example, to follow <a href="https://opencourseproject.com/course/201600/5984/">this</a>
+          For example, to follow <a href="/course/201600/5984/">this</a>
           course (CRN: <strong>5984</strong>) which belongs to Fall Semester 2015 (Term ID: <strong>201600</strong>),
           send the following request:
-          <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X POST --data '{"term": "/api/v1/term/201600/", "course_crn": "5984"}' https://opencourseproject.com/api/v1/follow/</pre>
+          <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X POST --data '{"term": "/api/v1/term/201600/", "course_crn": "5984"}' {{ domain_full }}/api/v1/follow/</pre>
           A successful POST returns <code>HTTP 201 CREATED</code>.
         </p>
       </div>
@@ -435,7 +435,7 @@ $(document).ready(function () {
           For example, if you want to delete the following item from your schedule:
           <code>{"course_crn": 5984, "id": 1, "resource_uri": "/api/v1/follow/1/", "term": {"name": "Fall Semester 2015", "resource_uri": "/api/v1/term/201600/", "value": 201600}}</code>
           send the following request:
-          <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X DELETE  https://opencourseproject.com/api/v1/follow/1/</pre>
+          <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X DELETE  {{ domain_full }}/api/v1/follow/1/</pre>
           A successful DELETE returns <code>HTTP 204 NO CONTENT</code>.
         </p>
       </div>
@@ -452,8 +452,8 @@ $(document).ready(function () {
         <li class="list-group-item">
           <strong>Exam schedule</strong> information is created using spreadsheet
           files and are downloadable at
-          <code>https://opencourseproject.com/static/assets/xl/exam_schedule_TERM.xlsx</code>
-          where TERM is a valid Term ID (ex: <a href="https://opencourseproject.com/static/assets/xl/exam_schedule_201600.xlsx">201600</a> for Fall Semester 2015). See the details
+          <code>{{ domain_full }}/static/assets/xl/exam_schedule_TERM.xlsx</code>
+          where TERM is a valid Term ID (ex: <a href="{{ domain_full }}/static/assets/xl/exam_schedule_201600.xlsx">201600</a> for Fall Semester 2015). See the details
           of the <strong>Term</strong> endpoint for more information on Term IDs.
           <ul>
             <li>

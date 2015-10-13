@@ -35,7 +35,7 @@ var facebookCallback = function(response) {
       </form>
       <p><h4>Logged in as <strong>{{ user.username }}</strong></h4><p>
       {% else %}
-      <p>Click Login to login with your CNU account.</p>
+      <p>Click Login to login with your {{ school_abbr }} account.</p>
       <a href="{% url "social:begin" "google-oauth2" %}{% if next %}?next={{ next }}{% endif %}">
           <button class="btn btn-primary">Login</button>
       </a>
@@ -68,7 +68,7 @@ var facebookCallback = function(response) {
       <strong>Log in with Facebook to see friends in your classes</strong>
       <p>
         Connecting with Facebook will show your profile only to other connected
-        CNU students on pages of courses you're taking.
+        {{ school_abbr }} students on pages of courses you're taking.
       </p>
       <div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false"></div>
       <div id="facebook-status"></div>

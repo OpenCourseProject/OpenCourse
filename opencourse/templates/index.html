@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
-<meta property="og:description" content="A free and independent service for CNU students to research, plan, and share their schedules." />
+<meta property="og:description" content="A free and independent service for {{ school_abbr }} students to research, plan, and share their schedules." />
 {% endblock %}
 {% block home-active %}active{% endblock %}
 {% block content %}
@@ -37,7 +37,7 @@
       Welcome to Open Course
     </h1>
     <p class="lead">
-      A free and independent service for CNU students to research, plan, and share their schedules.
+      A free and independent service for {{ school_abbr }}  students to research, plan, and share their schedules.
     </p>
     <ul>
       <li>Search for courses using any criteria</li>
@@ -49,8 +49,7 @@
     </ul>
     <p>
       Open Course is a non-official website that allows you to search and organize courses.
-      Course listings reflect CNU's official <a href="https://pulsar.cnu.edu/soc/socquery.aspx">Schedule of Classes</a>.
-      To begin, login with your CNU account or simply click Search to browse classes.
+      To begin, login with your {{ school_abbr }} account or simply click Search to browse classes.
     </p>
     <p><a class="btn btn-primary btn-lg" href="/search/" role="button">Get Started</a></p>
     {% endif %}
@@ -64,7 +63,7 @@
         {% for key, value in popular_courses.iteritems %}
         <li class="list-group-item">
           <h4 class="list-group-item-heading">
-            <a href="https://opencourseproject.com/course/{{ key.term_id }}/{{ key.crn }}/">
+            <a href="/course/{{ key.term_id }}/{{ key.crn }}/">
               {{ key.title }}
             </a>
             <small>with {{ key.instructor }}</small>

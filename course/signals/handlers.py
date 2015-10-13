@@ -4,6 +4,7 @@ from course.models import Course, CourseVersion, FollowEntry
 from course.utils import course_create_changelog
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth.models import User
+from django.conf import settings
 from opencourse.models import EmailLog
 
 @receiver(signals.post_save, sender=Course)
@@ -16,9 +17,9 @@ def send_follow_email(course):
     subject, from_email = 'Course Update: ' + course.title, 'admin@opencourseproject.com',
     course_link = 'https://opencourseproject.com/course/' + str(term.value) + '/' + str(course.crn) + '/'
     follow_link = 'https://opencourseproject.com/account/#follow'
-    email_template_path = '/var/www/opencourseproject.com/opencourse/opencourse/static/assets/email/template.html'
+    email_template_path = settings.STATIC_ROOT + '/assets/email/template.html'
     email_template = open(email_template_path).read()
-    text_template_path = '/var/www/opencourseproject.com/opencourse/opencourse/static/assets/email/template.txt'
+    text_template_path = settings.STATIC_ROOT + '/assets/email/template.txt'
     text_template = open(text_template_path).read()
     detail_list = ''
     changes = course_create_changelog(course)

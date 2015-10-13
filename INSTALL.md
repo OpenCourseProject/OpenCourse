@@ -11,7 +11,7 @@ First things first:
 
 Install the necessary packages:
 
-    sudo apt-get install git apache2 libapache2-mod-wsgi python python-dev libxml2-dev libxslt1-dev python-pip
+    sudo apt-get install git apache2 libapache2-mod-wsgi python python-dev libxml2-dev libxslt1-dev python-pip xvfb firefox
 
 I use (and suggest using) MySQL as your database, and instructions assume you do.
 There are suitable alternatives but you're on your own for configuration.
