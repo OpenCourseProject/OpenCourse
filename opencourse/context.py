@@ -24,5 +24,5 @@ def school_info(request):
 def domain(request):
     return {
         'domain': request.get_host(),
-        'domain_full': 'https://' if request.is_secure() else 'http://' + request.get_host()
+        'domain_full': ('https://' if request.is_secure() else 'http://') + request.get_host()
     }
