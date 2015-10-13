@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('course', '0004_auto_20150629_1638'),
+        ('course', '0001_initial'),
     ]
 
     operations = [
@@ -42,6 +42,19 @@ class Migration(migrations.Migration):
                 ('url', models.URLField()),
                 ('description', models.TextField()),
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('responded', models.BooleanField(default=False)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Alert',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('time_created', models.DateTimeField(auto_now_add=True)),
+                ('style', models.CharField(max_length=10, choices=[(b'success', b'Success'), (b'info', b'Info'), (b'warning', b'Warning'), (b'danger', b'Danger')])),
+                ('message', models.CharField(max_length=1000)),
+                ('enabled', models.BooleanField(default=False)),
+                ('expires', models.DateTimeField(null=True, blank=True)),
+                ('acknowledged', models.ManyToManyField(to=settings.AUTH_USER_MODEL, blank=True)),
             ],
         ),
     ]

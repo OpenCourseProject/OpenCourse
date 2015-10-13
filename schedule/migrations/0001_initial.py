@@ -8,8 +8,8 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('course', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('course', '0004_auto_20150629_1638'),
     ]
 
     operations = [
@@ -52,5 +52,15 @@ class Migration(migrations.Migration):
                 'verbose_name': 'scheduled course',
                 'verbose_name_plural': 'scheduled courses',
             },
+        ),
+        migrations.CreateModel(
+            name='ScheduleTransaction',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('course_crn', models.IntegerField()),
+                ('action', models.IntegerField(choices=[(1, b'ADD'), (0, b'DROP')])),
+                ('term', models.ForeignKey(to='course.Term')),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+            ],
         ),
     ]

@@ -43,9 +43,9 @@ Install the necessary pip libraries:
 
     pip install -r requirements.txt
 
-The settings files are now located at ```opencourse/settings/```. It is important to note that by default the **development** settings are used. You can change this to production settings in the ```__init__.py`` file in this directory when you're ready.
+The settings files are now located at ```opencourse/settings/```. It is important to note that by default the **development** settings are used. You can change this to production settings in the ```__init__.py``` file in this directory when you're ready.
 
-Open ```common.py`` up using your favorite text editor because we have some work to do. Some private values have been removed from the settings file and have been noted in comments. You'll need to provide your own replacement for these.
+Open ```common.py``` up using your favorite text editor because we have some work to do. Some private values have been removed from the settings file and have been noted in comments. You'll need to provide your own replacement for these.
 
 First, populate the SECRET_KEY value with a sufficiently random secure text string. [See the Django documentation for this setting](https://docs.djangoproject.com/en/1.8/ref/settings/#secret-key).
 

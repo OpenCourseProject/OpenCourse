@@ -8,8 +8,8 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('course', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('course', '0004_auto_20150629_1638'),
     ]
 
     operations = [
@@ -21,6 +21,7 @@ class Migration(migrations.Migration):
                 ('facebook_id', models.CharField(max_length=50, null=True)),
                 ('default_term', models.ForeignKey(to='course.Term', null=True)),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
+                ('preferred_name', models.CharField(max_length=50, null=True)),
             ],
         ),
     ]
