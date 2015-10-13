@@ -56,7 +56,7 @@ If you want to use the Google OAuth login system, you'll need to [register an ap
 * SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'YOUR KEY'
 * SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'YOUR SECRET'
 
-You'll need to do similarly to use the Facebook integration. [register an app](https://developers.facebook.com/apps/) with Facebook and, from your Dashboard, fill in the necessary fields. Here's a rundown of what you should have:
+You'll need to do similarly to use the Facebook integration. [Register an app](https://developers.facebook.com/apps/) with Facebook and, from your Dashboard, fill in the necessary fields. Here's a rundown of what you should have:
 
 * SOCIAL_AUTH_FACEBOOK_KEY = 'YOUR KEY'
 * SOCIAL_AUTH_FACEBOOK_SECRET = 'YOUR SECRET'
@@ -77,7 +77,7 @@ We'll do a quick test to make sure everything looks right:
 
     python manage.py runserver 0.0.0.0:80
 
-You can now point your browser towards the server's public IP and (if all goes well), you will see the OpenCourse homepage. If you run into an error take a look to see what it is asking you to do - usually this will be installing a missing dependency. You can also check the apache2 log at ```/var/log/apache2/error.log``` for any setup errors. Feel free to open an issue with the error in question if it's not obvious.
+You can now point your browser towards the server's public IP and (if all goes well), you will see the OpenCourse homepage. If you run into an error take a look to see what it is asking you to do - usually this will be installing a missing dependency. You can also check the apache2 log at ```/var/log/apache2/error.log``` for any setup errors once you've setup your virtual host. Feel free to open an issue with the error in question if it's not obvious.
 
 From here, there's no step-by-step instructions. The data you'll serve depends on what you want your site to focus on. The copy you cloned has management commands setup at ```course/management/commands/``` that scrape data from the Schedule of Courses.
 

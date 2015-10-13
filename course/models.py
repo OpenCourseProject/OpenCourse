@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.core import serializers
 import json
-import reversion
 
 class Term(models.Model):
     value = models.IntegerField(unique=True, primary_key=True, verbose_name ="Term Value")
@@ -17,7 +16,6 @@ class Term(models.Model):
     class Meta:
         ordering = ['-priority', '-value']
 
-@reversion.register
 class Instructor(models.Model):
     first_name = models.CharField(null=True, max_length=50, verbose_name="First Name")
     last_name = models.CharField(db_index=True, max_length=50, verbose_name="Last Name")
@@ -52,7 +50,6 @@ class MeetingTime(models.Model):
     def __unicode__(self):
         return "%s, %s - %s" % (self.days, self.start_time.strftime('%I:%M %p'), self.end_time.strftime('%I:%M %p'))
 
-@reversion.register
 class Course(models.Model):
     OPEN = 1
     CLOSED = 0

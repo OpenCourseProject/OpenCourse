@@ -2,7 +2,6 @@ from course.models import Course, CourseVersion, Instructor, FollowEntry, Meetin
 from schedule.models import ExamEntry
 from django.db.models import Q
 from django.utils.safestring import SafeString
-import reversion
 
 def exam_for_course(course):
     meeting_times = course.meeting_times.all()
