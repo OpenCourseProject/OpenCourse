@@ -1,6 +1,6 @@
 import os
 import django.conf.global_settings as DEFAULT_SETTINGS
-BASE_DIR = os.path.dirname(os.path.dirname(__file__) + "/..")
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # GIT USERS: some information from this file has been scrubbed from the
 # repository for privacy reasons. However, an effort has been made to publish
@@ -35,7 +35,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/var/www/opencourseproject.com/opencourse/opencourse/logs/app.log',
+            'filename': BASE_DIR + '/logs/app.log',
             'formatter': 'verbose',
         },
         'mail_admins': {
@@ -70,19 +70,6 @@ ALLOWED_HOSTS = [
 ]
 
 SESSION_COOKIE_DOMAIN = '.opencourseproject.com'
-
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SECURE_SSL_REDIRECT = True
-SECURE_HSTS_SECONDS = 5
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_FRAME_DENY = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_BROWSER_XSS_FILTER = True
-
-os.environ['wsgi.url_scheme'] = 'https'
 
 INSTALLED_APPS = (
     # Django Apps
