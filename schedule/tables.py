@@ -25,7 +25,7 @@ class SchedulePrintTable(tables.Table):
         order_by = "start_time"
         empty_text = "No courses yet!"
         attrs = {"class": "table table-bordered table-striped"}
-        fields = ("course", "title", "ctype", "days", "start_time", "end_time", "location", "instructor")
+        fields = ("crn", "course", "title", "ctype", "days", "start_time", "end_time", "location", "instructor")
 
 class ExamTable(tables.Table):
     course = tables.Column()
