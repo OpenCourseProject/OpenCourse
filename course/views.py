@@ -46,7 +46,7 @@ def search(request):
             if profile.default_term:
                 term = profile.default_term
             if 'term' in request.GET:
-                term = request.GET['term']
+                term = Term.objects.get(value=request.GET['term'])
         form = SearchForm()
         form.fields['term'].initial = term
     query = Course.objects.filter(term=term)
