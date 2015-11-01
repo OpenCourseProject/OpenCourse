@@ -56,7 +56,7 @@ class Alert(models.Model):
 
     @property
     def is_active(self):
-        return self.enabled and (date.today() < self.expires) if self.expires else True
+        return self.enabled and (date.today() < self.expires) if self.expires else self.enabled
 
     def has_acknowledged(self, user):
         return user.id in self.acknowledged
