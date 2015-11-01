@@ -1,0 +1,15 @@
+[
+    {
+        "values": [
+            {
+                "value": "0.54",
+                "label": "Top 50 Courses"
+            },
+            {
+                "value": "3.48",
+                "label": "Bottom 50 Courses"
+            }
+        ],
+        "key": "Average Open Seats"
+    }
+]
