@@ -33,6 +33,23 @@
 		max-width: 900px;
 		margin: 0 auto;
 	}
+  #course-list {
+    overflow-y: scroll;
+  }
+  .color {
+    width:5px;
+    position: absolute;
+    width: 1em;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    border-top-right-radius: inherit;
+    border-bottom-right-radius: inherit;
+    opacity: 0.7;
+  }
+  .print-content {
+    display: none
+  }
   @media print {
     .noprint {display:none !important;}
     a:link:after, a:visited:after {
@@ -79,9 +96,9 @@ $(document).ready(function() {
     columnFormat: 'ddd',
     events: '/schedule/calendar/course/?identifier={{ identifier }}',
     loading: function(isLoading, view) {
-      // Hacky fix to avoid calendar loading
       if (!isLoading) {
-        $('#viewTabs a[href="#list-tab"]').tab('show')
+        console.log($('#calendar').height())
+        $('#course-list').css('max-height', $('#calendar').height() + 'px');
       }
     }
   });
@@ -92,6 +109,31 @@ $(document).ready(function() {
     placement: 'bottom',
     title: 'Remember!',
     content: '<strong>Your schedule is private except when you choose to share your link with others.</strong> Be mindful of who you are sharing your schedule with at all times.',
+  });
+  $('#color-toggle').change(function() {
+    if (this.checked) {
+        $('.color').css('display', 'block');
+        $('.fc-time-grid-event').each(function() {
+          var color = $(this).data('color');
+          $(this).css('background-color', color);
+          $(this).css('border-color', color);
+        });
+    } else {
+      $('.color').css('display', 'none');
+      $('.fc-time-grid-event').each(function() {
+        var color = $(this).css('background-color');
+        $(this).data('color', color);
+        $(this).css('background-color', '#3A87AD');
+        $(this).css('border-color', '#3A87AD');
+      });
+    }
+  });
+  $('#detail-toggle').change(function() {
+    if (this.checked) {
+        $('.course-detail').css('display', 'block');
+    } else {
+      $('.course-detail').css('display', 'none');
+    }
   });
 });
 (function(d, s, id) {
@@ -120,7 +162,7 @@ $(document).ready(function() {
   </div>
   {% endif %}
   {% if share %}
-  <div class="print-content" style="display: none;">
+  <div class="print-content">
     <center>
       <h1>Your <strong>{{ term.name }}</strong> schedule</h1>
     </center>
@@ -166,21 +208,61 @@ $(document).ready(function() {
       </form>
     </h1>
   </div>
-  <div role="tabpanel">
-    {% if has_exams %}
-    <a href="/schedule/exam/{{ term.value }}" class="pull-right">View Exam Schedule</a>
-    {% endif %}
-    <ul class="nav nav-tabs" role="tablist" id="viewTabs">
-      <li role="presentation"><a href="#list-tab" aria-controls="list-tab" role="tab" data-toggle="tab">List View</a></li>
-      <li role="presentation" class="active"><a href="#calendar-tab" aria-controls="calendar-tab" role="tab" data-toggle="tab">Calendar View</a></li>
-    </ul>
-    <div class="tab-content">
-      <div role="tabpanel" class="tab-pane" id="list-tab"><br>{% render_table table %}</div>
-      <div role="tabpanel" class="tab-pane active" id="calendar-tab"><div id="calendar"></div></div>
-    </div>
+  {% if has_exams %}
+  <div class="alert alert-info" role="alert">
+    <center><a href="/schedule/exam/{{ term.value }}/" class="alert-link">View Exam Schedule</a></center>
+  </div>
+  {% endif %}
+  <div class="schedule">
+    <table class="table">
+      <tr style="border: 0;">
+        <td class="noprint">
+          <div id="course-list">
+            <div class="list-group pull-left">
+              {% for course, color in course_colors.items %}
+              <a href="/course/{{ course.term.value }}/{{ course.crn }}/" class="list-group-item" >
+                <div class="color" style="background-color:{{ color }};">
+                </div>
+                <h4 class="list-group-item-heading">
+                  {{ course.course }}
+                  <br>
+                  {{ course.title }}
+                </h4>
+                <p class="list-group-item-text">
+                  {{ course.primary_meeting_time }}
+                  <br>
+                  {{ course.location }}
+                  <br>
+                  {{ course.instructor }}
+                  <div class="course-detail">
+                    <br>
+                    <strong>CRN:</strong> {{ course.crn }}
+                    <br>
+                    <strong>Type:</strong> {{ course.ctype }}
+                    <br>
+                    <strong>Seats:</strong> {{ course.seats }}
+                  </div>
+                </p>
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+        </td>
+        <td>
+          <div id="calendar"></div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="well noprint">
+    <form>
+      <input type="checkbox" id="color-toggle" checked> Show Colors
+      <br>
+      <input type="checkbox" id="detail-toggle" checked> Show Course Details
+    </form>
   </div>
   {% if share %}
-  <div class="print-content" style="display: none;">
+  <div class="print-content">
     {% render_table print_table %}
   </div>
   {% endif %}

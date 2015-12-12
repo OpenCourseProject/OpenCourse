@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.utils.safestring import SafeString
 from django.http import Http404
 from schedule.models import ScheduleEntry, ExamEntry, ExamSource
-from schedule.utils import schedule_get_course, schedule_get_courses
+from schedule.utils import schedule_get_course, schedule_get_courses, get_colors_for_courses
 from course.models import Term, Course
 from account.models import Profile
 from django_tables2 import RequestConfig
@@ -65,10 +65,13 @@ def schedule(request):
         has_exams = False
 
     table = ScheduleTable(courses)
+    colors = get_colors_for_courses(courses)
     print_table = SchedulePrintTable(courses)
     RequestConfig(request).configure(table)
     RequestConfig(request).configure(print_table)
     context = {
+        'courses': courses,
+        'course_colors': colors,
         'table': table,
         'print_table': print_table,
         'form': form,
@@ -187,9 +190,10 @@ def schedule_calendar(request):
     SAT = FRI + delta
     if request.method == 'GET':
         query = ScheduleEntry.objects.filter(identifier=request.GET['identifier'])
+        courses = schedule_get_courses(query)
+        colors = get_colors_for_courses(courses)
         events = []
-        for entry in query:
-            course = schedule_get_course(entry)
+        for course in courses:
             for meeting_time in course.meeting_times.all():
                 for day in list(meeting_time.days):
                     day = MON if day == 'M' else TUE if day == 'T' else WED if day == 'W' else THU if day == 'R' else FRI if day == 'F' else SAT
@@ -200,7 +204,8 @@ def schedule_calendar(request):
                         'title': course.course,
                         'start': start,
                         'end': end,
-                        'url': 'https://opencourseproject.com/course/' + str(course.term.value) + '/' + str(course.crn) + '/',
+                        'url': '/course/' + str(course.term.value) + '/' + str(course.crn) + '/',
+                        'color': colors[course],
                     })
         days = SafeString(json.dumps(events))
         return HttpResponse(days, 201)
