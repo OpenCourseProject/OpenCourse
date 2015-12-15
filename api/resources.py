@@ -3,7 +3,7 @@ from tastypie import fields
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
 from tastypie.validation import Validation
-from course.models import Course, Term, Instructor, MeetingTime, Attribute, Material, FollowEntry
+from course.models import Course, Term, Instructor, MeetingTime, Attribute, Material, FollowEntry, CourseVersion
 from schedule.models import ScheduleEntry
 
 class TermResource(ModelResource):
@@ -92,6 +92,19 @@ class MaterialResource(ModelResource):
             'publisher': ALL,
             'edition': ALL,
             'year': ALL,
+        }
+
+class CourseVersionResource(ModelResource):
+    term = fields.ToOneField(TermResource, 'term', full=True)
+
+    class Meta:
+        queryset = CourseVersion.objects.all()
+        resource_name = 'courseversion'
+        allowed_methods = ['get']
+        filtering = {
+            'term': ALL_WITH_RELATIONS,
+            'course_crn': ALL,
+            'time_created': ALL,
         }
 
 class CRNValidation(Validation):

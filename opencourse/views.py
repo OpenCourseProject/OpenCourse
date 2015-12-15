@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.utils.safestring import SafeString
@@ -5,8 +6,9 @@ from django.core.mail import mail_admins
 from account.models import Profile
 from schedule.models import ScheduleEntry
 from schedule.utils import schedule_get_course
-from course.models import Course, Term, FollowEntry
-from opencourse.models import Report, Alert
+from course.models import Course, Term, FollowEntry, CourseVersion, QueryLog
+from course.utils import course_create_changelog
+from opencourse.models import Report, Alert, CourseUpdateLog
 from opencourse.forms import ReportForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
@@ -49,6 +51,17 @@ def about(request):
     context = {}
     return render(request, 'about.html', context)
 
+def dashboard(request):
+    context = {
+        'terms': Term.objects.all(),
+        'courses': Course.objects.all(),
+        'schedule_entries': ScheduleEntry.objects.all(),
+        'follow_entries': FollowEntry.objects.all(),
+        'course_versions': CourseVersion.objects.all(),
+        'query_logs': QueryLog.objects.all(),
+    }
+    return render(request, 'dashboard.html', context)
+
 @login_required
 def report(request):
     context = {}
@@ -68,6 +81,45 @@ def report(request):
             }
             return render(request, 'report.html', context)
     return redirect('/')
+
+def changes(request):
+    if request.method == 'GET':
+        num = int(request.GET['num'])
+        changes = []
+        versions = CourseVersion.objects.all().order_by('-time_created')[:num]
+        for version in versions:
+            course = Course.objects.get(crn=version.course_crn, term=version.term)
+            changelog = course_create_changelog(course)
+            changes.append({
+                'url': course.url,
+                'course': str(course),
+                'changes': changelog,
+                'time': version.time_created
+            })
+        value = {
+            'changes': changes
+        }
+        return JsonResponse(value)
+    else:
+        return redirect('/')
+
+def updates(request):
+    if request.method == 'GET':
+        num = int(request.GET['num'])
+        updates = []
+        query = CourseUpdateLog.objects.all().order_by('-time_created')[:num]
+        for update in query:
+            updates.append({
+                'updated': update.courses_updated,
+                'added': update.courses_added,
+                'time': update.time_created
+            })
+        value = {
+            'updates': updates
+        }
+        return JsonResponse(value)
+    else:
+        return redirect('/')
 
 @csrf_protect
 def error_500(request):

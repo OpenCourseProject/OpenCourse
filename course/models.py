@@ -103,6 +103,10 @@ class Course(models.Model):
         else:
             return None
 
+    @property
+    def url(self):
+        return "/course/{}/{}/".format(self.term.value, self.crn)
+
 class CourseVersionManager(models.Manager):
     def create(self, course):
         data = serializers.serialize('json', [course])

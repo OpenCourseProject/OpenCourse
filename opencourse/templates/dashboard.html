@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% block head %}
+<script src="/static/assets/js/jquery.timer.js"></script>
+<script src="/static/assets/js/moment.min.js"></script>
+<script src="/static/assets/js/later.min.js"></script>
+<link rel="stylesheet" href="/static/assets/font-awesome/css/font-awesome.min.css" type="text/css">
+<style>
+.spinner {
+  margin: 100px auto 0;
+  width: 70px;
+  text-align: center;
+}
+
+.spinner > div {
+  width: 18px;
+  height: 18px;
+  background-color: #333;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% {
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+</style>
+<script>
+$(document).ready(function() {
+  var timer;
+  var next;
+  var last;
+  function tick() {
+    var diff = next.diff(moment());
+
+    if (diff <= 0 && timer !== undefined) {
+      restartCron();
+      return;
+    }
+
+    var totalDiff = next.diff(last);
+    var percent = (100 - ((diff/totalDiff) * 100)) + '%';
+    var s = diff;
+    var ms = s % 1000;
+    s = (s - ms) / 1000;
+    var secs = s % 60;
+    s = (s - secs) / 60;
+    var mins = s % 60;
+    var hrs = (s - mins) / 60;
+
+    if (secs < 10) {
+      secs = "0" + secs;
+    }
+    if (mins < 10) {
+      mins = "0" + mins;
+    }
+
+    $('#timer').html(hrs + ':' + mins + ':' + secs);
+    $('#timer-progress').attr('aria-valuemax', totalDiff);
+    $('#timer-progress').attr('aria-valuenow', diff);
+    $('#timer-progress').css('width', percent);
+  }
+  function updateChanges() {
+    $('.changes-loading').css('display', 'inline-block');
+    $.getJSON("/internal/changes/?num=5", function(data) {
+      var items = [];
+      $.each(data.changes, function(key, val) {
+        var time = moment(val.time);
+        var value = "<strong>" + time.format('LT') + ":</strong> <a href=\"" + val.url + "\">" + val.course + "</a><ul>";
+        $.each(val.changes, function(key, val) {
+          value += "<li>" + val + "</li>";
+        });
+        items.push("<li>" + value + "</ul></li>");
+      });
+
+      $("#last-updates").html(items.join(""));
+      $('.changes-loading').css('display', 'none');
+    });
+  }
+  function updateLogs() {
+    $('.updates-loading').css('display', 'inline-block');
+    $.getJSON("/internal/updates/?num=5", function(data) {
+      var items = [];
+      $.each(data.updates, function(key, val) {
+        var time = moment(val.time);
+        var value = "<strong>" + time.format('LT') + ":</strong> " + val.updated + " updated courses, " + val.added + " new courses.";
+        items.push("<li class=\"list-group-item\">" + value + "</li>");
+      });
+
+      $("#update-log").html(items.join(""));
+      $('.updates-loading').css('display', 'none');
+    });
+  }
+  function update() {
+    updateChanges();
+    updateLogs();
+  }
+  function start() {
+    startCron();
+    startUpdate();
+  }
+  function startCron() {
+    var cron = later.parse.cron('0 */2 * * *');
+    var occurances = later.schedule(cron);
+    last = moment(occurances.prev(1));
+    next = moment(occurances.next(1));
+    $('#last-update').html(last.format('LT'));
+    $('#next-update').html(next.format('LT'));
+
+    timer = setInterval(tick, 1000);
+  }
+  function restartCron() {
+    clearInterval(timer);
+    startCron();
+  }
+  function startUpdate() {
+    update();
+    setInterval(update, 1000 * 30);
+  }
+  start();
+});
+</script>
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="well">
+    <h1>
+      Open Course Dashboard
+    </h1>
+    <p class="lead">
+      Data in real time.
+    </p>
+  </div>
+  <div class="updates">
+    <strong>Last update:</strong> <span id="last-update"></span>
+    <br>
+    <strong>Next update:</strong> <span id="next-update"></span>
+    <div class="progress">
+      <div id="timer-progress" class="progress-bar progress-bar-striped active" role="progressbar">
+        <span id="timer">
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">Most Recent Changes <i class="fa fa-spinner fa-spin changes-loading" style="display:none;"></i></div>
+      <div class="panel-body">
+        <ul id="last-updates" style="list-style-type: none; padding-left: 0;">
+        </ul>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">Update Log <i class="fa fa-spinner fa-spin updates-loading" style="display:none;"></i><br><br>
+        <ul id="update-log" class="list-group">
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="courses">
+    <ul class="list-group">
+      <li class="list-group-item">Total Terms: <strong>{{ terms|length }}</strong></li>
+      <li class="list-group-item">Total Courses: <strong>{{ courses|length }}</strong></li>
+      <li class="list-group-item">Courses Scheduled: <strong>{{ schedule_entries|length }}</strong></li>
+      <li class="list-group-item">Courses Being Followed: <strong>{{ follow_entries|length }}</strong></li>
+    </ul>
+  </div>
+  </div>
+</div>
+{% endblock %}
