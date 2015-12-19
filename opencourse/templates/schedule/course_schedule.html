@@ -46,11 +46,16 @@
     border-top-right-radius: inherit;
     border-bottom-right-radius: inherit;
   }
-  .print-content {
-    display: none
+  .print-only {
+    display: none;
   }
   @media print {
-    .noprint {display:none !important;}
+    .print-only {
+      display: block !important;
+    }
+    .noprint, footer {
+      display: none;
+    }
     a:link:after, a:visited:after {
       display: none;
       content: "";
@@ -91,12 +96,11 @@ $(document).ready(function() {
     editable: false,
     hiddenDays: [0],
     allDaySlot: false,
-    scrollTime: '08:00:00',
+    scrollTime: '07:30:00',
     columnFormat: 'ddd',
-    events: '/schedule/calendar/course/?identifier={{ identifier }}',
+    events: '/schedule/calendar/course/?identifier={{ identifier }}&color=true',
     loading: function(isLoading, view) {
       if (!isLoading) {
-        console.log($('#calendar').height())
         $('#course-list').css('max-height', $('#calendar').height() + 'px');
       }
     }
@@ -136,14 +140,11 @@ $(document).ready(function() {
   });
 });
 (function(d, s, id) {
-  var share = "{{ share }}"
-  if (share == "True") {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=886841334691353";
-    fjs.parentNode.insertBefore(js, fjs);
-  }
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=886841334691353";
+  fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 </script>
 {% endblock %}
@@ -160,15 +161,13 @@ $(document).ready(function() {
     {% endfor %}
   </div>
   {% endif %}
-  {% if share %}
-  <div class="print-content">
+  <div class="print-only">
     <center>
       <h1>Your <strong>{{ term.name }}</strong> schedule</h1>
     </center>
   </div>
-  {% endif %}
-  <div class="well">
-    {% if share %}
+  <div class="well noprint">
+    {% if has_courses %}
     <div class="pull-right">
       <div class="fb-share-button" data-href="{{ share_url }}" data-layout="button"></div>
       <button class="btn btn-default btn-xs" onclick="window.print()"><span class="glyphicon glyphicon-print"></span> Print</button>
@@ -176,7 +175,6 @@ $(document).ready(function() {
     {% endif %}
     <h1>
       <form class="schedule-form" action="/schedule/" method="post">
-        {% if not by_id %}
         Your
         <h5>
         {% csrf_token %}
@@ -185,28 +183,16 @@ $(document).ready(function() {
         {% endfor %}
         </h5>
         schedule
-        {% if share %}
+        {% if has_courses %}
         <div class="input-group">
           <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> Share</span>
           <input readonly id="share-url" style="background-color: #FFF;" type="text" size="35" class="form-control" aria-describedby="basic-addon1" onClick="this.setSelectionRange(0, this.value.length)" value="{{ share_url }}">
         </div>
-        {% else %}
-        <h6>
-          Your schedule looks a bit bare...
-          Click <a href="/search">Search</a> to begin adding classes.
-        </h6>
-        {% endif %}
-        {% else %}
-        <strong>{{ term.name }}</strong> schedule for
-        <strong>{{ schedule_name }}</strong>
-        {% if schedule_profile.learning_community %}
-        <br>
-        <small {% if profile and profile.learning_community and profile.learning_community == schedule_profile.learning_community %}class="text-success" title="You and {{ schedule_user.first_name }} are both in this LC"{% endif %}>Learning Community: {{ schedule_profile.learning_community }}</small>
-        {% endif %}
         {% endif %}
       </form>
     </h1>
   </div>
+  {% if has_courses %}
   {% if has_exams %}
   <div class="alert alert-info" role="alert">
     <center><a href="/schedule/exam/{{ term.value }}/" class="alert-link">View Exam Schedule</a></center>
@@ -260,9 +246,22 @@ $(document).ready(function() {
       <input type="checkbox" id="detail-toggle" checked> Show Course Details
     </form>
   </div>
-  {% if share %}
-  <div class="print-content">
+  <div class="print-only">
     {% render_table print_table %}
+  </div>
+  {% else %}
+  <div class="well">
+    <h4>
+      <p>
+        Your schedule looks a bit bare...
+      </p>
+      <p>
+        <a href="/search/"><span class="glyphicon glyphicon-search"></span> Search for classes to add</a><map>
+      </p>
+      <p>
+        <a href="/about/#getting-started"><span class="glyphicon glyphicon-cloud-upload"></span> Sync classes from CNU Live</a>
+      </p>
+    </h4>
   </div>
   {% endif %}
 </div>

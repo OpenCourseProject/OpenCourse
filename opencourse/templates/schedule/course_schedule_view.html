@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load render_table from django_tables2 %}
+
+{% block head %}
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="/static/assets/css/fullcalendar.css" />
+<link rel="stylesheet" href="/static/assets/css/fullcalendar.print.css" media="print" />
+<script src="/static/assets/js/moment.min.js"></script>
+<script src="/static/assets/js/fullcalendar.min.js"></script>
+<meta property="og:title" content="{{ term.name }} schedule for {{ schedule_user.first_name }} {{ schedule_user.last_name }}" />
+<meta property="og:description" content="{{ social_desc }}" />
+<style>
+	#calendar-tab {
+		margin: 40px 10px;
+		padding: 0;
+		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+		font-size: 14px;
+	}
+	#calendar {
+		max-width: 900px;
+		margin: 0 auto;
+	}
+  .print-content {
+    display: none
+  }
+  @media print {
+    .noprint {display:none !important;}
+    a:link:after, a:visited:after {
+      display: none;
+      content: "";
+  }
+}
+</style>
+<style media="screen" type="text/css">
+.fb_iframe_widget span {
+    vertical-align: middle !important;
+}
+</style>
+{% if share %}
+<style type="text/css" media="print">
+@page {
+  size: auto;
+}
+.container > .tabpanel, .container > .well, .nav, #list-tab, .pull-right, footer {
+  display: none;
+}
+.print-content {
+  display: block !important;
+}
+.pagebreak {
+  page-break-after: always;
+}
+#calendar-tab {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important
+}
+{% endif %}
+</style>
+<script>
+$(document).ready(function() {
+  $('#calendar').fullCalendar({
+  defaultView: 'agendaWeek',
+  header: false,
+  editable: false,
+  hiddenDays: [0],
+  allDaySlot: false,
+  scrollTime: '07:30:00',
+  columnFormat: 'ddd',
+  events: '/schedule/calendar/course/?identifier={{ identifier }}&color=false',
+  loading: function(isLoading, view) {
+    // Hacky fix to avoid calendar loading
+    if (!isLoading) {
+      $('#viewTabs a[href="#list-tab"]').tab('show')
+    }
+  }
+  });
+});
+</script>
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="well">
+    <h1>
+      <strong>{{ term.name }}</strong> schedule for
+      <strong>{{ schedule_name }}</strong>
+      {% if schedule_profile.learning_community %}
+      <br>
+      <small {% if profile and profile.learning_community and profile.learning_community == schedule_profile.learning_community %}class="text-success" title="You and {{ schedule_user.first_name }} are both in this LC"{% endif %}>Learning Community: {{ schedule_profile.learning_community }}</small>
+      {% endif %}
+    </h1>
+  </div>
+  <div role="tabpanel">
+    <ul class="nav nav-tabs" role="tablist" id="viewTabs">
+      <li role="presentation"><a href="#list-tab" aria-controls="list-tab" role="tab" data-toggle="tab">List View</a></li>
+      <li role="presentation" class="active"><a href="#calendar-tab" aria-controls="calendar-tab" role="tab" data-toggle="tab">Calendar View</a></li>
+    </ul>
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane" id="list-tab"><br>{% render_table table %}</div>
+      <div role="tabpanel" class="tab-pane active" id="calendar-tab"><div id="calendar"></div></div>
+    </div>
+  </div>
+</div>
+<div id="fb-root"></div>
+{% endblock %}

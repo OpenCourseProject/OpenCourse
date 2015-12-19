@@ -64,22 +64,18 @@ def schedule(request):
     except ExamSource.DoesNotExist:
         has_exams = False
 
-    table = ScheduleTable(courses)
     colors = get_colors_for_courses(courses)
     print_table = SchedulePrintTable(courses)
-    RequestConfig(request).configure(table)
     RequestConfig(request).configure(print_table)
     context = {
         'courses': courses,
         'course_colors': colors,
-        'table': table,
         'print_table': print_table,
         'form': form,
         'term': term,
         'authenticated': True,
-        'by_id': False,
         'identifier': hash,
-        'share': len(query) > 0,
+        'has_courses': len(query) > 0,
         'share_url': share_url,
         'credits_min': credits_min,
         'credits_max': credits_max,
@@ -167,28 +163,30 @@ def schedule_view(request, identifier):
         'schedule_user': user,
         'schedule_profile': profile,
         'schedule_name': name,
-        'by_id': True,
         'identifier': identifier,
         'credits_min': credits_min,
         'credits_max': credits_max,
     }
 
     if user != request.user and request.user.is_authenticated():
-        context['user_courses'] = schedule_get_courses(ScheduleEntry.objects.filter(user=request.user))
+        context['user_courses'] = schedule_get_courses(ScheduleEntry.objects.filter(user=request.user, term=term))
         context['profile'] = Profile.objects.get(user=request.user)
 
-    return render(request, 'schedule/course_schedule.html', context)
+    return render(request, 'schedule/course_schedule_view.html', context)
 
 def schedule_calendar(request):
-    # Requests will include a 'start' value which is a Monday
-    delta = datetime.timedelta(days=1)
-    MON = datetime.datetime.strptime(request.GET['start'], "%Y-%m-%d")
-    TUE = MON + delta
-    WED = TUE + delta
-    THU = WED + delta
-    FRI = THU + delta
-    SAT = FRI + delta
     if request.method == 'GET':
+        # Requests will include a 'start' value which is a Monday
+        delta = datetime.timedelta(days=1)
+        MON = datetime.datetime.strptime(request.GET['start'], "%Y-%m-%d")
+        TUE = MON + delta
+        WED = TUE + delta
+        THU = WED + delta
+        FRI = THU + delta
+        SAT = FRI + delta
+        use_color = True
+        if 'color' in request.GET:
+            use_color = request.GET['color'] == 'true'
         query = ScheduleEntry.objects.filter(identifier=request.GET['identifier'])
         courses = schedule_get_courses(query)
         colors = get_colors_for_courses(courses)
@@ -199,14 +197,17 @@ def schedule_calendar(request):
                     day = MON if day == 'M' else TUE if day == 'T' else WED if day == 'W' else THU if day == 'R' else FRI if day == 'F' else SAT
                     start = datetime.datetime.combine(day, meeting_time.start_time).isoformat()
                     end = datetime.datetime.combine(day, meeting_time.end_time).isoformat()
-                    events.append({
+                    event = {
                         'id': str(course.crn),
                         'title': course.course,
                         'start': start,
                         'end': end,
                         'url': '/course/' + str(course.term.value) + '/' + str(course.crn) + '/',
-                        'color': colors[course],
-                    })
+                    }
+                    if use_color:
+                        event['color'] = colors[course]
+                    events.append(event)
+
         days = SafeString(json.dumps(events))
         return HttpResponse(days, 201)
     else:

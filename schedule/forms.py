@@ -6,4 +6,7 @@ class TermChoiceField(forms.ModelChoiceField):
         return term.name
 
 class ScheduleForm(forms.Form):
-    term = TermChoiceField(widget=forms.Select(attrs={'onchange':'this.form.submit()'}), queryset=Term.objects.all(), empty_label=None)
+    term = TermChoiceField(widget=forms.Select(attrs={
+    'onchange':'this.form.submit()',
+    'class': 'form-control'
+    }), queryset=Term.objects.all(), empty_label=None)
