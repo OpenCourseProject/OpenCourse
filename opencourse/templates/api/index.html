@@ -74,6 +74,7 @@ $(document).ready(function () {
         <li><a href="#get-course">GET /course/</a></li>
         <li><a href="#get-material">GET /material/</a></li>
         <li><a href="#get-attribute">GET /attribute/</a></li>
+        <li><a href="#get-courseversion">GET /courseversion/</a></li>
         <li><a href="#private-endpoints"><strong>Private Endpoints</strong></a></li>
         <li><a href="#get-schedule">GET /schedule/</a></li>
         <li><a href="#post-schedule">POST /schedule/</a></li>
@@ -253,17 +254,8 @@ $(document).ready(function () {
         </p>
         Fields:
         <ul>
-          <li>
-            <code>course</code>: the <strong>Course</strong> to which this Material belongs.
-            <ul>
-              <li>
-                To avoid unnecessarily long query results, the Course which this
-                Material belongs to is summed up with a URI to the location which
-                can provide you with the Course information. See the Course endpoint
-                for more details on Courses.
-              </li>
-            </ul>
-          </li>
+          <li><code>term</code>: the <strong>Term</strong> for the <code>course_crn</code>.</li>
+          <li><code>course_crn</code>: the <strong>Course</strong> crn to which this Material belongs.</li>
           <li><code>isbn</code>: the ISBN number for the text.</li>
           <li><code>title</code>: the title of the text.</li>
           <li><code>author</code>: the author of the text.</li>
@@ -288,6 +280,27 @@ $(document).ready(function () {
         <ul>
           <li><code>value</code>: an Attribute ID.</li>
           <li><code>name</code>: the full name of this Attribute.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel panel-default" id="get-courseversion">
+      <div class="panel-heading">
+        <h3 class="panel-title"><samp>GET /courseversion/</samp></h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          A <strong>CourseVersion</strong> represents the state of a Course at
+          a given time in history. The first created CourseVersion represents its
+          fields and details when it was first indexed, and the most recent
+          CourseVersion represents the current state of the object, and is identical
+          to the Course object it represents.
+        </p>
+        Fields:
+        <ul>
+          <li><code>term</code>: the <strong>Term</strong> for the <code>course_crn</code>.</li>
+          <li><code>course_crn</code>: the <strong>Course</strong> crn to which this Material belongs.</li>
+          <li><code>time_created</code>: the date and time this version was stored.</li>
+          <li><code>data</code>: a JSON object listing the fields of the Course.</li>
         </ul>
       </div>
     </div>
