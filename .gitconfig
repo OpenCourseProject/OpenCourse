@@ -1,0 +1,3 @@
+[filter "private"]
+	smudge = cat
+	clean = "sed '/#private$/'d"

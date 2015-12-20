@@ -28,6 +28,8 @@ DEBUG = False
 
 TEMPLATE_DEBUG = DEBUG
 
+MAINTENANCE_MODE = False
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -85,6 +87,7 @@ INSTALLED_APPS = (
     'tastypie',
     'djangosecure',
     'kronos',
+    'maintenancemode',
     # Custom Apps
     'opencourse',
     'course',
@@ -103,6 +106,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.common.BrokenLinkEmailsMiddleware',
+    'maintenancemode.middleware.MaintenanceModeMiddleware',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -127,7 +131,7 @@ TEMPLATE_CONTEXT_PROCESSORS = DEFAULT_SETTINGS.TEMPLATE_CONTEXT_PROCESSORS + (
     'opencourse.context.report',
     'opencourse.context.api',
     'opencourse.context.school_info',
-    'opencourse.context.domain',    
+    'opencourse.context.domain',
 )
 
 ROOT_URLCONF = 'opencourse.urls'

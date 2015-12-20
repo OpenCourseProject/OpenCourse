@@ -3,3 +3,4 @@
 *.log
 src/
 opencourse/static/assets/img/
+opencourse/settings/__init__.py
