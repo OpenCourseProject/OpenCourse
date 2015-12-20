@@ -18,8 +18,7 @@ def search(request):
     crn = None
     course = None
     days = None
-    start = None
-    end = None
+    time = None
     instructor = None
     min_rating = None
     attribute = None
@@ -31,10 +30,8 @@ def search(request):
             crn = form.cleaned_data['crn']
             course = form.cleaned_data['course']
             days = form.cleaned_data['days']
-            start = form.cleaned_data['start']
-            form.fields['start'].initial = start
-            end = form.cleaned_data['end']
-            form.fields['end'].initial = start
+            time = form.cleaned_data['time']
+            form.fields['time'].initial = time
             instructor = form.cleaned_data['instructor']
             min_rating = form.cleaned_data['min_rating']
             attribute = form.cleaned_data['attribute']
@@ -61,12 +58,9 @@ def search(request):
         for day in list(days):
             query = query.filter(meeting_times__days__icontains=day)
         log['days'] = days
-    if start:
-        query = query.filter(meeting_times__start_time=start)
-        log['start'] = str(start)
-    if end:
-        query = query.filter(meeting_times__end_time=end)
-        log['end'] = str(end)
+    if time:
+        query = query.filter(meeting_times__start_time=time)
+        log['time'] = str(time)
     if instructor:
         query = query.filter(instructor__last_name__icontains=instructor)
         log['instructor'] = instructor
