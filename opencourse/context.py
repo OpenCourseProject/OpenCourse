@@ -26,3 +26,10 @@ def domain(request):
         'domain': request.get_host(),
         'domain_full': ('https://' if request.is_secure() else 'http://') + request.get_host()
     }
+
+def update_interval(request):
+    return {
+        'course_interval': settings.COURSE_UPDATE_INTERVAL,
+        'material_interval': settings.MATERIAL_UPDATE_INTERVAL,
+        'rating_interval': settings.RATING_UPDATE_INTERVAL
+    }

@@ -11,9 +11,10 @@ import datetime
 from time import sleep
 import logging
 import kronos
+from django.conf import settings
 logger = logging.getLogger('opencourse')
 
-@kronos.register('0 */2 * * *')
+@kronos.register(settings.COURSE_UPDATE_INTERVAL)
 class Command(BaseCommand):
     help = 'Scrapes the CNU courses'
 

@@ -4,11 +4,12 @@ from lxml import html
 import requests
 import decimal
 import kronos
+from django.conf import settings
 
 BASE_URL = "http://www.ratemyprofessors.com"
 SEARCH_URL = BASE_URL + "/search.jsp?queryoption=HEADER&queryBy=teacherName&schoolName=Christopher+Newport+University&query="
 
-@kronos.register('0 1 * * *')
+@kronos.register(settings.RATING_UPDATE_INTERVAL)
 class Command(BaseCommand):
     def handle(self, *args, **options):
         query = Instructor.objects.all()

@@ -3,7 +3,10 @@ from course.models import Course, Material
 from lxml import html
 import requests
 from time import sleep
+import kronos
+from django.conf import settings
 
+@kronos.register(settings.MATERIAL_UPDATE_INTERVAL)
 class Command(BaseCommand):
     def handle(self, *args, **options):
         query = Course.objects.all()

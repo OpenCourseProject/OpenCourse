@@ -105,7 +105,7 @@ $(document).ready(function() {
       var items = [];
       $.each(data.updates, function(key, val) {
         var time = moment(val.time);
-        var value = "<strong>" + time.format('LT') + ":</strong> " + val.updated + " updated courses, " + val.added + " new courses.";
+        var value = "<strong>" + time.calendar() + ":</strong> " + val.updated + " updated courses, " + val.added + " new courses.";
         items.push("<li class=\"list-group-item\">" + value + "</li>");
       });
 
@@ -122,7 +122,7 @@ $(document).ready(function() {
     startUpdate();
   }
   function startCron() {
-    var cron = later.parse.cron('0 */2 * * *');
+    var cron = later.parse.cron('{{ course_interval }}');
     var occurances = later.schedule(cron);
     last = moment(occurances.prev(1));
     next = moment(occurances.next(1));
