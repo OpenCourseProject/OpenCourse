@@ -24,15 +24,15 @@ Install virtualenv:
 
 Create a new folder to work with. I'll be placing this in ```/var/www/site/```:
 
-  cd /var/www/
-  sudo mkdir site
-  sudo chown ubuntu site
-  cd site
+    cd /var/www/
+    sudo mkdir site
+    sudo chown ubuntu site
+    cd site
 
 Create a new virtual environment to work on and activate it:
 
-  virtualenv env
-  source ./env/bin/activate
+    virtualenv env
+    source ./env/bin/activate
 
 Let's clone the project.
 
@@ -77,7 +77,21 @@ We'll do a quick test to make sure everything looks right:
 
     python manage.py runserver 0.0.0.0:80
 
-You can now point your browser towards the server's public IP and (if all goes well), you will see the OpenCourse homepage. If you run into an error take a look to see what it is asking you to do - usually this will be installing a missing dependency. You can also check the apache2 log at ```/var/log/apache2/error.log``` for any setup errors once you've setup your virtual host. Feel free to open an issue with the error in question if it's not obvious.
+You can now point your browser towards the server's public IP and (if all goes well), you will see the OpenCourse homepage. If you run into an error take a look to see what it is asking you to do - usually this will be installing a missing dependency.
+
+*These are the end of the development instructions. Limited assistance will be provided going forward.*
+
+Now you can finally enable the production settings and setup an apache2 VirtualHost to run the site using the wsgi file
+provided in the ```opencourse``` directory. Note that you'll need to setup static file delivery with apache as well, and that
+you'll need to enable the installed mods:
+
+    sudo a2enmod ssl # if serving securely
+    sudo a2enmod redirect # to implement strict SSL usage
+
+VirtualHosts, SSL certificate setup, static files, and final webserver implementation are all out-of-scope of these instructions.
+I'm happy to answer any questions that come up, but this is a process that needs to be done by the server administrator.
+
+If you encounter errors after the site is set up can check the apache2 log at ```/var/log/apache2/error.log```. Feel free to open an issue with the error in question if it's not obvious.
 
 From here, there's no step-by-step instructions. The data you'll serve depends on what you want your site to focus on. The copy you cloned has management commands setup at ```course/management/commands/``` that scrape data from the Schedule of Courses.
 
