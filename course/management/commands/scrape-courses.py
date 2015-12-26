@@ -1,26 +1,70 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.core.management import call_command
 from course.models import Course, Term, Instructor, FollowEntry, MeetingTime
-from opencourse.models import CourseUpdateLog
+from opencourse.models import TermUpdate, UpdateLog
 from pyvirtualdisplay import Display
 from splinter import Browser
 from splinter.request_handler.status_code import HttpResponseError
 from lxml import html
-import json
-import datetime
+from datetime import datetime
+from django.utils import timezone
 from time import sleep
+import json
 import logging
 import kronos
 from django.conf import settings
+from threading import Timer
+import signal
+import sys
 logger = logging.getLogger('opencourse')
 
-@kronos.register(settings.COURSE_UPDATE_INTERVAL)
+#@kronos.register(settings.COURSE_UPDATE_INTERVAL)
 class Command(BaseCommand):
     help = 'Scrapes the CNU courses'
 
-    total_parsed = 0
-    total_added = 0
-    total_updated = 0
+    def signal_handler(signal, frame):
+        self.log('Update process manually aborted')
+        self.complete_update(UpdateLog.FAILED)
+        sys.exit(0)
+
+    def log(self, text):
+        self.stdout.write(text)
+        self.update_log.log(text)
+
+    def begin_update(self):
+        self.update_log = UpdateLog()
+        self.update_log.save()
+        self.log('Update started')
+
+    def begin_term(self, term):
+        self.term_update = TermUpdate(term=term)
+        self.log('Parsing classes for: {}'.format(term.name))
+        self.term_update.save()
+        self.update_log.updates.add(self.term_update)
+        self.update_log.save()
+
+    def complete_term(self, parsed, added, updated):
+        self.log('Parsed {} courses. {} added, {} updated.'.format(parsed, added, updated))
+        self.term_update.courses_parsed = parsed
+        self.term_update.courses_added = added
+        self.term_update.courses_updated = updated
+        self.term_update.time_completed = timezone.now()
+        self.term_update.save()
+
+    def complete_update(self, status=UpdateLog.SUCCESS):
+        self.update_log.status = status
+        self.update_log.time_completed = timezone.now()
+        self.update_log.save()
+
+        if self.browser:
+            self.browser.quit()
+        if self.display:
+            self.display.stop()
+
+        diff = self.update_log.time_completed - self.update_log.time_created
+        minutes, seconds = divmod(diff.sdeconds, 60)
+        status_name = dict(UpdateLog._meta.get_field('status').choices)[status]
+        self.log('Update {} in {}m, {}s (status = {})'.format(status_name, minutes, seconds, status))
 
     def handle(self, *args, **options):
         # If present, will allow debugging of scrape without visiting webpage
@@ -30,19 +74,39 @@ class Command(BaseCommand):
             term = Term.objects.all()[0]
             self.parse_courses(term, html.fromstring(content))
             return
-        # Visit URL
-    	url = "https://pulsar.cnu.edu/soc/socquery.aspx"
-        display = Display(visible=0, size=(1024, 768))
-        display.start()
-    	browser = Browser('firefox')
+        # Begin update process
+        self.begin_update()
+        signal.signal(signal.SIGINT, self.signal_handler)
         try:
-            browser.visit(url)
+            self.scrape()
+        except Exception as e:
+            self.log(str(e))
+            self.complete_update(UpdateLog.FAILED)
+            print(e)
+
+    def scrape(self):
+        # Visit URL
+        self.log('Requesting course information...')
+        url = "https://pulsar.cnu.edu/soc/socquery.aspx"
+        self.display = Display(visible=0, size=(1024, 768))
+        self.display.start()
+        self.browser = Browser('firefox')
+        self.browser.driver.set_page_load_timeout(60)
+        try:
+            self.browser.visit(url)
         except HttpResponseError, e:
-            print "Request failed with status code %s: %s" % (e.status_code, e.reason)
+            self.log('Request failed with status code {}'.format(e.status_code))
+            self.complete_update(UpdateLog.FAILED)
+            return
+        except TimeoutException:
+            self.log('Reqeust timed out.')
+            self.complete_update(UpdateLog.FAILED)
+            return
         # Parse page HTML
-        page = html.fromstring(browser.html)
+        page = html.fromstring(self.browser.html)
         # Get semester select options
         semesterlist = page.xpath(".//select[@name='semesterlist']/option")
+        self.log('Received data. Found {} semesters.'.format(len(semesterlist)))
 
         # Add all the new entries
         for entry in semesterlist:
@@ -57,28 +121,34 @@ class Command(BaseCommand):
             except Term.DoesNotExist:
                 term.save()
 
-            self.stdout.write('Parsing classes for: ' + term.name)
+            if not term.update:
+                self.log('Not parsing {} as it has been marked as archived.'.format(term.name))
+                continue
 
-            self.stdout.write('-> Sleeping for 30s...')
+            self.begin_term(term)
+
+            self.log('Sleeping for 30s...')
             sleep(30)
-            self.stdout.write('-> Starting the scrape')
+            self.log('Beginning web scrape')
             # Visit the query page
-            browser.visit(url)
+            try:
+                self.browser.visit(url)
+            except TimeoutException:
+                self.log('Reqeust timed out.')
+                self.complete_update(UpdateLog.FAILED)
+                return
             # Select the relevant term
-            browser.select('startyearlist', '2')
-            browser.select('semesterlist', str(value))
+            self.browser.select('startyearlist', '2')
+            self.browser.select('semesterlist', str(value))
             # Find and click the 'search' button
-            button = browser.find_by_id('Button1').click()
+            button = self.browser.find_by_id('Button1').click()
 
             # Parse new HTML
-            page = html.fromstring(browser.html)
+            page = html.fromstring(self.browser.html)
             self.parse_courses(term, page)
 
-        browser.quit()
-        display.stop()
-        # Create a log
-        CourseUpdateLog(courses_parsed=self.total_parsed, courses_added=self.total_added, courses_updated=self.total_updated).save()
-        self.stdout.write('Successfully scraped courses')
+        # Complete update process
+        self.complete_update()
 
     def parse_instructor(self, content):
         # Parse the instructor
@@ -97,6 +167,7 @@ class Command(BaseCommand):
                 instructor = Instructor.objects.get(first_name__startswith=first_name, last_name=last_name)
         except Instructor.DoesNotExist:
             instructor.save()
+            self.log('Added a new instructor: {}'.format(instructor))
         except Instructor.MultipleObjectsReturned:
             return None
         return instructor
@@ -146,8 +217,8 @@ class Command(BaseCommand):
                         end_time = timestring.split('-')[1]
                         if len(end_time) == 3:
                             end_time = '0' + end_time
-                        start_time = datetime.datetime.strptime(start_time, '%H%M').time()
-                        end_time = datetime.datetime.strptime(end_time, '%H%M').time()
+                        start_time = datetime.strptime(start_time, '%H%M').time()
+                        end_time = datetime.strptime(end_time, '%H%M').time()
                         time.start_time = start_time
                         time.end_time = end_time
                         # Add it to the database
@@ -198,14 +269,13 @@ class Command(BaseCommand):
                     obj.meeting_times = meeting_times
                 if changed:
                     logger.debug('Course listed as changed: /' + str(obj.term.value) + '/' + str(obj.crn))
+                    self.log('Updated an existing course, CRN {}'.format(obj.crn))
                     updated += 1
                     obj.save()
             except Course.DoesNotExist:
                 course.save()
                 course.meeting_times = meeting_times
+                self.log('Added a new course, CRN {}'.format(course.crn))
                 added += 1
 
-        self.stdout.write('-> Parsed ' + str(len(rows) - 1) + ' courses. ' + str(added) + ' added, ' + str(updated) + ' updated.')
-        self.total_parsed += len(rows) - 1
-        self.total_added += added
-        self.total_updated += updated
+        self.complete_term(len(rows) - 1, added, updated)

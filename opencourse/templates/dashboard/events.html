@@ -1,0 +1,5 @@
+{% for event in events %}
+<li class="event">
+  <strong>{{ event.time }}</strong>: {{ event.text|safe }}
+</li>
+{% endfor %}

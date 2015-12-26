@@ -9,6 +9,7 @@ class ScheduleEntry(models.Model):
     term = models.ForeignKey(Term)
     course_crn = models.IntegerField()
     identifier = models.CharField(max_length=100)
+    time_created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = "scheduled course"
@@ -36,6 +37,7 @@ class ScheduleTransaction(models.Model):
     term = models.ForeignKey(Term)
     course_crn = models.IntegerField()
     action = models.IntegerField(choices=ACTION_CHOICES)
+    time_created = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return "%s %d" % (dict(self.ACTION_CHOICES)[self.action], self.course_crn)

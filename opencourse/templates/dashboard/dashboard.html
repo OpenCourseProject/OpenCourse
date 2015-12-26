@@ -1,50 +1,17 @@
 {% extends "base.html" %}
 {% block head %}
-<script src="/static/assets/js/jquery.timer.js"></script>
 <script src="/static/assets/js/moment.min.js"></script>
 <script src="/static/assets/js/later.min.js"></script>
 <link rel="stylesheet" href="/static/assets/font-awesome/css/font-awesome.min.css" type="text/css">
 <style>
-.spinner {
-  margin: 100px auto 0;
-  width: 70px;
-  text-align: center;
+.term-column {
+  padding: 10px;
 }
-
-.spinner > div {
-  width: 18px;
-  height: 18px;
-  background-color: #333;
-
-  border-radius: 100%;
-  display: inline-block;
-  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
-  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+.term-details {
+  margin: 0 !important;
 }
-
-.spinner .bounce1 {
-  -webkit-animation-delay: -0.32s;
-  animation-delay: -0.32s;
-}
-
-.spinner .bounce2 {
-  -webkit-animation-delay: -0.16s;
-  animation-delay: -0.16s;
-}
-
-@-webkit-keyframes sk-bouncedelay {
-  0%, 80%, 100% { -webkit-transform: scale(0) }
-  40% { -webkit-transform: scale(1.0) }
-}
-
-@keyframes sk-bouncedelay {
-  0%, 80%, 100% {
-    -webkit-transform: scale(0);
-    transform: scale(0);
-  } 40% {
-    -webkit-transform: scale(1.0);
-    transform: scale(1.0);
-  }
+.output-button {
+  margin-bottom: 5px;
 }
 </style>
 <script>
@@ -84,38 +51,65 @@ $(document).ready(function() {
   }
   function updateChanges() {
     $('.changes-loading').css('display', 'inline-block');
-    $.getJSON("/internal/changes/?num=5", function(data) {
-      var items = [];
-      $.each(data.changes, function(key, val) {
-        var time = moment(val.time);
-        var value = "<strong>" + time.format('LT') + ":</strong> <a href=\"" + val.url + "\">" + val.course + "</a><ul>";
-        $.each(val.changes, function(key, val) {
-          value += "<li>" + val + "</li>";
-        });
-        items.push("<li>" + value + "</ul></li>");
-      });
-
-      $("#last-updates").html(items.join(""));
-      $('.changes-loading').css('display', 'none');
+    $.get("/dashboard/changes/", function(data) {
+      if (data != $('#change-log').html()) {
+        $('#change-log').html(data);
+      }
     });
+    $('.changes-loading').css('display', 'none');
   }
   function updateLogs() {
     $('.updates-loading').css('display', 'inline-block');
-    $.getJSON("/internal/updates/?num=5", function(data) {
-      var items = [];
-      $.each(data.updates, function(key, val) {
-        var time = moment(val.time);
-        var value = "<strong>" + time.calendar() + ":</strong> " + val.updated + " updated courses, " + val.added + " new courses.";
-        items.push("<li class=\"list-group-item\">" + value + "</li>");
-      });
-
-      $("#update-log").html(items.join(""));
-      $('.updates-loading').css('display', 'none');
+    $.get("/dashboard/updates/", function(data) {
+      if (data != $('#update-log').html()) {
+        var expanded = [];
+        $.each($('.update'), function() {
+          if($(this).is(':visible')) {
+            expanded.push($(this).attr('id'));
+          }
+        });
+        var open = null;
+        $.each($('.update-modal'), function() {
+          if($(this).is(':visible')) {
+            open = $(this).data('updateid');
+          }
+        });
+        if (open != null) {
+          var dom = $('<div>').append($.parseHTML(data));
+          var output = $('#update-output-' + open, dom).text();
+          $('#update-output-' + open).html(output);
+          $('#update-modal-' + open, dom).remove();
+          $('.update', dom).each(function () {
+            $('#' + $(this).attr('id')).replaceWith($(this));
+          });
+        } else {
+          $('#update-log').html(data);
+        }
+        $.each(expanded, function(key, value) {
+          $('#' + value).addClass('in')
+        });
+        $.each($('.update-in-progress'), function() {
+          if (!$.inArray($(this).attr('id'), expanded)) {
+            $('#' + $(this).attr('id')).addClass('in');
+          }
+        });
+      }
     });
+    $('.updates-loading').css('display', 'none');
+  }
+  function updateEvents() {
+    $('.events-loading').css('display', 'inline-block');
+    $.get("/dashboard/events/", function(data) {
+      if (data != $('#event-log').html()) {
+        $('#event-log').html(data);
+      }
+    });
+    $('.events-loading').css('display', 'none');
   }
   function update() {
     updateChanges();
     updateLogs();
+    updateEvents();
   }
   function start() {
     startCron();
@@ -137,7 +131,7 @@ $(document).ready(function() {
   }
   function startUpdate() {
     update();
-    setInterval(update, 1000 * 30);
+    setInterval(update, 1000 * 10);
   }
   start();
 });
@@ -165,13 +159,20 @@ $(document).ready(function() {
     <div class="panel panel-default">
       <div class="panel-heading">Most Recent Changes <i class="fa fa-spinner fa-spin changes-loading" style="display:none;"></i></div>
       <div class="panel-body">
-        <ul id="last-updates" style="list-style-type: none; padding-left: 0;">
+        <ul id="change-log" style="list-style-type: none; padding-left: 0;">
         </ul>
       </div>
     </div>
     <div class="panel panel-default">
       <div class="panel-heading">Update Log <i class="fa fa-spinner fa-spin updates-loading" style="display:none;"></i><br><br>
-        <ul id="update-log" class="list-group">
+        <div id="update-log" class="panel list-group">
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">Most Recent Events <i class="fa fa-spinner fa-spin events-loading" style="display:none;"></i></div>
+      <div class="panel-body">
+        <ul id="event-log" style="list-style-type: none; padding-left: 0;">
         </ul>
       </div>
     </div>

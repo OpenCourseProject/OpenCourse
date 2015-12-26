@@ -9,6 +9,8 @@ class Term(models.Model):
     value = models.IntegerField(unique=True, primary_key=True, verbose_name ="Term Value")
     name = models.CharField(max_length=50, verbose_name="Term Name")
     priority = models.IntegerField(null=True, blank=True)
+    time_created = models.DateTimeField(auto_now_add=True)
+    update = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.name
@@ -24,6 +26,7 @@ class Instructor(models.Model):
     rmp_link = models.URLField(null=True, blank=True, default=None, max_length=100, verbose_name="RateMyProfessor Link")
     position = models.CharField(null=True, blank=True, default=None, max_length=100, verbose_name="Position")
     no_update = models.BooleanField(default=False)
+    time_created = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         name = self.last_name
@@ -136,6 +139,7 @@ class FollowEntry(models.Model):
     user = models.ForeignKey(User)
     term = models.ForeignKey(Term)
     course_crn = models.IntegerField()
+    time_created = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return "%s: %d" % (self.user, self.course_crn)
@@ -149,6 +153,7 @@ class Material(models.Model):
     publisher = models.CharField(max_length=50)
     edition = models.CharField(max_length=20)
     year = models.IntegerField(null=True)
+    time_created = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return self.title

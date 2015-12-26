@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
-from opencourse.views import home, about, dashboard, report, changes, updates, error_500, error_404
+from opencourse.views import home, about, report, error_500, error_404
 admin.autodiscover()
 
 from tastypie.api import Api
@@ -24,17 +24,15 @@ urlpatterns = patterns('',
     url(r'^$', home, name='home'),
     url(r'^', include('course.urls', namespace="search")),
     url(r'^about/', about, name='about'),
-    url(r'^dashboard/', dashboard, name='dashboard'),
     url(r'^api/', include('api.urls')),
     url(r'^api/', include(v1_api.urls)),
     url(r'^schedule/', include('schedule.urls', namespace="schedule")),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^account/', include('account.urls', namespace="account")),
     url(r'^updates/', include('updates.urls', namespace="updates")),
+    url(r'^dashboard/', include('dashboard.urls', namespace="dashboard")),
     # Third-party urls
     url('', include('social.apps.django_app.urls', namespace='social')),
     # Internal API
     url(r'^report/', report, name='report'),
-    url(r'^internal/changes/', changes, name='changes'),
-    url(r'^internal/updates/', updates, name='updates'),
 )

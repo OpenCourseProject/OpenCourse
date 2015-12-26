@@ -1,7 +1,7 @@
 from django.contrib import admin
-from opencourse.models import Report, CourseUpdateLog, EmailLog, Alert
+from opencourse.models import Report, UpdateLog, EmailLog, Alert
 
-@admin.register(CourseUpdateLog, EmailLog, Alert)
+@admin.register(UpdateLog, EmailLog, Alert)
 class Admin(admin.ModelAdmin):
     readonly_fields = ('time_created',)
 

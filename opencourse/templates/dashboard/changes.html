@@ -1,0 +1,10 @@
+{% for change in changes %}
+<li class="change">
+  <strong>{{ change.time }}</strong>: <a href="{{ change.url }}">{{ change.course }}</a>
+  <ul>
+    {% for value in change.changes %}
+    <li>{{ value }}</li>
+    {% endfor %}
+  </ul>
+</li>
+{% endfor %}

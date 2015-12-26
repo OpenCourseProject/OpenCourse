@@ -1,0 +1,49 @@
+{% for update in updates %}
+<!-- Output Modal -->
+{% include "dashboard/output-modal.html" %}
+<a href="javascript:;" class="list-group-item" data-toggle="collapse" data-target="#update-{{ update.time_created|time:"Hi" }}" data-parent="#update-log">
+  <strong>{{ update.time_created }}</strong>:
+  {% if update.status == 0 %}
+  Update in progress...
+  {% else %}
+  {{ update.courses_updated }} updated courses, {{ update.courses_added }} added courses.
+  {% endif %}
+  <div class="pull-right">
+    {% if update.status == 0 %}
+    <span class="text-muted" title="Update in progress"><i class="fa fa-cog fa-spin"></i></span>
+    {% elif update.status == 1 %}
+    <span class="glyphicon glyphicon-ok text-success" title="Update completed successfully"></span>
+    {% elif update.status == 2 %}
+    <span class="glyphicon glyphicon-remove text-danger" title="Update completed with errors"></span>
+    {% endif %}
+  </div>
+</a>
+<div class="update {% if update.status == 0 %}update-in-progress{% endif %} collapse" id="update-{{ update.time_created|time:"Hi" }}">
+  <div class="container">
+    <div class="row">
+      {% for value in update.updates.all %}
+      <div class="col-md-4 term-column">
+        {{ value.term }}
+        <div class="text-muted term-details">
+          {% if value.time_completed %}
+          {% if value.courses_added != 0 or value.courses_updated != 0 %}
+          Added: {{ value.courses_added }}
+          Updated: {{ value.courses_updated }}
+          {% else %}
+          No changes.
+          {% endif %}
+          {% else %}
+          Working...
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="output-button">
+      <center>
+        <a href="#" data-toggle="modal" data-target="#update-modal-{{ update.time_created|time:"Hi" }}">See full output</a>
+      </center>
+    </div>
+  </div>
+</div>
+{% endfor %}

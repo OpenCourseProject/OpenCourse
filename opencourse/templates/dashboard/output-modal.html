@@ -1,0 +1,15 @@
+<div class="modal fade update-modal" id="update-modal-{{ update.time_created|time:"Hi" }}" tabindex="-1" role="dialog" aria-labelledby="reportLabel" aria-hidden="true" data-updateid="{{ update.time_created|time:"Hi" }}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="update-label">Update Output</h4>
+      </div>
+      <div class="modal-body">
+        <pre class="update-output" id="update-output-{{ update.time_created|time:"Hi" }}" data-updateid="{{ update.time_created|time:"Hi" }}">
+{{ update.output }}
+        </pre>
+      </div>
+    </div>
+  </div>
+</div>
