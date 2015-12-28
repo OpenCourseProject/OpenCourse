@@ -58,8 +58,4 @@ class Migration(migrations.Migration):
             name='updates',
             field=models.ManyToManyField(to='opencourse.TermUpdate'),
         ),
-        migrations.RenameModel(
-            old_name='CourseUpdateLog',
-            new_name='UpdateLog',
-        ),
     ]
