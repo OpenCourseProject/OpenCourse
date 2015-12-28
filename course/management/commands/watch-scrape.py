@@ -30,7 +30,7 @@ class Command(BaseCommand):
                 if diff.seconds >= MAX_TIME:
                     status = UpdateLog.FAILED
                     update.status = status
-                    update.time_completed = datetime.now()
+                    update.time_completed = timezone.now()
                     update.save()
 
                     minutes, seconds = divmod(diff.seconds, 60)

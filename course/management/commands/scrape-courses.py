@@ -62,7 +62,7 @@ class Command(BaseCommand):
             self.display.stop()
 
         diff = self.update_log.time_completed - self.update_log.time_created
-        minutes, seconds = divmod(diff.sdeconds, 60)
+        minutes, seconds = divmod(diff.seconds, 60)
         status_name = dict(UpdateLog._meta.get_field('status').choices)[status]
         self.log('Update {} in {}m, {}s (status = {})'.format(status_name, minutes, seconds, status))
 
@@ -80,7 +80,7 @@ class Command(BaseCommand):
         try:
             self.scrape()
         except Exception as e:
-            self.log(str(e))
+            self.log('ERROR: ' + str(e))
             self.complete_update(UpdateLog.FAILED)
             print(e)
 
