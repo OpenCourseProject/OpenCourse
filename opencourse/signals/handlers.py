@@ -1,7 +1,7 @@
 from django.dispatch import receiver
 from django.db.models import signals
 from opencourse.models import UpdateLog
-from datetime import datetime
+from django.utils import timezone
 from django.core.mail import mail_admins
 
 @receiver(signals.pre_save, sender=UpdateLog)
@@ -14,5 +14,5 @@ def notify_failed_course_update(sender, instance, **kwargs):
         pass
 
 def send_failure_email(log):
-    message = "A course scrape failed at {time}. Here is the full output:\n\n{output}".format(time=datetime.now(), output=log.output)
+    message = "A course scrape failed at {time}. Here is the full output:\n\n{output}".format(time=timezone.now(), output=log.output)
     mail_admins('Course scrape failed', message)

@@ -1,8 +1,8 @@
 from django.db import models
 from course.models import Term, Course
 from django.contrib.auth.models import User
+from django.utils import timezone
 from datetime import date
-from datetime import datetime
 
 class Report(models.Model):
     user = models.ForeignKey(User)
@@ -71,7 +71,7 @@ class UpdateLog(models.Model):
         return self.status != 0
 
     def log(self, text):
-        text = '{}: {}'.format(datetime.now().strftime('%H:%M:%S'),text)
+        text = '{}: {}'.format(timezone.now().strftime('%H:%M:%S'),text)
         self.output += text + '\n'
         self.save()
 
