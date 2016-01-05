@@ -18,7 +18,7 @@ import signal
 import sys
 logger = logging.getLogger('opencourse')
 
-#@kronos.register(settings.COURSE_UPDATE_INTERVAL)
+@kronos.register(settings.COURSE_UPDATE_INTERVAL)
 class Command(BaseCommand):
     help = 'Scrapes the CNU courses'
 
@@ -87,7 +87,7 @@ class Command(BaseCommand):
     def scrape(self):
         # Visit URL
         self.log('Requesting course information...')
-        url = "https://pulsar.cnu.edu/soc/socquery.aspx"
+        url = "https://navigator.cnu.edu/StudentScheduleofClasses/"
         self.display = Display(visible=0, size=(1024, 768))
         self.display.start()
         self.browser = Browser('firefox')
@@ -156,7 +156,7 @@ class Command(BaseCommand):
         last_name = arr[0]
         first_name = None
         if len(arr) > 1:
-            first_name = arr[1]
+            first_name = arr[1].split(" ")[0]
 
         instructor = Instructor(first_name=first_name, last_name=last_name)
         # Add it to the database
@@ -173,6 +173,7 @@ class Command(BaseCommand):
         return instructor
 
     def parse_courses(self, term, page):
+        page.make_links_absolute('https://navigator.cnu.edu/StudentScheduleofClasses/')
     	# Get rows from the table
         rows = page.get_element_by_id('GridView1').xpath('tbody')[0]
         skip = True
