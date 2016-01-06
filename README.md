@@ -13,12 +13,12 @@ The Open Course Project is an effort to overhaul course lookup and registration.
 This repository is a [Django](https://www.djangoproject.com/) project written in Python.
 
 The official Open Course Project website is online at https://opencourseproject.com.
-This website and project are still in heavy development, and the code at this repository should be up-to-date,
-but may not necessarily reflect the current state of the website.
+This website and the code on this branch is geared towards usage at Christopher Newport University.
 
-For necessary privacy, details of the settings.py file necessary to run a Django project have been scrubbed from
-public viewing. Where that has been done, notes have been made in the file to allow anyone to reconstruct and easily
-start the site themselves. No other essential files have been removed.
+If you'd like to setup the system for yourself, please see [INSTALL.md](INSTALL.md).
+
+For necessary privacy, details of the settings files necessary to run a Django project have been scrubbed from
+public viewing. Where that has been done, notes have been made in the file to allow anyone to reconstruct and easily start the site themselves. No other essential files have been removed.
 
 ## Contributing
 
