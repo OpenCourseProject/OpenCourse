@@ -12,6 +12,7 @@ from course.utils import exam_for_course, create_changelog
 from django.contrib.auth.decorators import login_required
 from tastypie.models import ApiKey
 from collections import OrderedDict
+import re
 
 def search(request):
     term = None
@@ -52,6 +53,9 @@ def search(request):
         query = query.filter(crn=crn)
         log['crn'] = str(crn)
     if course:
+        match = re.search(r'([A-z]+?)([0-9]+)', course)
+        if match:
+            course = match.group(1) + ' ' + match.group(2)
         query = query.filter(course__icontains=course)
         log['course'] = course
     if days:
