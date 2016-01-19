@@ -1,0 +1,25 @@
+[{
+	"key": "Day",
+	"values": [{
+		"value": 56,
+		"label": "MW"
+	}, {
+		"value": 47,
+		"label": "MWF"
+	}, {
+		"value": 5,
+		"label": "M"
+	}, {
+		"value": 1,
+		"label": "F"
+	}, {
+		"value": 233,
+		"label": "TR"
+	}, {
+		"value": 5,
+		"label": "R"
+	}, {
+		"value": 46,
+		"label": "T"
+	}]
+}]

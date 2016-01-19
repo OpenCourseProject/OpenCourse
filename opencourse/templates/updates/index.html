@@ -1,36 +1,24 @@
 {% extends "base.html" %}
 
-{% block og-image %}<meta property="og:image" content="https://opencourseproject.com/static/assets/img/updates/4.png" />{% endblock %}
 {% block head %}
 <script src="/static/assets/js/d3.min.js"></script>
 <script src="/static/assets/js/nv.d3.min.js"></script>
 <link rel="stylesheet" href="/static/assets/css/nv.d3.css" />
-{% for update in updates %}
-{% if update.published or request.user.is_authenticated %}
-{% if update.scripts %}
-<script type="text/javascript">
-{% autoescape off %}{{ update.scripts }}{% endautoescape %}
-</script>
-{% endif %}
-{% if update.styles %}
 <style>
-{% autoescape off %}{{ update.styles }}{% endautoescape %}
+  .chart {
+    height: 500px;
+  }
 </style>
-{% endif %}
-{% endif %}
-{% endfor %}
 {% endblock %}
 
 {% block content %}
 <div class="container">
   {% for update in updates %}
-  {% if update.published or request.user.is_authenticated %}
-  <div class="page-header">
-    <h1>{{ update.title }} <small>{{ update.time_created }}</small></h1>
-  </div>
-  <p>
-    {% autoescape off %}{{ update.body }}{% endautoescape %}
-  </p>
+  {% if update.published or request.user.is_superuser %}
+    <div class="page-header">
+      <h1>{{ update.title }} <small>{{ update.time_created }}</small></h1>
+    </div>
+    {% include update.html_path %}
   {% endif %}
   {% endfor %}
 </div>

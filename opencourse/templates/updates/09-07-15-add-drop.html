@@ -1,0 +1,333 @@
+<script>
+// Course type graph
+d3.json("/static/updates/data/09-07-15-add-drop/course-types.json",function(error,response){
+nv.addGraph(function() {
+  var chart = nv.models.pieChart()
+      .x(function(d) { return d.label })
+      .y(function(d) { return d.value })
+      .valueFormat(d3.format('d'))
+      .showLabels(true)
+      .labelThreshold(.05)
+      .labelType("key")
+      .donut(true)
+      .donutRatio(0.35);
+
+    d3.select("#chart-course-type svg")
+        .datum(response)
+        .transition().duration(350)
+        .call(chart);
+
+  return chart;
+});
+});
+
+// Course subject graph
+d3.json("/static/updates/data/09-07-15-add-drop/course-subjects.json",function(error,response){
+nv.addGraph(function() {
+  var chart = nv.models.pieChart()
+      .x(function(d) { return d.label })
+      .y(function(d) { return d.value })
+      .valueFormat(d3.format('d'))
+      .showLabels(true)
+      .labelThreshold(.05)
+      .labelType("key");
+
+    d3.select("#chart-course-subject svg")
+        .datum(response)
+        .transition().duration(350)
+        .call(chart);
+
+  return chart;
+});
+});
+
+// Closed graph
+d3.json("/static/updates/data/09-07-15-add-drop/course-closed.json",function(error,response){
+nv.addGraph(function() {
+  var chart = nv.models.discreteBarChart()
+    .x(function(d) { return d.label })
+    .y(function(d) { return d.value })
+    .valueFormat(d3.format('d'))
+    .tooltips(false)
+    .showValues(true)
+
+  chart.yAxis
+    .axisLabel('Total Courses')
+    .tickFormat(d3.format('d'));
+
+  d3.select('#chart-closed svg')
+    .datum(response)
+    .transition().duration(500)
+    .call(chart);
+
+  return chart;
+});
+});
+
+// Seats graph
+d3.json("/static/updates/data/09-07-15-add-drop/course-seats.json",function(error,response){
+nv.addGraph(function() {
+  var timeFormat = d3.time.format("%I:%M %p %a %Y");
+  var chart = nv.models.lineChart()
+    .useInteractiveGuideline(true)
+    ;
+
+  chart.xAxis
+    .axisLabel('Date')
+    .showMaxMin(false)
+    .tickFormat(function(d) { return d3.time.format('%x')(new Date(d * 1)) });
+
+  chart.yAxis
+    .axisLabel('Total Open Seats')
+    .tickFormat(d3.format('d'));
+
+  d3.select('#chart-seats svg')
+    .datum(response)
+    .transition().duration(500)
+    .call(chart);
+
+  return chart;
+});
+});
+
+// New course subject graph
+d3.json("/static/updates/data/09-07-15-add-drop/course-new-seats.json",function(error,response){
+nv.addGraph(function() {
+  var chart = nv.models.pieChart()
+      .x(function(d) { return d.label })
+      .y(function(d) { return d.value })
+      .valueFormat(d3.format('d'))
+      .showLabels(true)
+      .labelThreshold(.05)
+      .labelType("key");
+
+    d3.select("#chart-new-course-subject svg")
+        .datum(response)
+        .transition().duration(350)
+        .call(chart);
+
+  return chart;
+});
+});
+
+// Seats by time graph
+d3.json("/static/updates/data/09-07-15-add-drop/course-time-seats.json",function(error,response){
+nv.addGraph(function() {
+  var chart = nv.models.discreteBarChart()
+    .x(function(d) { return d.label })
+    .y(function(d) { return d.value })
+    .tooltips(false)
+    .showValues(true)
+
+  chart.yAxis
+    .axisLabel('Average Open Seats')
+
+  d3.select('#chart-seats-time svg')
+    .datum(response)
+    .transition().duration(500)
+    .call(chart);
+
+  return chart;
+});
+});
+
+// Reviews graph
+d3.json("/static/updates/data/09-07-15-add-drop/course-review-seats.json",function(error,response){
+nv.addGraph(function() {
+  var chart = nv.models.discreteBarChart()
+    .x(function(d) { return d.label })
+    .y(function(d) { return d.value })
+    .tooltips(false)
+    .showValues(true)
+
+  chart.yAxis
+    .axisLabel('Average Open Seats')
+
+  d3.select('#chart-seats-reviews svg')
+    .datum(response)
+    .transition().duration(500)
+    .call(chart);
+
+  return chart;
+});
+});
+</script>
+<p>
+  We're looking back on Add/Drop period -- the first week of classes, where students
+  can update their scheduled courses at will. This week consists of the dates
+  <strong>Monday August 24 2015</strong> through <strong>Friday August 28 2015</strong>, after which adding and dropping
+  classes is no longer allowed. This period encompasses a large shift in registration
+  as students make final decisions on which courses they want to take, as well as a
+  number of new courses being added to the listing.
+</p>
+<p>
+  The goal of analysing these numbers is to gain insights into the add/drop process
+  and to better understand the student body, but the primary motivation is always simple curiosity.
+  We'll break this data down in a variety of ways to see what we can learn in this interest.
+  Data for this analysis is provided by the recently added course versioning functionality,
+  which is the technology used to send relevant updates via email when course details change.
+  Course versioning tracks courses over time and retains past data for future crunching.
+</p>
+<p>
+  With all that said, let's get to it!
+</p>
+<h2>Data</h2>
+<p>
+  The Fall Semester 2015 listings, as of the posting of this article, contain <strong>1,355</strong> courses.
+  Of these, lectures are of course the overwhelming majority, encompassing <strong>74%</strong> of them.
+  The next largest type is labs, coming in at <strong>16%</strong>. The type with the least number of offered courses is
+  practicum, of which only <a href="/search/?sort=-ctype"><strong>16</strong></a> are offered.
+</p>
+<div id="chart-course-type" class="chart">
+  <svg></svg>
+</div>
+<p>
+  An attempt to break these courses down by subject quickly reveals the diversity of subjects offered at CNU.
+  The top three contenders for most classes are, in order, Biology with <strong>107</strong> courses offered,
+  English with <strong>101</strong> courses offered, and Math with <strong>76</strong> courses offered.
+  A large amount of musical instruments are offered as their own subject, similar to how
+  foreign languages are separated, and most only contain a single course in that subject,
+  including Violin, Cello, Clarinet, Oboe, and more.
+  Other subjects with only one course include a <a href="/course/201600/6307/">Musical Improvisation</a>
+  course and <a href="/course/201600/5273/">NSCI - The Study of Science</a>
+  (not to be mistaken for NCIS, unfortunately).
+  You can click on the subjects below to disable them from the graph.
+</p>
+<div id="chart-course-subject" class="chart">
+  <svg></svg>
+</div>
+<p>
+  Of these classes, the majority (<strong>57%</strong>) are currently closed, which is to be expected following add/drop.
+</p>
+<div id="chart-closed" class="chart">
+  <svg></svg>
+</div>
+<p>
+  However, simply comparing the numbers of closed and open courses does not paint the entire picture.
+  Many courses frequently flip between statuses as students modify their schedules over time.
+  Data from the Open Course following system, which notifies users when a course status changes,
+  show that more users were notified about a <i>closed</i> course <i>opening</i> (<strong>79</strong> notifications)
+  than about an <i>open</i> course <i>closing</i> (<strong>65</strong> notifications) during add/drop.
+</p>
+<p>
+  In fact, over <strong>519</strong> courses changed their status at least once during this period.
+  <strong>470</strong> courses were closed from the beginning and never lost a registration, and <strong>366</strong>
+  courses were opened from the beginning and have still not reached capacity.
+</p>
+<p>
+  Looking at the change in the total number of open seats in all classes,
+  an upward trend is evident which grows as the weekend nears, indicating more available spots being opened up.
+  Whether this is from students dropping classes (the majority of the changes) or from a number of sections added,
+  courses become more available over time.
+</p>
+<div id="chart-seats" class="chart">
+  <svg></svg>
+</div>
+<p>
+  Note that this graph also includes the open seats from new classes added to the listings.
+  The jump in available seats on the 24th is the result of a large batch of <strong>50</strong> courses that were opened that day.
+  Following the graph from that point at the beginning of the week, students can be seen largely registering
+  for seats by the temporary downward trend before it heads back up as drops occur.
+</p>
+<p>
+  This number of open seats (over <strong>1,200</strong>) is at first surprisingly large - enough for nearly
+  an entire extra class of students to fill. However, considering the number of courses from
+  which they are summed, the overall average number of seats is only <strong>2.9</strong> per course.
+</p>
+<p>
+  Zeroing in on that set of 50 sections that was added on the 24th, we can break down the
+  courses by subject to see what was added. What happened there?
+</p>
+<div id="chart-new-course-subject" class="chart">
+  <svg></svg>
+</div>
+<p>
+  The explanation for this addition is more technical in nature. These classes actually are the new
+  sections that apply to the Fall 2015 catalog. Around the 24th at <strong>10 AM</strong>, a change was made to the
+  code of the <a href="https://pulsar.cnu.edu/soc/socquery.aspx">Schedule of Classes</a> page which Open Course
+  gets its data from. This change meant that the "Fall 2014" catalog option shows classes for catalogs
+  <i>After Fall 2014</i>, even though the label has remained the same.
+  This has the effect of introducing all of the newly introduced courses, notably ENGL 123 and LDSP 210
+  courses for Freshmen.
+</p>
+<p>
+  Prior to this change, the data on Schedule of Classes, and by extension on Open Course,
+  was incomplete (missing the Fall 2015 catalog-specific sections). This issue was known because several
+  freshman who had used the browser plugin to sync their classes to Open Course had synced an unknown CRN,
+  causing database errors that had to be resolved. Looking into this issue revealed the inconsistencies
+  in the public Schedule of Classes site which had remained unfixed by CNU until this time
+  (and resulted in much better API validation).
+</p>
+<p>
+  With that sorted, let's take a look at the state of courses by what time they start.
+  Time is often a factor when it comes to scheduling your courses, but when it comes to early and late classes,
+  there is still much debate about which are better. To determine what the majority prefers,
+  we'll look at the average available number of seats in courses at 12 hours of the day.
+</p>
+<div id="chart-seats-time" class="chart">
+  <svg></svg>
+</div>
+<p>
+  Not surprisingly, the courses beginning at <strong>8 AM</strong> are highly undesired by students, at least <strong>44%</strong>
+  less popular than other classes which begin at <strong>9 AM</strong>, just an hour later.
+  It seems that waking up much earlier than 8 to get ready for the day is avoided by most people.
+  Interestingly, classes at this time aren't the least popular according to this data.
+  Seats in courses around <strong>7 PM</strong> are the least popular, possibly because taking one of these
+  will cause you to miss regular hours for dinner. Courses which meet at most other times during
+  the day are the more widely taken classes, and <strong>10 AM</strong> courses are the favorites. Of course,
+  these hours aren't exhaustive.
+</p>
+<p>
+  What about the instructor who teaches the course? RateMyProfessors is an often-used site
+  that allows students to give reviews on their courses, and generates a rating for each professor.
+  Are these reviews heeded by students, or does the convenience of the course (time and other factors)
+  level the playing field?
+</p>
+<p>
+  Let's look at the average number of seats in the 50 highest and lowest rated courses.
+</p>
+<div id="chart-seats-reviews" class="chart">
+  <svg></svg>
+</div>
+<p>
+  As it turns out, students do appear to take general class or instructor rating into account
+  when selecting their classes. This result could come from online sources, such as RateMyProfessor,
+  simple word of mouth, or could be in fact related to unanalyzed factors. Keep in mind that this
+  evaluation is highly unscientific. From the data at hand, however, students to tend to choose courses
+  from more highly recommend instructors to add to their schedule.
+</p>
+<p>
+  It should be noted that, even among the bottom 50 courses, the average open seats is only <strong>3.48</strong>.
+  This is lower than the average number of seats in classes which meet at <strong>8 AM</strong> from the data above,
+  and significantly lower than those that meet at <strong>7 PM</strong>. This indicates that, even though instructors
+  are taken into account during registration, time can provide a much more compelling reason to choose
+  one class over another.
+</p>
+<h2>Conclusion</h2>
+<p>
+  There's a lot of cool things to be learned from data. Taking a look at this data is incredibly
+  validating and shows the importance (and coolness) of this project, because without it these insights
+  haven't been available. If you have an angle you'd like to see that hasn't been looked at yet,
+  please let me know!
+</p>
+<p>
+  Though the results of this analysis are interesting and very cool, they are limited in scope.
+  The functionality created to track courses over time offers better insight into how they change over time,
+  but still from an outside perspective. Better analytics could obviously be leveraged directly from course systems.
+</p>
+<p>
+  Futhermore, this data only comes from the add/drop period of course registration.
+  The Open Course system launched this summer and does not have any records of the full
+  registration period at the end of the Spring 2015 Semester. With the limitations of this analysis
+  understood, there is an opportunity to make changes and upgrades where needed to get a better
+  view of next semester's registration when the time comes.
+</p>
+<p>
+  With that said, boundaries must be respected. Data collection is often at odds with privacy.
+  Companies which manage popular internet websites often grapple with the desire to both respect
+  their users' perceived rights and better understanding them. When this is done wrong, it creates
+  security concerns for everyone involved because user's personal information is put at risk and makes
+  users feel as though they are being watched. "Surveillance breeds conformity" (Glenn Grenwald).
+  The goal of this project is to always, in the face of such a dilemma, air on the side of privacy.
+  These implications need to be kept in mind for future research.
+</p>

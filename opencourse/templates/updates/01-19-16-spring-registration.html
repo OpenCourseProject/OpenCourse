@@ -1,0 +1,431 @@
+<script>
+// Seats graph
+d3.json("/static/updates/data/01-19-16-spring-registration/course-seats.json", function(error,response) {
+  nv.addGraph(function() {
+    var timeFormat = d3.time.format("%I:%M %p %a %Y");
+    var chart = nv.models.lineChart()
+      .useInteractiveGuideline(true);
+
+    chart.xAxis
+      .axisLabel('Date')
+      .showMaxMin(false)
+      .tickFormat(function(d) { return d3.time.format('%x %I:%M %p')(new Date(d * 1)) });
+
+    chart.yAxis
+      .axisLabel('Total Open Seats')
+      .tickFormat(d3.format('d'));
+
+    d3.select('#chart-seats-2016 svg')
+      .datum(response)
+      .transition().duration(500)
+      .call(chart);
+
+    return chart;
+  });
+});
+
+// Course subject graph
+d3.json("/static/updates/data/01-19-16-spring-registration/course-subjects.json", function(error,response) {
+  nv.addGraph(function() {
+    var chart = nv.models.pieChart()
+        .x(function(d) { return d.label })
+        .y(function(d) { return d.value })
+        .valueFormat(d3.format('d'))
+        .showLabels(true)
+        .labelThreshold(.05)
+        .labelType("key");
+
+      d3.select("#chart-subject-2016 svg")
+          .datum(response)
+          .transition().duration(350)
+          .call(chart);
+
+    return chart;
+  });
+});
+
+// User queries graph
+nv.addGraph(function() {
+  var chart = nv.models.pieChart()
+      .x(function(d) { return d.label })
+      .y(function(d) { return d.value })
+      .valueFormat(d3.format('d'))
+      .showLabels(true)
+      .labelThreshold(.05)
+      .labelType("key");
+
+    d3.select("#chart-queries-2016 svg")
+        .datum({{ queries.201610.data|safe }})
+        .transition().duration(350)
+        .call(chart);
+
+  return chart;
+});
+
+// Query fields graph
+d3.json("/static/updates/data/01-19-16-spring-registration/query-fields.json", function(error,response) {
+  nv.addGraph(function() {
+    var chart = nv.models.pieChart()
+        .x(function(d) { return d.label })
+        .y(function(d) { return d.value })
+        .valueFormat(d3.format('d'))
+        .showLabels(true)
+        .labelThreshold(.05)
+        .labelType("key")
+        .donut(true)
+        .donutRatio(0.35);;
+
+      d3.select("#chart-query-fields-2016 svg")
+          .datum(response)
+          .transition().duration(350)
+          .call(chart);
+
+    return chart;
+  });
+});
+
+// Days graph
+d3.json("/static/updates/data/01-19-16-spring-registration/query-days.json", function(error,response) {
+  nv.addGraph(function() {
+    var chart = nv.models.discreteBarChart()
+      .x(function(d) { return d.label })
+      .y(function(d) { return d.value })
+      .valueFormat(d3.format('d'))
+      .tooltips(false)
+      .showValues(true);
+
+    chart.yAxis
+      .axisLabel('Searches')
+      .tickFormat(d3.format('d'));
+    chart.xAxis
+      .axisLabel('Day');
+
+    d3.select('#chart-query-days-2016 svg')
+      .datum(response)
+      .transition().duration(500)
+      .call(chart);
+
+    return chart;
+  });
+});
+
+// Days graph
+d3.json("/static/updates/data/01-19-16-spring-registration/query-times.json", function(error,response) {
+  nv.addGraph(function() {
+    var chart = nv.models.discreteBarChart()
+      .x(function(d) { return d.label })
+      .y(function(d) { return d.value })
+      .valueFormat(d3.format('d'))
+      .tooltips(false)
+      .showValues(true);
+
+    chart.yAxis
+      .axisLabel('Searches')
+      .tickFormat(d3.format('d'));
+    chart.xAxis
+      .axisLabel('Time');
+
+    d3.select('#chart-query-times-2016 svg')
+      .datum(response)
+      .transition().duration(500)
+      .call(chart);
+
+    return chart;
+  });
+});
+</script>
+<p>
+  We've crunched the numbers and generated the graphs. It's time to take a look at
+  Spring 2016 course registration. This period consists of the dates <strong>Friday October 30</strong>
+  through <strong>Friday November 13</strong>, when all Graduate and Undergraduate students
+  choose their classes for the upcoming semester. Technically registration extends through
+  the Schedule Adjustment Period (<strong>December 14 - December 18</strong>) and the final Add / Drop period
+  (<strong>January 4 - January 15</strong>), but that data won't be covered in this analysis.
+</p>
+<p>
+  We'll be looking at the registration patterns and behavior of the student body at large
+  to get a different perspective on students' academic interests and personal course preferences.
+  Data for this analysis is provided by examining the changes in course details on CNU's
+  course listings over time. This data is stored by the Open Course system as it runs periodical updates
+  for use in future analysis. Recently we've added
+  <a href="https://opencourseproject.com/api/#get-courseversion">Course Versions to the API</a>, which
+  allows anyone to examine these changes over time.
+</p>
+<p>
+  Let's get into it!
+</p>
+<h2>Data</h2>
+<p>
+  We'll first look at the big picture - the changes in overall availability of courses over time.
+  The following graph shows the number of open seats in all courses across the registration period.
+</p>
+<div id="chart-seats-2016" class="chart">
+  <svg></svg>
+</div>
+<p>
+  This graph follows the tiered registration pattern laid out by the registrar.
+  Seniors and graduate students are permitted to register at 7 AM and 7:30 AM
+  of <strong>October 30</strong>. Juniors register on <strong>November 3</strong>,
+  Sophomores on <strong>November 5</strong>, and Freshmen on <strong>November 11</strong>.
+  However, there are some dips in the graph that are unaccounted for by this schedule.
+  For instance, it looks as though there is an additional registration time on <strong>November 2</strong>,
+  although not as many seats are taken during this time (around <strong>1,878</strong> seats
+  registered for, compared with <strong>3,916</strong> on the 3rd). Assuming the
+  average student has 4-5 classes on their schedule, we can say that this registration
+  involves around <strong>400-500</strong> students. Similarly small and
+  undocumented drops occur on <strong>November 4</strong> and <strong>10</strong>, right before the official registration
+  times for Sophomores and Freshman respectively.
+</p>
+<p>
+  It's worth noting that, once a student has been opened to registration, their slot does
+  not close until <strong>November 13th</strong>. It is possible that these drops are a result of students
+  from previous registration times wanting to get a spot in a class before the next
+  wave of registration takes place. However, this is unlikely due to the time and scale
+  of the drop in seats. If the scenario just mentioned were occuring, we would expect
+  to see a much more gradual decrease taking place between registration periods.
+  Instead, we can clearly see a much more discrete drop occuring exactly between
+  <strong>7</strong> and <strong>9 AM</strong>, making it clear that this is a
+  planned and regulated registration time provided by the registrar.
+</p>
+<p>
+  This makes it also unlikely that these seats are being held by upperclassmen
+  in preparation for younger student's registration times, as the graph would be
+  much more gradual as courses were dropped and then added if this was a widespread issue.
+</p>
+<p>
+  Since Open Course does not directly interface with the registration system,
+  it's impossible to tell who these classes are being registered for, and thus
+  figure out what the academic qualification is of these unpublished registration
+  periods. As it turns out, however, these registration periods are the advance
+  opportunities given to students in the Honors or President's Leadership programs.
+  This information matches the number of estimated students registering during these
+  periods, which would become smaller each year as students decide to drop out from the
+  programs, but encompasses about half of each class.
+  Curiously not listed on the <a href="http://cnu.edu/registrar/info/">Registrar's website</a>,
+  students in these programs can expect to be allowed to register a full day before
+  their listed academic registration time. Both of these programs list "Priority schedule registration"
+  as one of their benefits, and the benefit is clearly seen here in the data.
+</p>
+<p>
+  With that solved, let's move on to the semester ahead!
+</p>
+<div id="chart-subject-2016" class="chart">
+  <svg></svg>
+</div>
+<p>
+  The spring semester is decidedly less musical than the fall. We've lost courses in
+  <strong>VIOL, OBOE, HARP, PIAN, CLAR, FLUT, PERC, VOIC, TRMB, HORN, TRPT, TUBA,</strong>
+  and <strong>IMPR</strong>. However, we've gained <strong>EVST</strong> (environmental studies),
+  <strong>GREK</strong> (greek language), and <strong>EENG</strong> (electrical engineering, a new program at CNU).
+</p>
+<p>
+  There's also substantial changes in the number of courses offered this semester.
+  While there are <strong>15%</strong> less <strong>ENGL</strong> courses,
+  <strong>18%</strong> less <strong>MATH</strong> courses, and
+  <strong>28%</strong> less <strong>BUSN</strong> courses, there are
+  <strong>450%</strong> more <strong>TCHG</strong> (teaching) opportunities available
+  (<strong>27</strong> more, up only <strong>3</strong> from last semester)
+  with a wealth of internships provided for 4 or even 8 credit hours.
+  There are also small increases in availability of <strong>MLAN</strong> (modern language)
+  <strong>HIST</strong>, <strong>COMM</strong>, and <strong>MGMT</strong> courses.
+</p>
+<br><br>
+<p>
+  The Open Course database was searched this semester alone over <strong>11,000</strong> times by users.
+  The combined results of these searches amounts to over <strong>620,000</strong> courses found.
+</p>
+<p>
+  The award for most searches of the database goes to..... non-logged in users!
+  Not surprisingly, as most web traffic comes from unidentified sources
+  (even if that user has an account but only wants to search, it's easier to remain logged-out),
+  searches from anonymous users totaled <strong>4,352</strong> searches alone,
+  close to <strong>40%</strong> of the overall. For comparison, the next most active user made <strong>320</strong> searches.
+  Still, this means over <strong>60%</strong> of the searches came from users who had an account and were logged in.
+</p>
+<p>
+  This unusually high number (in the grand scheme of things, web-crawlers alone make up
+  <a href="http://www.wired.com/2014/12/bots-now-outnumber-humans-web/">over 60% of Internet traffic</a>)
+  can be attributed to the fact that on Open Course it is incredibly easy to sign up for an account.
+  In fact, you don't have to sign up for anything - the site uses Google's OAuth system to allow users
+  to login with their existing CNU accounts. This is important to keep in mind, as it shows that ease of
+  use is an important factor to user's experience on a site.
+  It's also fair to say that most bots don't care about which English class they'll be taking in the spring,
+  so they wont be sticking around long, so this might not be a fair comparison.
+</p>
+<p>
+  {% if request.user.is_authenticated %}
+  How do you measure up? It looks like you made a total of <strong>{{ queries.201610.num_user }}</strong> searches
+  this semester, about <strong>{{ queries.201610.percentage|floatformat }}%</strong> of the total.
+
+  Here's the breakdown of your searches during this semester.
+  <div id="chart-queries-2016" class="chart">
+    <svg></svg>
+  </div>
+  {% else %}
+  <a href="/account/?next=/updates/{{ update.id }}/">Log in</a> to see how you measure up in these numbers.
+  {% endif %}
+  <p>
+    What did people most often search by when they wanted to find a course?
+    The graph below shows which methods students used to look up courses they
+    might want to take - whether it's by searching for a specific CRN, for a
+    professor they like, or for a course subject or number they have to take.
+  </p>
+  <div id="chart-query-fields-2016" class="chart">
+    <svg></svg>
+  </div>
+  <p>
+    Clearly, searches by course subject are the most common (a subject being a four-letter
+    department identifier or a course number). These sorts of searches make up
+    <strong>64%</strong> of the totals. This backs up the conclusion of the last
+    Add-Drop breakdown that, in general, people see more importance in the substance
+    of the course than who teaches it. Let's have a look at the most popular
+    subjects people searched for:
+  </p>
+  <ul class="list-group">
+    <li class="list-group-item">
+      <span class="badge">427 searches</span>
+      <strong>1.</strong> MATH
+    </li>
+    <li class="list-group-item">
+      <span class="badge">267 searches</span>
+      <strong>2.</strong> PSYC
+    </li>
+    <li class="list-group-item">
+      <span class="badge">232 searches</span>
+      <strong>3.</strong> CPSC
+    </li>
+    <li class="list-group-item">
+      <span class="badge">225 searches</span>
+      <strong>4.</strong> BIOL
+    </li>
+    <li class="list-group-item">
+      <span class="badge">223 searches</span>
+      <strong>5.</strong> ECON
+    </li>
+    <li class="list-group-item">
+      <span class="badge">218 searches</span>
+      <strong>6.</strong> ENGL & CHEM
+    </li>
+  </ul>
+  <p>
+    While these were the most popular subject searches made, there was also a substantial
+    number of searches found that showed a misunderstanding of how course searching
+    works.
+  </p>
+  <p>
+    By narrowing our analysis to focus only on searches which returned no results
+    (and are thus more often invalid searches), we can see some issues with this
+    system. Here are some examples of commonly-made searches which are invalid.
+  </p>
+  <ul class="list-group">
+    <li class="list-group-item">
+      <strong>1.</strong> "HNRS" (as opposed to "HONR", the Honors Seminar label,
+      or a similarly misspelled or mis-abbreviated subject.
+    </li>
+    <li class="list-group-item">
+      <strong>2.</strong> "CHOIR", "BIOLOGY", "ARABIC", or a similarly long version of a course
+      subject. While these are all valid course fields offered by CNU, they
+      should be searched for by their proper abbreviation, "MUSC", "BIOL",
+      "ARAB" respectively.
+    </li>
+    <li class="list-group-item">
+      <strong>3.</strong> "ECON201", "ENGL223", "BIOL213", or a similar search where no space
+      is left between the course subject and the course number. An abbreviation
+      and course number with a space in the middle is the format provided by
+      CNU, and the same one used here.
+    </li>
+  </ul>
+  <p>
+    Obviously, these are very small mistakes that could easily be made by
+    anyone and could confuse people when it returns no results, and this is why
+    data is important. Looking at the search form, it's very easy to understand
+    how these would be made - the help text given for the "Course" field,
+    "<i>(ACCT, PHYS 151, etc.)</i>", is meant to instruct users to the format, but
+    fails to tell people when they've made a mistake. Even the field name,
+    "Course", can be misleading. It's not easy to understand why you cannot
+    search for a choir course using that box, and it's surprisingly hard
+    to find that course at all unless you know it's listed under "MUSC".
+  </p>
+  <p>
+    This indicates that something needs to be done to make searching easier
+    on users. Making things easier through new presentations is, after all,
+    the reason this site was created. Even though the vast majority of searches
+    are successful, some who are in a hurry or have very specific searches to
+    make can be put off by the lack of feedback on what went wrong.
+  </p>
+  <p>
+    As a first step, I've made <a href="https://github.com/OpenCourseProject/OpenCourse/commit/86680fed4e03bf82ada72bf94d80d4f78a7bcbb6" target="_blank">
+    changes to the search engine</a> to automatically correct the 3rd example,
+    where no space is left between the course subject number, without bothering the user.
+    The other examples are a bit more complex. I've been discontent with the current
+    search system for a while now, and this has given me a reason to start over
+    and make something better, fixing those issues (or at least letting people know it's wrong).
+  </p>
+  <p>
+    After considering what can go wrong when searching, let's move on to look
+    at successful searches and what people most look for.
+  </p>
+  <div id="chart-query-days-2016" class="chart">
+    <svg></svg>
+  </div>
+  <p>
+    When it comes to picking a day, students seem to look for classes on <strong>Tuesdays</strong> and <strong>Thursdays</strong>
+    far more than those on others. While <strong>233</strong> searches were made for <strong>TR</strong>
+    courses, only <strong>103</strong> were made for those on <strong>MW/F</strong>. This could mean
+    most people prefer their classes on these days, or that they already have their MWF courses
+    figured out and are using the search function to find classes on the other days. Which do you prefer?
+  </p>
+  <div id="chart-query-times-2016" class="chart">
+    <svg></svg>
+  </div>
+  <p>
+    As for times of day, it turns out that, in order, <strong>3 PM</strong>, <strong>9 AM</strong>,
+    <strong>8 AM</strong>, <strong>11 AM</strong> and <strong>6 PM</strong> are the most searched
+    class times. However, when times are grouped together in blocks, searches are most often made
+    for classes between <strong>11:00 AM and 1:30 PM</strong> This represents, for many college
+    students, a sweet spot where classes are not too early and not too late. This is consistent with the
+    findings of the fall semester's add/drop analysis, which found that classes which meet around
+    <strong>10 AM</strong> are generally most popular.
+  </p>
+  <p>
+    Surprisingly, instructors are not searched for by name very often (queries with instructors named
+    make up less than <strong>1.5%</strong> of all searches). Still, some professors are saught after
+    by searchers. Among these popular folks are professors Throupe (LDSP), Camobreco (GOVT), Lopez (MUSC),
+    Sheffield (LDSP), Falk (HIST), Manning (COMM), Redick (RSTD), and... Staff. It seems like one
+    adventurous user really wanted a surprise in their semester.
+  </p>
+  <p>
+    The top course attributes students looked for were <strong>AINW</strong> (Investigating the Natural World),
+    <strong>AICE</strong> (Creative Expressions), and <strong>AIWT</strong> (Western Traditions). In fact, the 5 Area of Inquiry
+    attributes made up <strong>87%</strong> of the attributes that were searched for, and the Liberal
+    Learning Foundations, Writing Intensive, and Honors attributes were far less saught after.
+  </p>
+  <h2>Conclusion</h2>
+  <p>
+    One of the major limitations of this data is the time between data sampling. Thus far,
+    Open Course has only updated its data every 2 or 3 hours. This is because CNU places
+    limits on its Schedule of Classes web service that lock out the system if more frequent
+    queries are attempted. To be able to see these sorts of breakdowns without any inside
+    access is great, but it's not nearly as detailed and informative as it could be if
+    the database was more complete and up-to-date. There's definitely still more progress to be made there.
+  </p>
+  <p>
+    Still, major improvements on this site alone can come from analysis. In this update alone,
+    multiple issues with the search function were found that will lead to a better user
+    experience for everyone in the future. I'd be happy and interested to hear anyone's feedback
+    or ideas about what can be done to make things more clear.
+  </p>
+  <p>
+    Since the query logging system was new as of writing this post, this analysis focused more on
+    that data than on the courses themselves (those were covered a lot in the last one, and the course
+    makeup doesn't change substantially semester to semester). It's good to see how data collected
+    right here on the site (as opposed to from CNU's website as a third-party) can be so detailed
+    and offers more fine selection, such as the ability to look at only searches that failed to
+    determine their cause. I'll be looking forward to a point where this is available for
+    all course data.
+  </p>
+  <p>
+    I do hope that everyone's semester goes well, and wish everyone a wonderful 2016.
+    Until next time!
+  </p>
+</p>
