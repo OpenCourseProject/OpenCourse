@@ -19,7 +19,7 @@ import datetime
 @login_required
 def schedule(request):
     if request.method == 'POST':
-        form = ScheduleForm(request.POST)
+        form = ScheduleForm(request.user, request.POST)
         if form.is_valid():
             term = form.cleaned_data['term']
     else:
@@ -31,7 +31,7 @@ def schedule(request):
                 term = profile.default_term
             else:
                 term = Term.objects.all()[0]
-        form = ScheduleForm()
+        form = ScheduleForm(request.user)
         form.fields['term'].initial = term
     query = ScheduleEntry.objects.filter(user=request.user, term=term)
     courses = schedule_get_courses(query)

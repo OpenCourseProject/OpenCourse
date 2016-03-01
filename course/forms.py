@@ -1,6 +1,7 @@
 from django import forms
 from course.models import Term, Attribute
 from course.widgets import SelectTimeWidget
+from account.models import Profile
 
 class TermChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, term):
@@ -11,7 +12,7 @@ class AttributeChoiceField(forms.ModelChoiceField):
         return attribute.name
 
 class SearchForm(forms.Form):
-    term = TermChoiceField(widget=forms.Select(attrs={'onchange':'this.form.submit()'}), queryset=Term.objects.all(), empty_label=None)
+    term = TermChoiceField(widget=forms.Select(attrs={'onchange':'this.form.submit()'}), queryset=None, empty_label=None)
     crn = forms.IntegerField(label='CRN', required=False)
     course = forms.CharField(label='Course', widget=forms.TextInput(attrs={'placeholder': '(ACCT, PHYS 151, etc.)'}), max_length=20, required=False)
     days = forms.CharField(label='Days', widget=forms.TextInput(attrs={'placeholder': '(M, MWF, TR, etc.)'}), max_length=5, required=False)
@@ -20,6 +21,15 @@ class SearchForm(forms.Form):
     min_rating = forms.DecimalField(label='Instructor rating', decimal_places=1, max_digits=2, required=False)
     attribute = AttributeChoiceField(label='Fulfills', queryset=Attribute.objects.all(), required=False)
     show_closed = forms.BooleanField(label='Show closed courses', initial=True, required=False)
+
+    def __init__(self, user, *args, **kwargs):
+        terms = Term.objects.filter(update=True)
+        if user.is_authenticated():
+            profile = Profile.objects.get(user=user)
+            if profile.show_archived_terms:
+                terms = Term.objects.all()
+        super(SearchForm, self).__init__(*args, **kwargs)
+        self.fields['term'].queryset = terms
 
 class InstructorSuggestionForm(forms.Form):
     email_address = forms.EmailField(label='Professor Email', required=False)

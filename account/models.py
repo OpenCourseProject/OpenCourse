@@ -8,6 +8,9 @@ class Profile(models.Model):
     default_term = models.ForeignKey(Term, null=True)
     facebook_id = models.CharField(max_length=50, null=True)
     preferred_name = models.CharField(max_length=50, null=True)
+    show_archived_terms = models.BooleanField(default=False)
+    show_colors_schedule = models.BooleanField(default=True)
+    show_details_schedule = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.user.username

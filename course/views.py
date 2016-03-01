@@ -25,7 +25,7 @@ def search(request):
     attribute = None
     show_closed = True
     if request.method == 'POST':
-        form = SearchForm(request.POST)
+        form = SearchForm(request.user, request.POST)
         if form.is_valid():
             term = form.cleaned_data['term']
             crn = form.cleaned_data['crn']
@@ -45,7 +45,7 @@ def search(request):
                 term = profile.default_term
             if 'term' in request.GET:
                 term = Term.objects.get(value=request.GET['term'])
-        form = SearchForm()
+        form = SearchForm(request.user)
         form.fields['term'].initial = term
     query = Course.objects.filter(term=term)
     log = {}
