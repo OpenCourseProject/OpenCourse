@@ -5,7 +5,7 @@ from opencourse.views import home, about, report, error_500, error_404
 admin.autodiscover()
 
 from tastypie.api import Api
-from api.resources import CourseResource, TermResource, InstructorResource, AttributeResource, MaterialResource, ScheduleResource, FollowResource, CourseVersionResource
+from api.resources import CourseResource, TermResource, InstructorResource, AttributeResource, MaterialResource, CourseVersionResource, ScheduleResource, FollowResource, ProfileResource
 
 v1_api = Api(api_name='v1')
 v1_api.register(CourseResource())
@@ -13,9 +13,10 @@ v1_api.register(TermResource())
 v1_api.register(InstructorResource())
 v1_api.register(AttributeResource())
 v1_api.register(MaterialResource())
+v1_api.register(CourseVersionResource())
 v1_api.register(ScheduleResource())
 v1_api.register(FollowResource())
-v1_api.register(CourseVersionResource())
+v1_api.register(ProfileResource())
 
 handler500 = error_500
 handler404 = error_404

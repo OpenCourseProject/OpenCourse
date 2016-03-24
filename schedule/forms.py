@@ -20,3 +20,7 @@ class ScheduleForm(forms.Form):
                 terms = Term.objects.all()
         super(ScheduleForm, self).__init__(*args, **kwargs)
         self.fields['term'].queryset = terms
+
+class ScheduleOptionsForm(forms.Form):
+    show_colors = forms.BooleanField(label='Show colors', required=False)
+    show_details = forms.BooleanField(label='Show course details', required=False)

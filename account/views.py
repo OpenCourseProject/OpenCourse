@@ -21,10 +21,14 @@ def account(request):
                 learning_community = form.cleaned_data['learning_community']
                 preferred_name = form.cleaned_data['preferred_name']
                 show_archived_terms = form.cleaned_data['show_archived_terms']
+                show_colors_schedule = form.cleaned_data['show_colors_schedule']
+                show_details_schedule = form.cleaned_data['show_details_schedule']
                 profile.default_term = default_term
                 profile.learning_community = learning_community
                 profile.preferred_name = preferred_name
                 profile.show_archived_terms = show_archived_terms
+                profile.show_colors_schedule = show_colors_schedule
+                profile.show_details_schedule = show_details_schedule
                 profile.save()
         else:
             form = ProfileForm()
@@ -34,6 +38,10 @@ def account(request):
                 form.fields['learning_community'].initial = profile.learning_community
             if profile.show_archived_terms:
                 form.fields['show_archived_terms'].initial = profile.show_archived_terms
+            if profile.show_colors_schedule:
+                form.fields['show_colors_schedule'].initial = profile.show_colors_schedule
+            if profile.show_details_schedule:
+                form.fields['show_details_schedule'].initial = profile.show_details_schedule
             if profile.preferred_name:
                 form.fields['preferred_name'].initial = profile.preferred_name
             else:

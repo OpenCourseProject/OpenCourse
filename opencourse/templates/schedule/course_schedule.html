@@ -89,7 +89,12 @@
 {% endif %}
 </style>
 <script>
+var api_username = "{{ api_username }}"
+var api_key = "{{ api_key }}"
 $(document).ready(function() {
+  // Update 1 for sidebar
+  updateColors($('#id_show_colors'));
+  updateDetails($('#id_show_details'));
   $('#calendar').fullCalendar({
     defaultView: 'agendaWeek',
     header: false,
@@ -101,6 +106,10 @@ $(document).ready(function() {
     events: '/schedule/calendar/course/?identifier={{ identifier }}&color=true',
     loading: function(isLoading, view) {
       if (!isLoading) {
+        // Update 2 for calendar elements
+        console.log($('#id_show_colors').get(0))
+        updateColors($('#id_show_colors').get(0));
+        updateDetails($('#id_show_details').get(0));
         $('#course-list').css('max-height', $('#calendar').height() + 'px');
       }
     }
@@ -113,32 +122,68 @@ $(document).ready(function() {
     title: 'Remember!',
     content: '<strong>Your schedule is private except when you choose to share your link with others.</strong> Be mindful of who you are sharing your schedule with at all times.',
   });
-  $('#color-toggle').change(function() {
-    if (this.checked) {
-        $('.color').css('display', 'block');
-        $('.fc-time-grid-event').each(function() {
-          var color = $(this).data('color');
-          $(this).css('background-color', color);
-          $(this).css('border-color', color);
-        });
-    } else {
-      $('.color').css('display', 'none');
-      $('.fc-time-grid-event').each(function() {
-        var color = $(this).css('background-color');
-        $(this).data('color', color);
-        $(this).css('background-color', '#3A87AD');
-        $(this).css('border-color', '#3A87AD');
-      });
+  $('#id_show_colors').change(function() {
+    updateColors(this);
+    var headers = {
+      'Authorization': 'ApiKey ' + api_username + ':' + api_key,
     }
+    var data = {
+      'show_colors_schedule': this.checked,
+    }
+    $.ajax({
+      url: '/api/v1/profile/',
+      type: 'POST',
+      data: JSON.stringify(data),
+      headers: headers,
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      processData: false
+    });
   });
-  $('#detail-toggle').change(function() {
-    if (this.checked) {
-        $('.course-detail').css('display', 'block');
-    } else {
-      $('.course-detail').css('display', 'none');
+  $('#id_show_details').change(function() {
+    updateDetails(this);
+    var headers = {
+      'Authorization': 'ApiKey ' + api_username + ':' + api_key,
     }
+    var data = {
+      'show_details_schedule': this.checked,
+    }
+    $.ajax({
+      url: '/api/v1/profile/',
+      type: 'POST',
+      data: JSON.stringify(data),
+      headers: headers,
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      processData: false
+    });
   });
 });
+function updateColors(element) {
+  if (element.checked) {
+      $('.color').css('display', 'block');
+      $('.fc-time-grid-event').each(function() {
+        var color = $(this).data('color');
+        $(this).css('background-color', color);
+        $(this).css('border-color', color);
+      });
+  } else {
+    $('.color').css('display', 'none');
+    $('.fc-time-grid-event').each(function() {
+      var color = $(this).css('background-color');
+      $(this).data('color', color);
+      $(this).css('background-color', '#3A87AD');
+      $(this).css('border-color', '#3A87AD');
+    });
+  }
+}
+function updateDetails(element) {
+  if (element.checked) {
+      $('.course-detail').css('display', 'block');
+  } else {
+    $('.course-detail').css('display', 'none');
+  }
+}
 (function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
@@ -241,9 +286,9 @@ $(document).ready(function() {
   </div>
   <div class="well noprint">
     <form>
-      <input type="checkbox" id="color-toggle" checked> Show Colors
+      {{ options_form.show_colors }} {{ options_form.show_colors.label }}
       <br>
-      <input type="checkbox" id="detail-toggle" checked> Show Course Details
+      {{ options_form.show_details }} {{ options_form.show_details.label }}
     </form>
   </div>
   <div class="print-only">

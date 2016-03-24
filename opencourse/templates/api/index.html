@@ -82,6 +82,8 @@ $(document).ready(function () {
         <li><a href="#get-follow">GET /follow/</a></li>
         <li><a href="#post-follow">POST /follow/</a></li>
         <li><a href="#delete-follow">DELETE /follow/</a></li>
+        <li><a href="#get-profile">GET /profile/</a></li>
+        <li><a href="#post-profile">POST /profile/</a></li>
         <li><a href="#resources"><strong>Non-API Resources</strong></a></li>
       </ul>
     </div>
@@ -450,6 +452,44 @@ $(document).ready(function () {
           send the following request:
           <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X DELETE  {{ domain_full }}/api/v1/follow/1/</pre>
           A successful DELETE returns <code>HTTP 204 NO CONTENT</code>.
+        </p>
+      </div>
+    </div>
+    <div class="panel panel-default" id="get-profile">
+      <div class="panel-heading">
+        <h3 class="panel-title"><samp>GET /profile/</samp></h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          A <strong>Profile</strong> stores personal user data and preferences.
+        </p>
+        Fields:
+        <ul>
+          <li><code>learning_community</code>: the LC the user is in.</li>
+          <li><code>default_term</code>: the default Term to use when searching.</li>
+          <li><code>facebook_id</code>: the ID of the user's linked Facebook profile.</li>
+          <li><code>preferred_name</code>: the user's preferred name.</li>
+          <li><code>show_archived_terms</code>: whether to show old terms in dropdowns.</li>
+          <li><code>show_colors_schedule</code>: whether to colorize classes on the schedule.</li>
+          <li><code>show_details_schedule</code>: whether to show class details on the schedule.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel panel-default" id="post-profile">
+      <div class="panel-heading">
+        <h3 class="panel-title"><samp>POST /profile/</samp></h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          To update your profile, send a POST request where the body includes
+          the fields and values to change.
+        </p>
+        <p>
+          For example, to change your preferred name, send the following request:
+          <pre>curl --dump-header - -H "Content-Type: application/json" -H "Authorization: ApiKey {% if user.is_authenticated %}{{ user.username }}:{{ api_key.key }}{% else %}USERNAME:API_KEY{% endif %}" -X POST --data '{"preferred_name": "Dave"}' {{ domain_full }}/api/v1/profile/</pre>
+          A successful POST to an existing profile will update that profile and return
+          <code>HTTP 400 BAD REQUEST</code> with an error message explaining that the changes have been
+          made to the existing object. This should not be considered an error and is simply a limitation of the API framework.
         </p>
       </div>
     </div>

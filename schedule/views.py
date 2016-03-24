@@ -7,7 +7,7 @@ from course.models import Term, Course
 from account.models import Profile
 from django_tables2 import RequestConfig
 from schedule.tables import ScheduleTable, SchedulePrintTable, ExamTable
-from schedule.forms import ScheduleForm
+from schedule.forms import ScheduleForm, ScheduleOptionsForm
 from course.utils import exam_for_course
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -18,6 +18,7 @@ import datetime
 
 @login_required
 def schedule(request):
+    profile = Profile.objects.get(user=request.user)
     if request.method == 'POST':
         form = ScheduleForm(request.user, request.POST)
         if form.is_valid():
@@ -26,13 +27,17 @@ def schedule(request):
         if 'term' in request.GET:
             term = Term.objects.get(value=request.GET['term'])
         else:
-            profile = Profile.objects.get(user=request.user)
             if profile.default_term:
                 term = profile.default_term
             else:
                 term = Term.objects.all()[0]
         form = ScheduleForm(request.user)
         form.fields['term'].initial = term
+
+    options_form = ScheduleOptionsForm()
+    options_form.fields['show_colors'].initial = profile.show_colors_schedule
+    options_form.fields['show_details'].initial = profile.show_details_schedule
+
     query = ScheduleEntry.objects.filter(user=request.user, term=term)
     courses = schedule_get_courses(query)
     hash = hashlib.md5(b'%s:%s' % (str(request.user.username), str(term.name))).hexdigest()[:15]
@@ -72,6 +77,7 @@ def schedule(request):
         'course_colors': colors,
         'print_table': print_table,
         'form': form,
+        'options_form': options_form,
         'term': term,
         'authenticated': True,
         'identifier': hash,

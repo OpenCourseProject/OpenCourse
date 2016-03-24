@@ -5,6 +5,7 @@ from tastypie.authorization import Authorization
 from tastypie.validation import Validation
 from course.models import Course, Term, Instructor, MeetingTime, Attribute, Material, FollowEntry, CourseVersion
 from schedule.models import ScheduleEntry
+from account.models import Profile
 
 class TermResource(ModelResource):
     class Meta:
@@ -164,3 +165,46 @@ class FollowResource(ModelResource):
 
     def get_object_list(self, request):
         return super(FollowResource, self).get_object_list(request).filter(user=request.user)
+
+class ProfileValidation(Validation):
+    def is_valid(self, bundle, request=None):
+        if not bundle.data:
+            return {'__all__': 'No data provided.'}
+
+        user = bundle.request.user
+        try:
+            obj = Profile.objects.get(user=user)
+            if 'learning_community' in bundle.data:
+                obj.learning_community = bundle.data.get('learning_community')
+            if 'default_term' in bundle.data:
+                obj.default_term = bundle.data.get('default_term')
+            if 'facebook_id' in bundle.data:
+                obj.facebook_id = bundle.data.get('facebook_id')
+            if 'preferred_name' in bundle.data:
+                obj.preferred_name = bundle.data.get('preferred_name')
+            if 'show_archived_terms' in bundle.data:
+                obj.show_archived_terms = bundle.data.get('show_archived_terms')
+            if 'show_colors_schedule' in bundle.data:
+                obj.show_colors_schedule = bundle.data.get('show_colors_schedule')
+            if 'show_details_schedule' in bundle.data:
+                obj.show_details_schedule = bundle.data.get('show_details_schedule')
+            obj.save()
+            return {'__all__': 'Profile already exists, has been updated.'}
+        except Profile.DoesNotExist:
+            return {}
+
+class ProfileResource(ModelResource):
+
+    class Meta:
+        queryset = Profile.objects.all()
+        resource_name = 'profile'
+        allowed_methods = ['get', 'post']
+        authentication = ApiKeyAuthentication()
+        authorization = Authorization()
+        validation = ProfileValidation()
+
+    def obj_update(self, bundle, **kwargs):
+        return super(ProfileResource, self).obj_update(bundle, user=bundle.request.user)
+
+    def get_object_list(self, request):
+        return super(ProfileResource, self).get_object_list(request).filter(user=request.user)
