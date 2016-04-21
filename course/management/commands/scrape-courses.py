@@ -18,6 +18,8 @@ import signal
 import sys
 logger = logging.getLogger('opencourse')
 
+SOC_URL = "https://navigator.cnu.edu/StudentScheduleofClasses/"
+
 @kronos.register(settings.COURSE_UPDATE_INTERVAL)
 class Command(BaseCommand):
     help = 'Scrapes the CNU courses'
@@ -87,19 +89,18 @@ class Command(BaseCommand):
     def scrape(self):
         # Visit URL
         self.log('Requesting course information...')
-        url = "https://navigator.cnu.edu/StudentScheduleofClasses/"
         self.display = Display(visible=0, size=(1024, 768))
         self.display.start()
         self.browser = Browser('firefox')
         self.browser.driver.set_page_load_timeout(60)
         try:
-            self.browser.visit(url)
+            self.browser.visit(SOC_URL)
         except HttpResponseError, e:
             self.log('Request failed with status code {}'.format(e.status_code))
             self.complete_update(UpdateLog.FAILED)
             return
         except TimeoutException:
-            self.log('Reqeust timed out.')
+            self.log('Request timed out.')
             self.complete_update(UpdateLog.FAILED)
             return
         # Parse page HTML
@@ -132,9 +133,9 @@ class Command(BaseCommand):
             self.log('Beginning web scrape')
             # Visit the query page
             try:
-                self.browser.visit(url)
+                self.browser.visit(SOC_URL)
             except TimeoutException:
-                self.log('Reqeust timed out.')
+                self.log('Request timed out.')
                 self.complete_update(UpdateLog.FAILED)
                 return
             # Select the relevant term
@@ -173,7 +174,7 @@ class Command(BaseCommand):
         return instructor
 
     def parse_courses(self, term, page):
-        page.make_links_absolute('https://navigator.cnu.edu/StudentScheduleofClasses/')
+        page.make_links_absolute(SOC_URL)
     	# Get rows from the table
         rows = page.get_element_by_id('GridView1').xpath('tbody')[0]
         skip = True
