@@ -50,7 +50,7 @@ facebookCallback = function(response) {
                 $(".social-body").append('<a href="' + url + '" title="' + name + '"><img src="' + picture_url + '" alt="' + name + '" hspace="5"></a>');
                 added++;
                 if (added == ids.length && ids.length > 0) {
-                  $(".social-heading").html(ids.length + (ids.length == 1 ? " other" : " others") + " in this class");
+                  $(".social-heading").html(ids.length + (ids.length == 1 ? " person" : " people") + " in this class");
                   $(".social-panel").removeClass("hidden");
                 }
               });

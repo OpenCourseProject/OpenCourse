@@ -16,7 +16,7 @@ from django.db.models import Count
 from collections import OrderedDict
 
 def home(request):
-    current_term = Term.objects.get(value=201610)
+    current_term = Term.objects.get(value=201700)
     query = ScheduleEntry.objects.filter(term_id=current_term.value).values('course_crn').annotate(Count('course_crn')).order_by('-course_crn__count')[:3]
     popular_courses = OrderedDict()
     alerts = Alert.objects.all()
