@@ -93,6 +93,10 @@ I'm happy to answer any questions that come up, but this is a process that needs
 
 If you encounter errors after the site is set up can check the apache2 log at ```/var/log/apache2/error.log```. Feel free to open an issue with the error in question if it's not obvious.
 
+If you are using MySQL and haven't done so already, you should make sure timezone data has been added
+
+    mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql -p
+
 From here, there's no step-by-step instructions. The data you'll serve depends on what you want your site to focus on. The copy you cloned has management commands setup at ```course/management/commands/``` that scrape data from the Schedule of Courses.
 
 If you'd like to use these commands, you should run the kronos command to install the tasks as cron jobs:
