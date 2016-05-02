@@ -13,6 +13,9 @@
 .output-button {
   margin-bottom: 5px;
 }
+.graph {
+  margin-bottom: 20px;
+}
 </style>
 <script>
 $(document).ready(function() {
@@ -157,16 +160,18 @@ $(document).ready(function() {
       </div>
     </div>
     <div class="panel panel-default">
+      <div class="panel-heading">Update Log <i class="fa fa-spinner fa-spin updates-loading" style="display:none;"></i><br><br>
+        <div id="update-log" class="panel list-group">
+        </div>
+      </div>
+    </div>
+    <object class="graph" type="image/svg+xml" data="/static/graphs/seats_history.svg">
+    </object>
+    <div class="panel panel-default">
       <div class="panel-heading">Most Recent Changes <i class="fa fa-spinner fa-spin changes-loading" style="display:none;"></i></div>
       <div class="panel-body">
         <ul id="change-log" style="list-style-type: none; padding-left: 0;">
         </ul>
-      </div>
-    </div>
-    <div class="panel panel-default">
-      <div class="panel-heading">Update Log <i class="fa fa-spinner fa-spin updates-loading" style="display:none;"></i><br><br>
-        <div id="update-log" class="panel list-group">
-        </div>
       </div>
     </div>
     <div class="panel panel-default">
@@ -176,6 +181,8 @@ $(document).ready(function() {
         </ul>
       </div>
     </div>
+    <object class="graph" type="image/svg+xml" data="/static/graphs/schedule_history.svg">
+    </object>
   </div>
   <div class="courses">
     <ul class="list-group">

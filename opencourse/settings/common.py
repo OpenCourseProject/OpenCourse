@@ -156,6 +156,7 @@ SCHOOL_WEBSITE = 'http://cnu.edu'
 COURSE_UPDATE_INTERVAL = '0 */1 * * *'
 MATERIAL_UPDATE_INTERVAL = '0 1 * * *'
 RATING_UPDATE_INTERVAL = '0 1 * * *'
+GRAPH_UPDATE_INTERVAL = '0 */1 * * *'
 
 STATIC_ROOT = BASE_DIR + '/static/'
 STATIC_URL = '/static/'
