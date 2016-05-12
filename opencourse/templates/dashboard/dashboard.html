@@ -15,6 +15,7 @@
 }
 .graph {
   margin-bottom: 20px;
+  border-radius: 5px;
 }
 </style>
 <script>
@@ -147,7 +148,7 @@ $(document).ready(function() {
       Open Course Dashboard
     </h1>
     <p class="lead">
-      Data in real time.
+      Current Term: <strong>{{current_term}}</strong>
     </p>
   </div>
   <div class="updates">
@@ -165,7 +166,7 @@ $(document).ready(function() {
         </div>
       </div>
     </div>
-    <object class="graph" type="image/svg+xml" data="/static/graphs/seats_history.svg">
+    <object class="graph" type="image/svg+xml" data="/static/graphs/course_updates.svg">
     </object>
     <div class="panel panel-default">
       <div class="panel-heading">Most Recent Changes <i class="fa fa-spinner fa-spin changes-loading" style="display:none;"></i></div>
@@ -174,6 +175,8 @@ $(document).ready(function() {
         </ul>
       </div>
     </div>
+    <object class="graph" type="image/svg+xml" data="/static/graphs/query_history.svg">
+    </object>
     <div class="panel panel-default">
       <div class="panel-heading">Most Recent Events <i class="fa fa-spinner fa-spin events-loading" style="display:none;"></i></div>
       <div class="panel-body">
@@ -181,16 +184,14 @@ $(document).ready(function() {
         </ul>
       </div>
     </div>
-    <object class="graph" type="image/svg+xml" data="/static/graphs/schedule_history.svg">
-    </object>
-  </div>
-  <div class="courses">
-    <ul class="list-group">
-      <li class="list-group-item">Total Terms: <strong>{{ terms|length }}</strong></li>
-      <li class="list-group-item">Total Courses: <strong>{{ courses|length }}</strong></li>
-      <li class="list-group-item">Courses Scheduled: <strong>{{ schedule_entries|length }}</strong></li>
-      <li class="list-group-item">Courses Being Followed: <strong>{{ follow_entries|length }}</strong></li>
-    </ul>
+    <div class="courses">
+      <ul class="list-group">
+        <li class="list-group-item">Total Terms: <strong>{{ terms|length }}</strong></li>
+        <li class="list-group-item">Total Courses: <strong>{{ courses|length }}</strong></li>
+        <li class="list-group-item">Courses Scheduled: <strong>{{ schedule_entries|length }}</strong></li>
+        <li class="list-group-item">Courses Being Followed: <strong>{{ follow_entries|length }}</strong></li>
+      </ul>
+    </div>
   </div>
   </div>
 </div>

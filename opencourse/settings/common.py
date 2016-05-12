@@ -10,6 +10,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # SECRET_KEY scrubbed
 
+# ADMINS scrubbed
+
 # SOCIAL_AUTH_GOOGLE_OAUTH2_KEY scrubbed
 # SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET scrubbed
 SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = ['cnu.edu']
@@ -95,6 +97,7 @@ INSTALLED_APPS = (
     'account',
     'api',
     'updates',
+    'dashboard',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -153,7 +156,8 @@ SCHOOL_NAME = 'Christopher Newport University'
 SCHOOL_ABBREVIATION = 'CNU'
 SCHOOL_WEBSITE = 'http://cnu.edu'
 
-COURSE_UPDATE_INTERVAL = '0 */1 * * *'
+COURSE_UPDATE_INTERVAL = '0 */2 * * *'
+COURSE_UPDATE_WATCHER_INTERVAL = '*/5 * * * *'
 MATERIAL_UPDATE_INTERVAL = '0 1 * * *'
 RATING_UPDATE_INTERVAL = '0 1 * * *'
 GRAPH_UPDATE_INTERVAL = '0 */1 * * *'

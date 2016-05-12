@@ -3,6 +3,7 @@ from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.utils.safestring import SafeString
 from django.core.mail import mail_admins
+from django.conf import settings
 from account.models import Profile
 from schedule.models import ScheduleEntry
 from schedule.utils import schedule_get_course
@@ -16,7 +17,7 @@ from django.db.models import Count
 from collections import OrderedDict
 
 def home(request):
-    current_term = Term.objects.get(value=201700)
+    current_term = Term.objects.get(value=settings.CURRENT_TERM)
     query = ScheduleEntry.objects.filter(term_id=current_term.value).values('course_crn').annotate(Count('course_crn')).order_by('-course_crn__count')[:3]
     popular_courses = OrderedDict()
     alerts = Alert.objects.all()

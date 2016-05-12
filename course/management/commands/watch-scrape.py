@@ -7,7 +7,7 @@ import kronos
 from django.conf import settings
 from datetime import datetime
 
-MAX_TIME = 60 * 10 # 10 Minutes
+MAX_TIME = 60 * 20 # 20 Minutes
 
 @kronos.register(settings.COURSE_UPDATE_WATCHER_INTERVAL)
 class Command(BaseCommand):

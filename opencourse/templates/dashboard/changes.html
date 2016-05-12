@@ -1,6 +1,9 @@
 {% for change in changes %}
 <li class="change">
   <strong>{{ change.time }}</strong>: <a href="{{ change.url }}">{{ change.course }}</a>
+  {% if change.course.term != current_term %}
+  ({{ change.course.term }})
+  {% endif %}
   <ul>
     {% for value in change.changes %}
     <li>{{ value }}</li>

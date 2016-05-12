@@ -5,6 +5,7 @@ from opencourse.models import TermUpdate, UpdateLog
 from pyvirtualdisplay import Display
 from splinter import Browser
 from splinter.request_handler.status_code import HttpResponseError
+from selenium.common.exceptions import TimeoutException
 from lxml import html
 from datetime import datetime
 from django.utils import timezone
