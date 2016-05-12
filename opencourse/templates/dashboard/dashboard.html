@@ -110,10 +110,20 @@ $(document).ready(function() {
     });
     $('.events-loading').css('display', 'none');
   }
+  function updateCourses() {
+    $('.courses-loading').css('display', 'inline-block');
+    $.get("/dashboard/courses/", function(data) {
+      if (data != $('#courses').html()) {
+        $('#courses').html(data);
+      }
+    });
+    $('.courses-loading').css('display', 'none');
+  }
   function update() {
     updateChanges();
     updateLogs();
     updateEvents();
+    updateCourses();
   }
   function start() {
     startCron();
@@ -160,6 +170,15 @@ $(document).ready(function() {
         <span id="timer">
       </div>
     </div>
+    {% if request.user.is_authenticated %}
+    <div class="panel panel-default">
+      <div class="panel-heading">Your courses <i class="fa fa-spinner fa-spin courses-loading" style="display:none;"></i></div>
+      <div class="panel-body">
+        <ul id="courses" style="list-style-type: none; padding-left: 0;">
+        </ul>
+      </div>
+    </div>
+    {% endif %}
     <div class="panel panel-default">
       <div class="panel-heading">Update Log <i class="fa fa-spinner fa-spin updates-loading" style="display:none;"></i><br><br>
         <div id="update-log" class="panel list-group">
