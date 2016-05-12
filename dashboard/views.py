@@ -59,6 +59,26 @@ def events(request):
     }
     return render(request, 'dashboard/events.html', context)
 
+def courses(request):
+    current_term = Term.objects.get(value=settings.CURRENT_TERM)
+    courses = []
+    if request.user.is_authenticated():
+        scheduled_courses = ScheduleEntry.objects.filter(user=request.user, term=current_term)
+        for schedule in scheduled_courses:
+            course = Course.objects.get(crn=schedule.course_crn, term=schedule.term)
+            versions = (CourseVersion.objects.find(course)[:2])
+            last_version = versions[1] if len(versions) is 2 else versions[0]
+            values = {
+                'current': course,
+                'last': last_version.field_list(),
+                'last_time': last_version.time_created
+            }
+            courses.append(values)
+    context = {
+        'courses': courses,
+    }
+    return render(request, 'dashboard/courses.html', context)
+
 def sort_by_time(obj):
     return obj['time']
 

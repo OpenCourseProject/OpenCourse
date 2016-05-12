@@ -1,0 +1,23 @@
+<ul class="list-group">
+  {% for course in courses %}
+  <li class="list-group-item">
+    <h4 class="list-group-item-heading">
+      <a href="{{ course.current.url }}/">
+        {{ course.current.title }}
+      </a>
+      <small>with {{ course.current.instructor }}</small>
+    </h4>
+    {% if course.current.seats == 0 %}
+    <span class="badge">CLOSED</span>
+    {% endif %}
+    <p class="{% if course.current.seats == 0 %}text-danger{% endif %}">
+    Seats: {{ course.current.seats }}
+    {% if course.current.seats < course.last.seats %}
+      <span class="glyphicon glyphicon-arrow-down text-danger" aria-hidden="true" title="Down from {{ course.last.seats }} on {{ course.last_time }}"></span>
+    {% elif course.current.seats > course.last.seats %}
+      <span class="glyphicon glyphicon-arrow-up text-success" aria-hidden="true" title="Up from {{ course.last.seats }} on {{ course.last_time }}"></span>
+    {% endif %}
+    </p>
+  </li>
+  {% endfor %}
+</ul>
