@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import signals
 from course.models import Course, Term
-import hashlib
+from schedule.utils import get_identifier
 
 class ScheduleEntry(models.Model):
     user = models.ForeignKey(User)
@@ -19,8 +19,7 @@ class ScheduleEntry(models.Model):
         return "%s: %d" % (self.user, self.course_crn)
 
     def generate_hash(self):
-        hash = hashlib.md5(b'%s:%s' % (str(self.user.username), str(self.term.name)))
-        return hash.hexdigest()[:15]
+        return get_identifier(self.user, self.term)
 
     def save(self, *args, **kwargs):
         self.identifier = self.generate_hash()

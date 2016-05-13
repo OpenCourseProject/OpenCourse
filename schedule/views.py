@@ -12,7 +12,7 @@ from course.utils import exam_for_course
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
-import hashlib
+from schedule.utils import get_identifier
 import json
 import datetime
 
@@ -40,7 +40,7 @@ def schedule(request):
 
     query = ScheduleEntry.objects.filter(user=request.user, term=term)
     courses = schedule_get_courses(query)
-    hash = hashlib.md5(b'%s:%s' % (str(request.user.username), str(term.name))).hexdigest()[:15]
+    hash = get_identifier(request.user, term)
     share_url = request.build_absolute_uri('/schedule/' + hash + '/')
 
     credits_min = 0

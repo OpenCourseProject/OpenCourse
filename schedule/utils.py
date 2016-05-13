@@ -1,4 +1,6 @@
-from course.models import Course
+from course.models import Term, Course
+from django.contrib.auth.models import User
+import hashlib
 
 COLORS = [
     'rgba(46, 204, 113, 0.8)',
@@ -31,3 +33,7 @@ def get_colors_for_courses(courses):
         color = COLORS[i % len(COLORS)]
         values[course] = color
     return values
+
+def get_identifier(user, term):
+    hash = hashlib.md5(b'{}:{}:{}'.format(user.username, user.date_joined, term.name))
+    return hash.hexdigest()[:15]
