@@ -63,7 +63,7 @@ def start(request):
 @login_required
 def start_setup(request):
     current_term = Term.objects.get(value=settings.CURRENT_TERM)
-    query = ScheduleEntry.objects.filter(term=current_term)
+    query = ScheduleEntry.objects.filter(term=current_term, user=request.user)
     courses = schedule_get_courses(query)
     context = {
         'current_term': current_term,
