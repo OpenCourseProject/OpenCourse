@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block head %}
+<meta property="og:description" content="A free and independent service for {{ school_abbr }} students to research, plan, and share their schedules." />
+<link rel="stylesheet" href="/static/assets/font-awesome/css/font-awesome.min.css" type="text/css">
+<style>
+.step {
+  display: none;
+  opacity: 0.1;
+  position: relative;
+}
+.section {
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+</style>
+<script>
+var api_username = "{{ api_username }}"
+var api_key = "{{ api_key }}"
+
+var step = 0;
+var steps = ["#step-1", "#step-2"];
+function advance(value) {
+  if (value) {
+    step = value;
+  } else {
+    step++;
+  }
+  var disable = $('.step').filter(function() {return $(this).css('display') == 'block';})
+  if (disable.length > 0) {
+    var next = function(){ return animateIn($(steps[step - 1])); }
+    animateOut(disable, next);
+  } else {
+    animateIn($(steps[step - 1]));
+  }
+}
+
+function animateOut(element, next) {
+  element.animate({
+    left: "-=50",
+    opacity: 0.0,
+  }, 500, function() {
+    element.css('display', 'none');
+    next();
+  });
+}
+
+function animateIn(element) {
+  element.css('display', 'block');
+  element.css('left', 50);
+  element.css('z-index', '10');
+  element.animate({
+    left: 0,
+    opacity: 1.0,
+  }, 500, function() {
+    console.log(element.position().left)
+  });
+}
+
+$(document).ready(function() {
+  advance();
+});
+</script>
+<script src="/static/assets/js/buttons.js"></script>
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="jumbotron">
+    <h1>
+      Getting Started
+    </h1>
+    <p>
+      Let's get you setup to start using Open Course to plan and schedule your classes.
+    </p>
+    <div id="step-1" class="step panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Follow courses</h3>
+      </div>
+      <div class="panel-body">
+        {% if courses|length > 0 %}
+        <p>
+          To stay up-to-date with your classes, you can follow them and we'll send you updates via email if there's anything you need to know --
+          changes in the location, time, instructor, and so on.
+          <br>
+          Click <strong>Get Updates</strong> for classes you want to follow.
+        </p>
+        <ul class="list-group">
+          {% for course in courses %}
+          <li class="list-group-item">
+            <button name="follow-button" type="button" data-term-id="{{ current_term.value }}" data-course-crn="{{ course.crn }}" class="btn btn-default pull-right">
+              <span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Loading...
+            </button>
+            <h4 class="list-group-item-heading">
+              <a href="{{ course.url }}" target="_blank">
+                {{ course.title }}
+              </a>
+              <small>with {{ course.instructor }}</small>
+            </h4>
+            <small class="list-group-item-text">
+              {{ course.primary_meeting_time }}
+              <br>
+              {{ course.instructor }}
+            </small>
+          </li>
+          {% endfor %}
+        </ul>
+        You can always unfollow courses later if you don't want to get updates about them anymore.
+        <div class="section">
+          <button class="btn btn-default" onclick="advance();">Done <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+        </div>
+        {% else %}
+        <p>
+          Hmm, doesn't look like you added any classes to your schedule. Maybe try starting over?
+        </p>
+        <div class="section">
+          <a href="/start/"><button class="btn btn-default"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Go Back</button></a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div id="step-2" class="step panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">You've done it!</h3>
+      </div>
+      <div class="panel-body">
+        <p>Sweet! Your schedule is all setup!</p>
+        <a href="/schedule/" target="_blank"><button class="btn btn-success"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> See your schedule</button></a>
+        <div class="section">
+          From your schedule you can see all the course details, print a paper copy, or use the share url to send it to your friends!
+          <br>
+          <i>Hint: click on a course to open up the course page, which lets you check out the full details including required texts.</i>
+        </div>
+        <div class="section">
+          Here's some more stuff you can do:
+          <ul>
+            <li><a href="/account/#profile" target="_blank">Add your Learning Community to your schedule</a></li>
+            <li><a href="/account/#facebook" target="_blank">Connect to Facebook to see friends in your classes</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

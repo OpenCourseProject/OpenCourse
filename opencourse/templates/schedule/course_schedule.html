@@ -107,7 +107,6 @@ $(document).ready(function() {
     loading: function(isLoading, view) {
       if (!isLoading) {
         // Update 2 for calendar elements
-        console.log($('#id_show_colors').get(0))
         updateColors($('#id_show_colors').get(0));
         updateDetails($('#id_show_details').get(0));
         $('#course-list').css('max-height', $('#calendar').height() + 'px');
@@ -301,7 +300,7 @@ function updateDetails(element) {
         Your schedule looks a bit bare...
       </p>
       <p>
-        <a href="/search/"><span class="glyphicon glyphicon-search"></span> Search for classes to add</a><map>
+        <a href="/search/"><span class="glyphicon glyphicon-search"></span> Search for classes to add</a>
       </p>
       <p>
         <a href="/about/#getting-started"><span class="glyphicon glyphicon-cloud-upload"></span> Sync classes from CNU Live</a>

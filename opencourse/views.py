@@ -6,7 +6,7 @@ from django.core.mail import mail_admins
 from django.conf import settings
 from account.models import Profile
 from schedule.models import ScheduleEntry
-from schedule.utils import schedule_get_course
+from schedule.utils import schedule_get_course, schedule_get_courses
 from course.models import Course, Term, FollowEntry, CourseVersion, QueryLog
 from course.utils import course_create_changelog
 from opencourse.models import Report, Alert
@@ -51,6 +51,25 @@ def home(request):
 def about(request):
     context = {}
     return render(request, 'about.html', context)
+
+@login_required
+def start(request):
+    current_term = Term.objects.get(value=settings.CURRENT_TERM)
+    context = {
+        'current_term': current_term
+    }
+    return render(request, 'start.html', context)
+
+@login_required
+def start_setup(request):
+    current_term = Term.objects.get(value=settings.CURRENT_TERM)
+    query = ScheduleEntry.objects.filter(term=current_term)
+    courses = schedule_get_courses(query)
+    context = {
+        'current_term': current_term,
+        'courses': courses,
+    }
+    return render(request, 'start_setup.html', context)
 
 @login_required
 def report(request):

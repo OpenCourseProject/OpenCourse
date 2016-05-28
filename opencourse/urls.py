@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
-from opencourse.views import home, about, report, error_500, error_404
+from opencourse.views import home, about, start, start_setup, report, error_500, error_404
 admin.autodiscover()
 
 from tastypie.api import Api
@@ -25,6 +25,8 @@ urlpatterns = patterns('',
     url(r'^$', home, name='home'),
     url(r'^', include('course.urls', namespace="search")),
     url(r'^about/', about, name='about'),
+    url(r'^start/$', start, name='start'),
+    url(r'^start/setup/', start_setup, name='start setup'),
     url(r'^api/', include('api.urls')),
     url(r'^api/', include(v1_api.urls)),
     url(r'^schedule/', include('schedule.urls', namespace="schedule")),

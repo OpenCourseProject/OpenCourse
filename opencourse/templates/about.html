@@ -53,7 +53,6 @@ $(document).ready(function () {
       <ul class="nav nav-tabs nav-stacked affix-top" data-spy="affix" data-offset-top="125">
         <li class="active"><a href="#project">The Project</a></li>
         <li><a href="#philosophy">Philosophy</a></li>
-				<li><a href="#getting-started">Getting Started</a></li>
 				<li><a href="#privacy">Privacy</a></li>
 				<li><a href="#security">Security</a></li>
         <li><a href="#extensibility">Extensibility</a></li>
@@ -120,72 +119,6 @@ $(document).ready(function () {
 					</p>
 				</div>
 			</div>
-      <div class="panel panel-info" id="getting-started">
-        <div class="panel-heading">
-          <h3 class="panel-title">Getting Started</h3>
-        </div>
-        <div class="panel-body">
-          <p>
-            If you're just starting on OpenCourse, you'll probably want to sync
-            your current schedule from CNU Live instead of manually adding all
-            the classes.
-          </p>
-          <p>
-            Fortunately, this is made easy by the official
-            <a href="https://chrome.google.com/webstore/detail/iklkhbogomjhkakapieafljbldmhelep">Google Chrome</a>
-						and <a href="https://addons.mozilla.org/en-US/firefox/addon/open-course/">Firefox</a> plugins
-            which integrate with your schedule on CNU Live. You'll want to add
-            it to your browser here:
-          </p>
-          <button class="btn btn-info" onclick="chrome.webstore.install()" id="install-button">Install Chrome plugin</button>
-					<a href="https://addons.mozilla.org/en-US/firefox/addon/open-course/" target="_blank"><button class="btn btn-success">Install Firefox addon</button></a>
-          <br><br>
-          {% if not request.user.is_authenticated %}
-          <p class="text-danger">
-            Make sure you <a href="/account/">log in</a> before you try to sync
-						your courses.
-          </p>
-          {% endif %}
-          <p class="bg-info">
-            If you're not using Google Chrome or Firefox, you can still use this site.
-            Instead of syncing courses from CNU Live, you should use the <a href="/search/">search</a>
-            function to find your courses, open them up, and hit the "Add to schedule" button.
-          </p>
-          <p>
-            Once you've got the plugin installed, you can head to <a href="https://luna.cnu.edu/sso/SSO/SSO_CNU_Live.aspx">CNU Live</a>
-            and go to <strong>Student Services</strong>, to <strong>Registration</strong>,
-            and then click <strong>Student Detail Schedule</strong>. Select the
-            term you're interested in syncing to OpenCourse, and then hit submit.
-          </p>
-          <p>
-            If the plugin has been installed correctly, you should see a large
-            green button linking you to the matching OpenCourse schedule as well
-            as green check marks or red X's depending on whether or not the
-            course listed is included on your OpenCourse schedule. If you don't
-            see any of these things, feel free to <a href="#report" data-toggle="modal" data-target="#report">contact us</a>.
-          </p>
-          <p>
-            If you see a green check mark, it means the course that is displayed
-            on your registration is properly synced - you're good to go! If you
-            see a red X, it means the course isn't on your schedule yet, so you
-            should probably add it. To do this easily you can click the blue
-            "Add" button that will appear there and the course will be synced.
-            Do this for all the courses until only green checks appear!
-          </p>
-          <p>
-            After everything is synced, you can click the green button to view
-            your schedule back here. You should see a nice listing of your
-            courses as well as a calendar view option to see them listed by time.
-            You can also make use of the share URL or the Facebook share widget
-            to share your schedule with whoever you like!
-          </p>
-          <p>
-            Remember that if you make changes to your schedule on OpenCourse, it
-            has no change on your official registration. Scheduling on this site
-            is purely for planning, sharing, and research. Enjoy!
-          </p>
-        </div>
-      </div>
 			<div class="panel panel-default" id="privacy">
 				<div class="panel-heading">
 					<h3 class="panel-title">Privacy</h3>

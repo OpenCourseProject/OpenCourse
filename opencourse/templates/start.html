@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/iklkhbogomjhkakapieafljbldmhelep">
+<meta property="og:description" content="A free and independent service for {{ school_abbr }} students to research, plan, and share their schedules." />
+<link rel="stylesheet" href="/static/assets/font-awesome/css/font-awesome.min.css" type="text/css">
+<style>
+.step {
+  display: none;
+  opacity: 0.1;
+  position: relative;
+}
+.section {
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+</style>
+<script>
+var api_username = "{{ api_username }}"
+var api_key = "{{ api_key }}"
+
+var isFirefox = typeof InstallTrigger !== 'undefined';
+var isChrome = !!window.chrome && !!window.chrome.webstore;
+
+var timer;
+var courseList = [];
+
+function setup() {
+  if (isFirefox) {
+    $('#step-1 .panel-body .firefox').css('display', 'block');
+  } else if (isChrome) {
+    $('#step-1 .panel-body .chrome').css('display', 'block');
+  } else {
+    $('#step-1 .panel-body .none').css('display', 'block');
+  }
+  timer = setInterval(getSchedule, 5 * 1000);
+}
+
+function getSchedule() {
+  var term = "{{ current_term.value }}"
+  var params = {
+    'username': api_username,
+    'api_key': api_key,
+    'term': term,
+    'format': 'json',
+  }
+  $.get('/api/v1/schedule/', params, function(data) {
+    $.each(data.objects, function(index, item) {
+      var course_params = {
+        'username': api_username,
+        'api_key': api_key,
+        'term__value': term,
+        'crn': item.course_crn,
+        'format': 'json',
+      }
+      $.get('/api/v1/course/', course_params, function(data) {
+        if (data.objects.length == 1) {
+          var course = '<li><a href="/course/' + term + '/' + data.objects[0].crn + '/">' + data.objects[0].title + '</a> <div class="text-success" style="display: inline-block"><span class="glyphicon glyphicon-ok"></span></div></li>';
+          if ($.inArray(course, courseList) == -1) {
+            courseList.push(course);
+            updateCourseList();
+          }
+        }
+      });
+    });
+    //$('#course-list').html(data);
+  });
+}
+function updateCourseList() {
+  if (courseList.length > 0) {
+    $('#course-list').html('');
+    for (var i=0;i<courseList.length;i++) {
+      $('#course-list').append(courseList[i]);
+    }
+    $('.courses-finished').css('display', 'block')
+  }
+}
+
+var step = 0;
+var steps = ["#step-1", "#step-2", "#step-3"];
+function advance(value) {
+  if (value) {
+    step = value;
+  } else {
+    step++;
+  }
+  var disable = $('.step').filter(function() {return $(this).css('display') == 'block';})
+  if (disable.length > 0) {
+    var next = function(){ return animateIn($(steps[step - 1])); }
+    animateOut(disable, next);
+  } else {
+    animateIn($(steps[step - 1]));
+  }
+}
+
+function animateOut(element, next) {
+  element.animate({
+    left: "-=50",
+    opacity: 0.0,
+  }, 500, function() {
+    element.css('display', 'none');
+    next();
+  });
+}
+
+function animateIn(element) {
+  element.css('display', 'block');
+  element.css('left', 50);
+  element.css('z-index', '10');
+  element.animate({
+    left: 0,
+    opacity: 1.0,
+  }, 500, function() {
+    console.log(element.position().left)
+  });
+}
+
+$(document).ready(function() {
+  setup();
+  advance();
+});
+</script>
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="jumbotron">
+    <h1>
+      Getting Started
+    </h1>
+    <p>
+      Let's get you setup to start using Open Course to plan and schedule your classes.
+    </p>
+    <div id="step-1" class="step panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Step 1</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          If you're just starting on Open Course, you'll probably want to sync your current schedule from CNU Live instead of manually adding all the classes.
+          Fortunately, this is made easy by the official
+          <a href="https://chrome.google.com/webstore/detail/iklkhbogomjhkakapieafljbldmhelep" target="_blank">Google Chrome</a>
+          and <a href="https://addons.mozilla.org/en-US/firefox/addon/open-course/" target="_blank">Firefox</a> plugins
+          which integrate with your schedule on CNU Live.
+        </p>
+        <div class="section firefox" style="display: none">
+          Looks like you're using Firefox. Go ahead and install the addon by clicking here:
+          <div class="section">
+            <a href="https://addons.mozilla.org/en-US/firefox/addon/open-course/" target="_blank"><button class="btn btn-success">Install Firefox addon</button></a>
+          </div>
+          <div class="section">
+            <button class="btn btn-default" onclick="advance();">Done <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+          </div>
+        </div>
+        <div class="section chrome" style="display: none">
+          Looks like you're using Chrome. Click here to install the plugin:
+          <div class="section">
+            <button class="btn btn-info" onclick="chrome.webstore.install()" id="install-button">Install Chrome plugin</button>
+          </div>
+          <div class="section">
+            <button class="btn btn-default" onclick="advance();">Done <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+          </div>
+        </div>
+        <div class="section none" style="display: none;">
+          It doesn't look like you're using either of these browsers, however.
+          Instead of syncing courses from CNU Live, you should search for your courses, open them up, and hit the "Add to schedule" button.
+          <div class="section">
+            <a href="/search/" target="_blank"><button class="btn btn-info"><span class="glyphicon glyphicon-search"></span> Search for classes</button></a>
+          </div>
+          Click done when you've finished adding classes.
+          <div class="section">
+            <a href="/start/setup/"><button class="btn btn-default">Done <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="step-2" class="step panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Step 2</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          Great. You're ready to sync your courses from CNU Live.
+        </p>
+        <ul>
+          <li>
+            Login to <a href="https://luna.cnu.edu/SSO/Login.aspx?ReturnUrl=/sso/sso/sso_CNU_Live.aspx" target="_blank">CNU Live</a> (opens in a new tab).
+          </li>
+          <li>
+            Click <strong>Student Services and Financial Aid</strong>
+          </li>
+          <li>
+            Click <strong>Registration</strong>
+          </li>
+          <li>
+            Click <strong>Student Detail Schedule</strong>
+          </li>
+          <li>
+            Select <strong>{{ current_term }}</strong>.
+          </li>
+        </ul>
+        <div class="section">
+          <button class="btn btn-default" onclick="advance();">Done <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+        </div>
+      </div>
+    </div>
+    <div id="step-3" class="step panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Step 3</h3>
+      </div>
+      <div class="panel-body">
+        <div>
+          If the plugin has been installed correctly, you should see that courses are listed with
+          <br>
+          <div class="text-success" style="font-size: 16px; display: inline-block"><span class="glyphicon glyphicon-ok"></span> synced to OpenCourse</div>
+          or
+          <div class="text-danger" style="font-size: 16px; display: inline-block"><span class="glyphicon glyphicon-remove"></span> not synced to OpenCourse</div>
+          <br>
+          If you don't see any of these things, feel free to <a href="#report" data-toggle="modal" data-target="#report">contact us</a>.
+        </div>
+        <div class="section">
+          Click the
+          <div style="font-size: 16px; display: inline-block"><button class="btn btn-primary btn-xs" style="display: inline-block">Add</button></div>
+          button next to the courses on CNU Live to sync them over. Your synced courses will appear below as you add them.
+        </div>
+        <div class="well">
+          <strong>Your courses:</strong>
+          <ul id="course-list">
+            None synced yet... <i class="fa fa-spinner fa-spin courses-loading"></i>
+          </ul>
+          <div class="section courses-finished" style="display: none">
+            <i>If you see all of your classes above, you are done syncing! Hit done to continue.</i>
+          </div>
+        </div>
+        <div class="section">
+          <a href="/start/setup/"><button class="btn btn-default">Done <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
