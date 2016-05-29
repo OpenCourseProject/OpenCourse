@@ -257,8 +257,8 @@ function updateDetails(element) {
     <table class="table">
       <tr style="border: 0;">
         <td class="noprint">
-          <div id="course-list">
-            <div class="list-group pull-left" data-step="3" data-intro="Click on any of your course listings to open the course page. There you can see your textbooks, who else is in the class, and way more.">
+          <div id="course-list" data-step="3" data-position="right" data-intro="Click on any of your course listings to open the course page. There you can see your textbooks, who else is in the class, and way more.">
+            <div class="list-group pull-left">
               {% for course, color in course_colors.items %}
               <a href="/course/{{ course.term.value }}/{{ course.crn }}/" class="list-group-item" >
                 <div class="color" style="background-color:{{ color }};">
