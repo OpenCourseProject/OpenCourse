@@ -5,9 +5,10 @@
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
 <link rel="stylesheet" href="/static/assets/css/fullcalendar.css" />
 <link rel="stylesheet" href="/static/assets/css/fullcalendar.print.css" media="print" />
+<link rel="stylesheet" href="/static/assets/css/introjs.css" />
 <script src="/static/assets/js/moment.min.js"></script>
 <script src="/static/assets/js/fullcalendar.min.js"></script>
-<script src="/static/assets/js/facebook.js"></script>
+<script src="/static/assets/js/intro.js"></script>
 <meta property="og:title" content="{{ term.name }} schedule for {{ schedule_user.first_name }} {{ schedule_user.last_name }}" />
 <meta property="og:description" content="{{ social_desc }}" />
 <style>
@@ -91,7 +92,14 @@
 <script>
 var api_username = "{{ api_username }}"
 var api_key = "{{ api_key }}"
+function getParameterByName(name) {
+    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
 $(document).ready(function() {
+  if (getParameterByName('train') != null) {
+    introJs().start();
+  }
   // Update 1 for sidebar
   updateColors($('#id_show_colors'));
   updateDetails($('#id_show_details'));
@@ -219,16 +227,18 @@ function updateDetails(element) {
     {% endif %}
     <h1>
       <form class="schedule-form" action="/schedule/" method="post">
-        Your
-        <h5>
-        {% csrf_token %}
-        {% for field in form %}
-          {{ field }}
-        {% endfor %}
-        </h5>
-        schedule
+        <div data-step="1" data-intro="This is your {{ term.name }} schedule. You can view and edit other semester schedules by selecting them here.">
+          Your
+          <h5>
+          {% csrf_token %}
+          {% for field in form %}
+            {{ field }}
+          {% endfor %}
+          </h5>
+          schedule
+        </div>
         {% if has_courses %}
-        <div class="input-group">
+        <div class="input-group" data-step="2" data-intro="Use the URL here to share your schedule with friends and family.">
           <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> Share</span>
           <input readonly id="share-url" style="background-color: #FFF;" type="text" size="35" class="form-control" aria-describedby="basic-addon1" onClick="this.setSelectionRange(0, this.value.length)" value="{{ share_url }}">
         </div>
@@ -238,7 +248,7 @@ function updateDetails(element) {
   </div>
   {% if has_courses %}
   {% if has_exams %}
-  <div class="alert alert-info" role="alert">
+  <div class="alert alert-info" role="alert" data-step="3" data-intro="You can check out when your exams are by clicking here.">
     <center><a href="/schedule/exam/{{ term.value }}/" class="alert-link">View Exam Schedule</a></center>
   </div>
   {% endif %}
@@ -247,7 +257,7 @@ function updateDetails(element) {
       <tr style="border: 0;">
         <td class="noprint">
           <div id="course-list">
-            <div class="list-group pull-left">
+            <div class="list-group pull-left" data-step="3" data-intro="Click on any of your course listings to open the course page. There you can see your textbooks, who else is in the class, and way more.">
               {% for course, color in course_colors.items %}
               <a href="/course/{{ course.term.value }}/{{ course.crn }}/" class="list-group-item" >
                 <div class="color" style="background-color:{{ color }};">
