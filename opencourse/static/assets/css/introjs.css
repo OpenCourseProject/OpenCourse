@@ -91,7 +91,7 @@ tr.introjs-showElement > th {
   top: -16px;
   left: -16px;
   z-index: 9999999999 !important;
-  padding: 2px;
+  padding: 1.5px;
   font-family: Arial, verdana, tahoma;
   font-size: 13px;
   font-weight: bold;
@@ -105,10 +105,9 @@ tr.introjs-showElement > th {
   background:     -ms-linear-gradient(top, #ff3019 0%, #cf0404 100%); /* IE10+ */
   background:      -o-linear-gradient(top, #ff3019 0%, #cf0404 100%); /* Opera 11.10+ */
   background:         linear-gradient(to bottom, #ff3019 0%, #cf0404 100%);  /* W3C */
-  width: 20px;
-  height:20px;
+  width: 25px;
+  height:25px;
   line-height: 20px;
-  border: 3px solid white;
   border-radius: 50%;
   filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff3019', endColorstr='#cf0404', GradientType=0)"; /* IE6-9 */
   filter: "progid:DXImageTransform.Microsoft.Shadow(direction=135, strength=2, color=ff0000)"; /* IE10 text shadows */

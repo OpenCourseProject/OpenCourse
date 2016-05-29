@@ -84,6 +84,13 @@ function advance(value) {
   } else {
     step++;
   }
+  changeSection();
+}
+function back() {
+  step--;
+  changeSection();
+}
+function changeSection() {
   var disable = $('.step').filter(function() {return $(this).css('display') == 'block';})
   if (disable.length > 0) {
     var next = function(){ return animateIn($(steps[step - 1])); }
@@ -199,6 +206,7 @@ $(document).ready(function() {
           </li>
         </ul>
         <div class="section">
+          <a href="#" class="pull-right" onclick="back();">Go back</a>
           <button class="btn btn-default" onclick="advance();">Done <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
         </div>
       </div>
@@ -232,6 +240,7 @@ $(document).ready(function() {
           </div>
         </div>
         <div class="section">
+          <a href="#" class="pull-right" onclick="back();">Go back</a>
           <a href="/start/setup/"><button class="btn btn-default">Done <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button></a>
         </div>
       </div>

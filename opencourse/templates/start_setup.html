@@ -26,6 +26,13 @@ function advance(value) {
   } else {
     step++;
   }
+  changeSection();
+}
+function back() {
+  step--;
+  changeSection();
+}
+function changeSection() {
   var disable = $('.step').filter(function() {return $(this).css('display') == 'block';})
   if (disable.length > 0) {
     var next = function(){ return animateIn($(steps[step - 1])); }
@@ -34,7 +41,6 @@ function advance(value) {
     animateIn($(steps[step - 1]));
   }
 }
-
 function animateOut(element, next) {
   element.animate({
     left: "-=50",
@@ -110,7 +116,7 @@ $(document).ready(function() {
         </div>
         {% else %}
         <p>
-          Hmm, doesn't look like you added any classes to your schedule. Maybe try starting over?
+          Hmm, doesn't look like you added any classes to your schedule. Maybe try <a href="/start/">starting over</a>?
         </p>
         <div class="section">
           <a href="/start/"><button class="btn btn-default"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Go Back</button></a>
@@ -136,6 +142,7 @@ $(document).ready(function() {
             <li><a href="/account/#profile" target="_blank">Add your Learning Community to your schedule</a></li>
             <li><a href="/account/#facebook" target="_blank">Connect to Facebook to see friends in your classes</a></li>
           </ul>
+          <a href="#" class="pull-right" onclick="back();">Go back</a>
         </div>
       </div>
     </div>
