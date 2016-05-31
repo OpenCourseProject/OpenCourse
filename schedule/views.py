@@ -116,7 +116,7 @@ def exam_schedule(request, termid):
                 if not first_exam or exam.exam_date < first_exam:
                     first_exam = exam.exam_date
 
-    hash = hashlib.md5(b'%s:%s' % (str(request.user.username), str(term.name))).hexdigest()[:15]
+    identifier = get_identifier(request.user, term)
 
     table = ExamTable(exams)
 
@@ -126,7 +126,7 @@ def exam_schedule(request, termid):
         'term': term,
         'table': table,
         'first_exam': first_exam.strftime('%Y-%m-%d'),
-        'identifier': hash,
+        'identifier': identifier,
         'authenticated': True,
     }
     return render(request, 'schedule/exam_schedule.html', context)
