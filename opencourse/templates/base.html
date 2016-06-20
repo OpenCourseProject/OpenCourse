@@ -63,6 +63,15 @@
   			      <li class="{% block home-active %}{% endblock %}"><a class="" href="/">Home</a></li>
   			      <li class="{% block search-active %}{% endblock %}"><a class="" href="/search/">Search</a></li>
               <li class="{% block schedule-active %}{% endblock %}"><a class="" href="/schedule/">Schedule</a></li>
+              {% if profile and profile.orientation %}
+              <li class="dropdown">
+                <a href="/orientation/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Orientation <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/orientation/">Courses</a></li>
+                  <li><a href="/orientation/majors/">Majors</a></li>
+                </ul>
+              </li>
+              {% endif %}
             </ul>
   			    <ul class="nav navbar-nav navbar-right">
   			      <li><a class="navbar-right navbar-link" href="/account/">{% if user.is_authenticated %}{{ user.email }}{% else %}Log In{% endif %}</a></li>

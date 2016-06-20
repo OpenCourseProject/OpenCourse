@@ -8,6 +8,7 @@ from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     search_fields = ['user__username']
+    list_filter = ('orientation',)
 
 class ProfileInline(admin.StackedInline):
     model = Profile

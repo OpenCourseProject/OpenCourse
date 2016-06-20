@@ -34,6 +34,7 @@ urlpatterns = patterns('',
     url(r'^account/', include('account.urls', namespace="account")),
     url(r'^updates/', include('updates.urls', namespace="updates")),
     url(r'^dashboard/', include('dashboard.urls', namespace="dashboard")),
+    url(r'^orientation/', include('orientation.urls', namespace="orientation")),
     # Third-party urls
     url('', include('social.apps.django_app.urls', namespace='social')),
     # Internal API

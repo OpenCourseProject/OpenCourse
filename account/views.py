@@ -20,6 +20,7 @@ def account(request):
                 default_term = form.cleaned_data['default_term']
                 learning_community = form.cleaned_data['learning_community']
                 preferred_name = form.cleaned_data['preferred_name']
+                major = form.cleaned_data['major']
                 show_archived_terms = form.cleaned_data['show_archived_terms']
                 show_colors_schedule = form.cleaned_data['show_colors_schedule']
                 show_details_schedule = form.cleaned_data['show_details_schedule']
@@ -36,6 +37,8 @@ def account(request):
                 form.fields['default_term'].initial = profile.default_term
             if profile.learning_community:
                 form.fields['learning_community'].initial = profile.learning_community
+            if profile.major:
+                form.fields['major'].initial = profile.major
             if profile.show_archived_terms:
                 form.fields['show_archived_terms'].initial = profile.show_archived_terms
             if profile.show_colors_schedule:
