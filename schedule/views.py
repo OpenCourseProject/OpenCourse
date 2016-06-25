@@ -64,8 +64,8 @@ def schedule(request):
 
     has_exams = False
     try:
-        ExamSource.objects.get(term=term)
-        has_exams = True
+        source = ExamSource.objects.get(term=term)
+        has_exams = source.active
     except ExamSource.DoesNotExist:
         has_exams = False
 

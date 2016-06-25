@@ -61,6 +61,7 @@ class ExamSource(models.Model):
     term = models.ForeignKey(Term)
     cnu_source = models.URLField()
     xl_source = models.URLField()
+    active = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.term.name
