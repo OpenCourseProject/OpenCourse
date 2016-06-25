@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block head %}
+<style>
+  .panel-body form  {
+    display: table;
+  }
+  .panel-body p {
+    display: table-row;
+  }
+  .panel-body label {
+    display: table-cell;
+  }
+  .panel-body input {
+    display: table-cell;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="well">
+    <a href="/orientation/" class="btn btn-default btn-md" role="button">
+      <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> Back to search
+    </a>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Majors</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+        {% for profile in profiles %}
+        {% if profile.major %}
+        <li class="list-group-item">
+          <strong>
+          {% if profile.preferred_name %}
+          {{ profile.preferred_name }}
+          {% else %}
+          {{ profile.user.first_name }}
+          {% endif %}
+          {{ profile.user.last_name }}
+          </strong>
+          - {{ profile.major }}
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block head %}
+<style>
+  .panel-body form  {
+    display: table;
+  }
+  .panel-body p {
+    display: table-row;
+  }
+  .panel-body label {
+    display: table-cell;
+  }
+  .panel-body input {
+    display: table-cell;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="well">
+    <a href="/orientation/majors/" class="btn btn-default btn-md" role="button">
+      <span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> List of Majors
+    </a>
+  </div>
+  <div class="panel-group" id="accordion" role="search">
+    <div class="panel panel-default" role="tablist">
+      <div class="panel-heading" role="tab" id="heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse" aria-expanded="true" aria-controls="collapse">
+            Search for courses
+          </a>
+        </h4>
+      </div>
+      <div id="collapse" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading">
+        <div class="panel-body">
+          <p>
+            This tool is intended to allow orientation leaders to connect students to people who have taken or will be taking
+            classes they have questions about. Please remember to always speak neutrally about professors and classes whether you have had
+            a good or bad experience with them.
+          </p>
+          <br>
+          <form class="form-horizontal" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <p>
+              {{ field.errors }}
+              {{ field.label_tag }} {{ field }}
+            </p>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Search</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    </head>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Results</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+        {% if results|length > 0 %}
+        {% for result in results %}
+        <li class="list-group-item">
+          <strong>
+          {% if result.profile.preferred_name %}
+          {{ result.profile.preferred_name }}
+          {% else %}
+          {{ result.user.first_name }}
+          {% endif %}
+          {{ result.user.last_name }}
+          </strong>
+          {% if result.course.term.value = current_term.value %}
+          is taking
+          {% elif result.course.term.value > current_term.value %}
+          will take
+          {% else %}
+          has taken
+          {% endif %}
+          <a href="{{ result.course.url }}">{{ result.course.course }}</a> with {{ result.course.instructor.full_name }}
+          during the <strong>{{ result.course.term }}</strong> semester
+        </li>
+        {% endfor %}
+        {% else %}
+        No courses.
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
