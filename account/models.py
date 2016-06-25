@@ -10,6 +10,7 @@ class Profile(models.Model):
     preferred_name = models.CharField(max_length=50, null=True, blank=True)
     major = models.CharField(max_length=50, null=True, blank=True)
     orientation = models.BooleanField(default=False)
+    private = models.BooleanField(default=False)
     show_archived_terms = models.BooleanField(default=False)
     show_colors_schedule = models.BooleanField(default=True)
     show_details_schedule = models.BooleanField(default=True)

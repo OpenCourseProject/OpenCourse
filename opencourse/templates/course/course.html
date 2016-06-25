@@ -22,43 +22,62 @@ $(document).ready(function() {
   });
 });
 facebookCallback = function(response) {
+  var friends = JSON.parse('{% autoescape off %} {{ friends }} {% endautoescape %}');
   if (response.status === 'connected') {
-    $.get('/friends/', {term: "{{ term.value }}", crn: "{{ course.crn }}"}, function(data) {
-      if (data.length == 0) {
-        return;
+    var arr = [];
+    var ids = [];
+    var added = 0
+    for (var i=0;i<friends.length;i++) {
+      if (friends[i].facebook_id) {
+        arr.push(friends[i]);
       }
-      var arr = data.split(",");
-      var ids = []
-      var added = 0
-      if (arr.length > 0) {
-        FB.api('/me', function(response) {
-          var my_id = response.id;
-          for(var i=0;i<arr.length;i++) {
-            var id = arr[i];
-            if (id != my_id) {
-              ids.push(id);
-            }
+    }
+    if (arr.length > 0) {
+      FB.api('/me', function(response) {
+        var my_id = response.id;
+        for (var i=0;i<arr.length;i++) {
+          var id = arr[i].facebook_id;
+          if (id != my_id) {
+            ids.push(id);
           }
-          for(var i=0;i<ids.length;i++) {
-            var id = ids[i];
-            FB.api('/' + id, function(response) {
-              var name = response.name;
-              var detail_id = response.id
-              var url = 'http://facebook.com/' + detail_id;
-              FB.api('/' + detail_id + '/picture/', function(response) {
-                var picture_url = response.data.url;
-                $(".social-body").append('<a href="' + url + '" title="' + name + '"><img src="' + picture_url + '" alt="' + name + '" hspace="5"></a>');
-                added++;
-                if (added == ids.length && ids.length > 0) {
-                  $(".social-heading").html(ids.length + (ids.length == 1 ? " person" : " people") + " in this class");
-                  $(".social-panel").removeClass("hidden");
-                }
-              });
+        }
+        for(var i=0;i<ids.length;i++) {
+          var id = ids[i];
+          FB.api('/' + id, function(response) {
+            var name = response.name;
+            var detail_id = response.id
+            var url = 'http://facebook.com/' + detail_id;
+            FB.api('/' + detail_id + '/picture/', function(response) {
+              var picture_url = response.data.url;
+              $(".social-body").append('<a href="' + url + '" data-toggle="tooltip" data-placement="bottom" rel="tooltip" title="' + name + '"><img src="' + picture_url + '" alt="' + name + '" hspace="5" vspace="5"></a>');
+              added++;
+              if (added == ids.length && ids.length > 0) {
+                $(".social-heading").html(friends.length + (friends.length == 1 ? " person" : " people") + " in this class");
+                $(".social-panel").removeClass("hidden");
+                $("[rel='tooltip']").tooltip();
+              }
             });
-          }
-        });
-      }
-    });
+          });
+        }
+      });
+    }
+  }
+  var unconnected_arr = [];
+  var unconnected_added = 0;
+  for (var i=0;i<friends.length;i++) {
+    if (!friends[i].facebook_id) {
+      unconnected_arr.push(friends[i]);
+    }
+  }
+  for (var i=0;i<unconnected_arr.length;i++) {
+    var name = unconnected_arr[i].first_name + " " + unconnected_arr[i].last_name;
+    $(".social-body").append('<a href="#" data-toggle="tooltip" data-placement="bottom" rel="tooltip" title="' + name + '"><img src="/static/assets/img/user.png" width="50" height="50" alt="' + name + '" hspace="5" vspace="5"></a>');
+    unconnected_added++;
+    if (unconnected_added == unconnected_arr.length && unconnected_arr.length > 0) {
+      $(".social-heading").html(friends.length + (friends.length == 1 ? " person" : " people") + " in this class");
+      $(".social-panel").removeClass("hidden");
+      $("[rel='tooltip']").tooltip();
+    }
   }
 }
 </script>

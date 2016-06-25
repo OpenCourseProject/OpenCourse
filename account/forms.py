@@ -14,3 +14,4 @@ class ProfileForm(forms.Form):
     show_archived_terms = forms.BooleanField(label='Show old terms when searching', required=False)
     show_colors_schedule = forms.BooleanField(label='Show colors on schedule', required=False)
     show_details_schedule = forms.BooleanField(label='Show course details on schedule', required=False)
+    private = forms.BooleanField(label='Don\'t show me on course pages (will also prevent you from seeing others in the class)', required=False)

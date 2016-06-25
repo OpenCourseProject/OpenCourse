@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required
 from tastypie.models import ApiKey
 from collections import OrderedDict
 import re
+import json
 
 def search(request):
     term = None
@@ -105,6 +106,23 @@ def course(request, term, crn):
         'materials': materials,
         'suggestion_form': InstructorSuggestionForm(),
     }
+
+    if authenticated:
+        user_profile = Profile.objects.get(user=user)
+        if not user_profile.private:
+            friends = []
+            for profile in Profile.objects.all():
+                if not profile == user_profile:
+                    try:
+                        ScheduleEntry.objects.get(user=profile.user, course_crn=course.crn)
+                        friends.append({
+                            'first_name': profile.preferred_name if profile.preferred_name else profile.user.first_name,
+                            'last_name': profile.user.last_name,
+                            'facebook_id': profile.facebook_id
+                        })
+                    except ScheduleEntry.DoesNotExist:
+                        continue
+            context['friends'] = json.dumps(friends)
 
     version_list = CourseVersion.objects.find(course)
     if len(version_list) > 1:
