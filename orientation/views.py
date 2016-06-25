@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 from orientation.forms import SearchForm
 from account.models import Profile
 from schedule.models import ScheduleEntry
@@ -8,6 +9,9 @@ import re
 
 @login_required
 def search(request):
+    profile = Profile.objects.get(user=request.user)
+    if not profile.orientation:
+        return HttpResponseForbidden()
     results = []
     if request.method == 'POST':
         form = SearchForm(request.POST)
@@ -48,6 +52,9 @@ def search(request):
 
 @login_required
 def majors(request):
+    profile = Profile.objects.get(user=request.user)
+    if not profile.orientation:
+        return HttpResponseForbidden()
     results = []
     profiles = Profile.objects.filter(orientation=True)
     context = {
