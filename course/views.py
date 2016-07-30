@@ -114,7 +114,7 @@ def course(request, term, crn):
             for profile in Profile.objects.all():
                 if not profile == user_profile:
                     try:
-                        ScheduleEntry.objects.get(user=profile.user, course_crn=course.crn)
+                        ScheduleEntry.objects.get(user=profile.user, term=term, course_crn=course.crn)
                         friends.append({
                             'first_name': profile.preferred_name if profile.preferred_name else profile.user.first_name,
                             'last_name': profile.user.last_name,
