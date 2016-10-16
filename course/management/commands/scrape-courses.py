@@ -177,7 +177,11 @@ class Command(BaseCommand):
     def parse_courses(self, term, page):
         page.make_links_absolute(SOC_URL)
     	# Get rows from the table
-        rows = page.get_element_by_id('GridView1').xpath('tbody')[0]
+        try:
+            grid = page.get_element_by_id('GridView1')
+            rows = grid.xpath('tbody')[0]
+        except:
+            rows = []
         skip = True
         added = 0
         updated = 0
@@ -280,5 +284,5 @@ class Command(BaseCommand):
                 course.meeting_times = meeting_times
                 self.log('Added a new course, CRN {}'.format(course.crn))
                 added += 1
-
-        self.complete_term(len(rows) - 1, added, updated)
+        count = 0 if len(rows) is 0 else len(rows) - 1
+        self.complete_term(count, added, updated)
