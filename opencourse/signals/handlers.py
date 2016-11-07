@@ -15,4 +15,4 @@ def notify_failed_course_update(sender, instance, **kwargs):
 
 def send_failure_email(log):
     message = "A course scrape failed at {time}. Here is the full output:\n\n{output}".format(time=timezone.now(), output=log.output)
-    #mail_admins('Course scrape failed', message)
+    mail_admins('Course scrape failed', message)

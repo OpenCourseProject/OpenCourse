@@ -115,11 +115,14 @@ def course(request, term, crn):
                 if not profile == user_profile:
                     try:
                         ScheduleEntry.objects.get(user=profile.user, term=term, course_crn=course.crn)
-                        friends.append({
+                        friend = {
                             'first_name': profile.preferred_name if profile.preferred_name else profile.user.first_name,
                             'last_name': profile.user.last_name,
                             'facebook_id': profile.facebook_id
-                        })
+                        }
+                        friend['first_name'] = friend['first_name'].replace("'","")
+                        friend['last_name'] = friend['last_name'].replace("'","")
+                        friends.append(friend)
                     except ScheduleEntry.DoesNotExist:
                         continue
             context['friends'] = json.dumps(friends)
