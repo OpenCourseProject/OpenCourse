@@ -38,7 +38,8 @@ def update_interval(request):
 
 def term_info(request):
     return {
-        'current_term': Term.objects.get(value=settings.CURRENT_TERM)
+        'current_term': Term.objects.get(value=settings.CURRENT_TERM),
+        'sync_term': Term.objects.get(value=settings.SYNC_TERM)
     }
 
 def user_info(request):

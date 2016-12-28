@@ -54,7 +54,7 @@ def about(request):
 
 @login_required
 def start(request):
-    current_term = Term.objects.get(value=settings.CURRENT_TERM)
+    current_term = Term.objects.get(value=settings.SYNC_TERM)
     context = {
         'current_term': current_term
     }
@@ -62,7 +62,7 @@ def start(request):
 
 @login_required
 def start_setup(request):
-    current_term = Term.objects.get(value=settings.CURRENT_TERM)
+    current_term = Term.objects.get(value=settings.SYNC_TERM)
     query = ScheduleEntry.objects.filter(term=current_term, user=request.user)
     courses = schedule_get_courses(query)
     context = {

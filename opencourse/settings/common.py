@@ -99,6 +99,7 @@ INSTALLED_APPS = (
     'api',
     'updates',
     'dashboard',
+    'orientation',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -137,6 +138,8 @@ TEMPLATE_CONTEXT_PROCESSORS = DEFAULT_SETTINGS.TEMPLATE_CONTEXT_PROCESSORS + (
     'opencourse.context.school_info',
     'opencourse.context.domain',
     'opencourse.context.update_interval',
+    'opencourse.context.term_info',
+    'opencourse.context.user_info',
 )
 
 ROOT_URLCONF = 'opencourse.urls'
@@ -157,7 +160,8 @@ SCHOOL_NAME = 'Christopher Newport University'
 SCHOOL_ABBREVIATION = 'CNU'
 SCHOOL_WEBSITE = 'http://cnu.edu'
 
-CURRENT_TERM = 201700
+CURRENT_TERM = 201710
+SYNC_TERM = 201710
 
 COURSE_UPDATE_INTERVAL = '0 */2 * * *'
 COURSE_UPDATE_WATCHER_INTERVAL = '*/5 * * * *'
