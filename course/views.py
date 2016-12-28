@@ -22,7 +22,6 @@ def search(request):
     days = None
     time = None
     instructor = None
-    min_rating = None
     attribute = None
     show_closed = True
     if request.method == 'POST':
@@ -35,7 +34,6 @@ def search(request):
             time = form.cleaned_data['time']
             form.fields['time'].initial = time
             instructor = form.cleaned_data['instructor']
-            min_rating = form.cleaned_data['min_rating']
             attribute = form.cleaned_data['attribute']
             show_closed = form.cleaned_data['show_closed']
     else:
@@ -69,9 +67,6 @@ def search(request):
     if instructor:
         query = query.filter(instructor__last_name__icontains=instructor)
         log['instructor'] = instructor
-    if min_rating:
-        query = query.filter(instructor__rmp_score__gte=min_rating)
-        log['min_rating'] = str(min_rating)
     if attribute:
         query = query.filter(attributes__icontains=attribute.value)
         log['attribute'] = str(attribute.value)

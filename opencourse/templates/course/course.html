@@ -121,13 +121,9 @@ facebookCallback = function(response) {
         <strong>{{ course.course }}</strong>: {{ course.title }}
         {% if course.instructor %}<small>with
         {% if course.instructor.last_name != "Staff" %}
-        <a href="#instructor" data-toggle="modal" data-target="#instructor">
-        {% endif %}
+        <a href="#instructor" data-toggle="modal" data-target="#instructor">{{ course.instructor }}</a>
+        {% else %}
         {{ course.instructor }}
-        {% if course.instructor.rmp_link %}
-        ({{ course.instructor.rmp_score }})</a>
-        {% elif course.instructor.last_name != "Staff" %}
-        </a>
         {% endif %}
         </small>
         {% endif %}

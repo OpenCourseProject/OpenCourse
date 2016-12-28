@@ -18,7 +18,6 @@ class SearchForm(forms.Form):
     days = forms.CharField(label='Days', widget=forms.TextInput(attrs={'placeholder': '(M, MWF, TR, etc.)'}), max_length=5, required=False)
     time = forms.TimeField(label='Time', widget=SelectTimeWidget(minute_step=30, second_step=60, twelve_hr=True), required=False)
     instructor = forms.CharField(label='Instructor name', max_length=50, required=False)
-    min_rating = forms.DecimalField(label='Instructor rating', decimal_places=1, max_digits=2, required=False)
     attribute = AttributeChoiceField(label='Fulfills', queryset=Attribute.objects.all(), required=False)
     show_closed = forms.BooleanField(label='Show closed courses', initial=True, required=False)
 

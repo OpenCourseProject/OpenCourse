@@ -22,7 +22,6 @@ class Instructor(models.Model):
     first_name = models.CharField(null=True, max_length=50, verbose_name="First Name")
     last_name = models.CharField(db_index=True, max_length=50, verbose_name="Last Name")
     email_address = models.EmailField(null=True, blank=True, default=None)
-    rmp_score = models.DecimalField(null=True, blank=True, default=None, decimal_places=1, max_digits=2, verbose_name="Rating")
     rmp_link = models.URLField(null=True, blank=True, default=None, max_length=100, verbose_name="RateMyProfessor Link")
     position = models.CharField(null=True, blank=True, default=None, max_length=100, verbose_name="Position")
     no_update = models.BooleanField(default=False)

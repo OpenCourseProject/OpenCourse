@@ -25,9 +25,9 @@
                 <h3>RateMyProfessors</h3>
                 {% if course.instructor.rmp_link %}
                 <p>
-                  {{ course.instructor.full_name }} has a <strong>{{ course.instructor.rmp_score }}</strong> on RateMyProfessors.
+                  See {{ course.instructor.full_name }}'s score on on RateMyProfessors.
                 </p>
-                <p><a href="{{ course.instructor.rmp_link }}" target="_blank" class="btn btn-primary" role="button">View Page</a></p>
+                <p><a href="{{ course.instructor.rmp_link }}" target="_blank" class="btn btn-primary" role="button">View Rating</a></p>
                 {% else %}
                 <p>
                 We don't have a RateMyProfessor link for this instructor yet.
