@@ -160,8 +160,8 @@ $(document).ready(function () {
             <code>__contains</code>, <code>__icontains</code> (case-insensitive),
             <code>__startswith</code> or <code>__endswith</code> modifiers to make
             advanced queries.
-            For instance, <code>{{ domain_full }}/api/v1/course/?instructor__rmp_score__gte=3</code>
-            finds all courses where the instructor's RateMyProfessor score is <strong>at least</strong> 3.0.
+            For instance, <code>{{ domain_full }}/api/v1/course/?seats__gte=3</code>
+            finds all courses where there are <strong>at least</strong> 3 open seats.
           </li>
         </ul>
       </div>
@@ -193,7 +193,6 @@ $(document).ready(function () {
           </li>
           <li><code>last_name</code>: the last name of the Instructor.</li>
           <li><code>rmp_link</code>: the RateMyProfessor page for this Instructor, if known.</li>
-          <li><code>rmp_score</code>: the last RateMyProfessor rating for this Instructor, if known.</li>
         </ul>
       </div>
     </div>
@@ -239,10 +238,10 @@ $(document).ready(function () {
           </li>
         </ul>
         <p>
-          Course data is updated daily by
-          <a href="http://www.wolframalpha.com/input/?i=6+AM+EST+in+my+timezone">6 AM EST</a>.
-          If you are regularly querying courses, you can cache this data and assume
-          it is unchanged until at least this time.
+          Course data is updated every 2 hours, and can be monitored on the
+          <a href="https://opencourseproject.com/dashboard/">Dashboard</a>.
+          If you are regularly querying courses, you can cache course data and assume
+          it is unchanged until the next processing period.
         </p>
       </div>
     </div>
