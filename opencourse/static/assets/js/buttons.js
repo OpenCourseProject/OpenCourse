@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  var API_PARAM = '?username=' + api_username + '&api_key=' + api_key;
   $('button[name="schedule-button"]').each(function(i, obj) {
     var button = $(this);
     var term = button.data('term-id');
@@ -46,7 +47,7 @@ $(document).ready(function() {
         'course_crn': course,
       }
       $.ajax({
-        url: '/api/v1/schedule/',
+        url: '/api/v1/schedule/' + API_PARAM,
         type: 'POST',
         data: JSON.stringify(data),
         headers: headers,
@@ -69,7 +70,7 @@ $(document).ready(function() {
         'format': 'json',
       }
       $.get('/api/v1/schedule/', params, function(data) {
-        uri = data.objects[0].resource_uri;
+        uri = data.objects[0].resource_uri + API_PARAM;
         headers = {
           'Authorization': 'ApiKey ' + api_username + ':' + api_key,
         }
@@ -99,7 +100,7 @@ $(document).ready(function() {
         'course_crn': course,
       }
       $.ajax({
-        url: '/api/v1/follow/',
+        url: '/api/v1/follow/' + API_PARAM,
         type: 'POST',
         data: JSON.stringify(data),
         headers: headers,
@@ -122,7 +123,7 @@ $(document).ready(function() {
         'format': 'json',
       }
       $.get('/api/v1/follow/', params, function(data) {
-        uri = data.objects[0].resource_uri;
+        uri = data.objects[0].resource_uri + API_PARAM;
         headers = {
           'Authorization': 'ApiKey ' + api_username + ':' + api_key,
         }
