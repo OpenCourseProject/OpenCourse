@@ -74,6 +74,7 @@ class Course(models.Model):
     instructor = models.ForeignKey(Instructor, null=True, blank=True, verbose_name="Instructor")
     seats = models.IntegerField(db_index=True, verbose_name="Seats Left")
     status = models.IntegerField(verbose_name="Status", choices=STATUS_CHOICES)
+    deleted = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "course"

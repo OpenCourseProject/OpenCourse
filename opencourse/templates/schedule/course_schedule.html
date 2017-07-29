@@ -210,7 +210,16 @@ function updateDetails(element) {
     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <strong>Whoops!</strong> Some of the classes you scheduled couldn't be found. The following CRNs are invalid for this term:
     {% for entry in invalid_courses %}
-    {{ entry.course_crn }}{% if not forloop.last %}, {% else %}{% endif %}
+    {{ entry.course_crn }}{% if not forloop.last %}, {% else %}.{% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if deleted_courses %}
+  <div class="alert alert-warning alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong>Warning:</strong> One or more classes on your schedule have been deleted by the registrar. The following courses are no longer offered for this semester:
+    {% for course in deleted_courses %}
+    <a href="{{ course.url }}">{{ course.crn }}: {{ course.course }}-{{ course.section }}</a>{% if not forloop.last %}, {% else %}.{% endif %}
     {% endfor %}
   </div>
   {% endif %}

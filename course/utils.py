@@ -38,7 +38,11 @@ def follow_get_courses(follows):
 def create_changelog(old_version, new_version, plaintext=False):
     changes = []
     for field, value in new_version.field_list().iteritems():
-        old_value = old_version.field_list()[field]
+        try:
+            old_value = old_version.field_list()[field]
+        except:
+            if field == 'deleted':
+                old_value = False
         new_value = value
         if old_value != new_value:
             if field == 'status':
@@ -62,6 +66,11 @@ def create_changelog(old_version, new_version, plaintext=False):
             if new_value == '':
                 new_value = 'none'
             string = verbose_name + ' changed from ' + str(old_value) +  ' to ' + str(new_value) if plaintext else SafeString(verbose_name + ' changed from <strong>' + str(old_value) +  '</strong> to <strong>' + str(new_value) + '</strong>')
+            if field == 'deleted':
+                if new_value:
+                    string = 'Course was removed from the Schedule of Classes by the registrar' if plaintext else SafeString('Course was <strong>removed</strong> from the Schedule of Classes by the registrar')
+                else:
+                    string = 'Course was re-added to the Schedule of Classes by the registrar' if plaintext else SafeString('Course was <strong>re-added</strong> to the Schedule of Classes by the registrar')
             changes.append(string)
     return changes
 

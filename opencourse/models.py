@@ -20,6 +20,7 @@ class TermUpdate(models.Model):
     courses_parsed = models.IntegerField(default=0)
     courses_added = models.IntegerField(default=0)
     courses_updated = models.IntegerField(default=0)
+    courses_deleted = models.IntegerField(default=0)
     time_completed = models.DateTimeField(null=True, blank=True)
 
     @property

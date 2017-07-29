@@ -46,6 +46,7 @@ def schedule(request):
     credits_min = 0
     credits_max = 0
     invalid_courses = []
+    deleted_courses = []
     if len(query) > 0:
         term = query[0].term
         user = query[0].user
@@ -55,6 +56,8 @@ def schedule(request):
                 invalid_courses.append(entry)
                 courses.remove(course)
             else:
+                if course.deleted:
+                    deleted_courses.append(course)
                 value = course.hours
                 credits_min += int(value[:1])
                 if len(value) > 1:
@@ -86,6 +89,7 @@ def schedule(request):
         'credits_min': credits_min,
         'credits_max': credits_max,
         'invalid_courses': invalid_courses,
+        'deleted_courses': deleted_courses,
         'has_exams': has_exams,
     }
     return render(request, 'schedule/course_schedule.html', context)

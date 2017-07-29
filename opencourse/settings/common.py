@@ -54,8 +54,13 @@ LOGGING = {
             'handlers': ['file'],
         },
         'django.request': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.security': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
             'propagate': True,
         },
     },

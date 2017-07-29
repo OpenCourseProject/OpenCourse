@@ -44,9 +44,11 @@ def search(request):
                 term = profile.default_term
             if 'term' in request.GET:
                 term = Term.objects.get(value=request.GET['term'])
+            if 'course' in request.GET:
+                course = value=request.GET['course']
         form = SearchForm(request.user)
         form.fields['term'].initial = term
-    query = Course.objects.filter(term=term)
+    query = Course.objects.filter(term=term, deleted=False)
     log = {}
     if crn:
         query = query.filter(crn=crn)

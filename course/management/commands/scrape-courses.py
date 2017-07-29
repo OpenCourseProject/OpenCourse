@@ -17,6 +17,7 @@ from django.conf import settings
 from threading import Timer
 import signal
 import sys
+import traceback
 logger = logging.getLogger('opencourse')
 
 SOC_URL = "https://navigator.cnu.edu/StudentScheduleofClasses/"
@@ -46,11 +47,12 @@ class Command(BaseCommand):
         self.update_log.updates.add(self.term_update)
         self.update_log.save()
 
-    def complete_term(self, parsed, added, updated):
-        self.log('Parsed {} courses. {} added, {} updated.'.format(parsed, added, updated))
+    def complete_term(self, parsed, added, updated, deleted):
+        self.log('Parsed {} courses. {} added, {} updated, {} removed.'.format(parsed, added, updated, deleted))
         self.term_update.courses_parsed = parsed
         self.term_update.courses_added = added
         self.term_update.courses_updated = updated
+        self.term_update.courses_deleted = deleted
         self.term_update.time_completed = timezone.now()
         self.term_update.save()
 
@@ -85,7 +87,7 @@ class Command(BaseCommand):
         except Exception as e:
             self.log('ERROR: ' + str(e))
             self.complete_update(UpdateLog.FAILED)
-            print(e)
+            traceback.print_exc()
 
     def scrape(self):
         # Visit URL
@@ -182,9 +184,11 @@ class Command(BaseCommand):
             rows = grid.xpath('tbody')[0]
         except:
             rows = []
+        crns = []
         skip = True
         added = 0
         updated = 0
+        deleted = 0
         # Parse all rows
         for row in rows:
             # Skip the first row (titles)
@@ -255,6 +259,9 @@ class Command(BaseCommand):
             # Create the course
             course = Course(term=term, crn=crn, course=course, course_link=course_link, section=section, title=title, bookstore_link=bookstore_link, hours=hours, attributes=attributes, ctype=ctype, location=location, instructor=instructor, seats=seats, status=status)
 
+            # Log the CRN as found
+            crns.append(crn)
+
             # Add it to the database
             try:
                 obj = Course.objects.get(term=term, crn=crn)
@@ -270,6 +277,9 @@ class Command(BaseCommand):
                             logger.debug('Changed value ' + f.name + ': ' + str(old_attr) + ' -> ' + str(new_attr))
                             changed = True
                             setattr(obj, f.name, new_attr)
+                if obj.deleted:
+                    obj.deleted = False
+                    changed = True
                 if len([item for item in obj.meeting_times.all() if item not in meeting_times]) > 0:
                     logger.debug('Changed meeting times ' + str(obj.meeting_times.all()) + ' -> ' + str(meeting_times))
                     changed = True
@@ -284,5 +294,13 @@ class Command(BaseCommand):
                 course.meeting_times = meeting_times
                 self.log('Added a new course, CRN {}'.format(course.crn))
                 added += 1
+        # Remove courses that didn't show up
+        missing_courses = Course.objects.filter(term=term, deleted=False).exclude(crn__in=crns)
+        for missing_course in missing_courses:
+            missing_course.deleted = True
+            missing_course.save()
+            self.log('Removed a course that no longer exists, CRN {}'.format(missing_course.crn))
+            deleted += 1
+
         count = 0 if len(rows) is 0 else len(rows) - 1
-        self.complete_term(count, added, updated)
+        self.complete_term(count, added, updated, deleted)

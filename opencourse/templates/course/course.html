@@ -92,7 +92,13 @@ facebookCallback = function(response) {
 <!-- Materials Modal -->
 {% include "component/materials-modal.html" %}
 <div class="container">
-  {% if not authenticated %}
+  {% if course.deleted %}
+  <div class="alert alert-danger" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong>This class has been deleted by the registrar.</strong>
+    This section will no longer be offered for this term.
+  </div>
+  {% elif not authenticated %}
   <div class="alert alert-info" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     Log in with your {{ school_abbr }} account to schedule or get updates about this course.
@@ -118,6 +124,9 @@ facebookCallback = function(response) {
     {% endif %}
     <div class="course-details">
       <h1>
+        {% if course.deleted %}
+        <del>
+        {% endif %}
         <strong>{{ course.course }}</strong>: {{ course.title }}
         {% if course.instructor %}<small>with
         {% if course.instructor.last_name != "Staff" %}
@@ -126,6 +135,9 @@ facebookCallback = function(response) {
         {{ course.instructor }}
         {% endif %}
         </small>
+        {% endif %}
+        {% if course.deleted %}
+        </del>
         {% endif %}
       </h1>
     </div>
@@ -138,6 +150,7 @@ facebookCallback = function(response) {
       </button>
       {% endif %}
       <p>
+        {% if not course.deleted %}
         {% if course.location %}
         Meets
         {% endif %}
@@ -156,6 +169,7 @@ facebookCallback = function(response) {
             {% endfor %}
           </ul>
         </small>
+        {% endif %}
         {% endif %}
       </p>
       <p>
