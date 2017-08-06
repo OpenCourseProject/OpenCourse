@@ -48,11 +48,14 @@ def search(request):
                 course = value=request.GET['course']
         form = SearchForm(request.user)
         form.fields['term'].initial = term
-    query = Course.objects.filter(term=term, deleted=False)
     log = {}
+    
     if crn:
-        query = query.filter(crn=crn)
         log['crn'] = str(crn)
+        query = Course.objects.filter(term=term, crn=crn)
+    else:
+        query = Course.objects.filter(term=term, deleted=False, hidden=False)
+
     if course:
         match = re.search(r'([A-z]+?)([0-9]+)', course)
         if match:

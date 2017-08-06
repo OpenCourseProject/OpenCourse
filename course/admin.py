@@ -4,9 +4,15 @@ from course.models import Course, CourseVersion, Term, Instructor, FollowEntry, 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
     search_fields = ['crn', 'course', 'title']
+    list_filter = ('hidden','deleted',)
 
 class CourseInline(admin.StackedInline):
     model = Course
+
+@admin.register(Term)
+class CourseAdmin(admin.ModelAdmin):
+    search_fields = ['name']
+    list_filter = ('update',)
 
 @admin.register(Instructor)
 class InstructorAdmin(admin.ModelAdmin):
@@ -17,7 +23,6 @@ class FollowEntryAdmin(admin.ModelAdmin):
     search_fields = ['course_crn', 'user__username']
 
 admin.site.register(CourseVersion)
-admin.site.register(Term)
 admin.site.register(Attribute)
 admin.site.register(InstructorSuggestion)
 admin.site.register(QueryLog)

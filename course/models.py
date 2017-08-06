@@ -75,6 +75,7 @@ class Course(models.Model):
     seats = models.IntegerField(db_index=True, verbose_name="Seats Left")
     status = models.IntegerField(verbose_name="Status", choices=STATUS_CHOICES)
     deleted = models.BooleanField(default=False)
+    hidden = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "course"
