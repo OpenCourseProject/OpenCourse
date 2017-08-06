@@ -165,9 +165,9 @@ SCHOOL_NAME = 'Christopher Newport University'
 SCHOOL_ABBREVIATION = 'CNU'
 SCHOOL_WEBSITE = 'http://cnu.edu'
 
-CURRENT_TERM = 201710
-REGISTER_TERM = 201800
-SYNC_TERM = 201710
+# CURRENT_TERM is set to the term value which is currently in session
+# REGISTER_TERM is set to the term value from which stats should be displayed on the home screen
+# SYNC_TERM is set to the term value which new users shoul
 
 COURSE_UPDATE_INTERVAL = '0 */2 * * *'
 COURSE_UPDATE_WATCHER_INTERVAL = '*/5 * * * *'

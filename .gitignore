@@ -1,6 +1,8 @@
 *.pyc
 *.pyo
 *.log
+.DS_Store
 src/
 opencourse/static/assets/img/
+opencourse/static/graphs
 opencourse/settings/__init__.py

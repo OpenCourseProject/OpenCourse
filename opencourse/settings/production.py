@@ -1,6 +1,8 @@
 from __future__ import absolute_import
 from .common import *
 
+DEBUG = False
+
 DATABASES = {
     'default': {
         # 'ENGINE' scrubbed
@@ -25,7 +27,7 @@ SECURE_BROWSER_XSS_FILTER = True
 
 os.environ['wsgi.url_scheme'] = 'https'
 
-EMAIL_USE_TLS = True
+EMAIL_USE_SSL = True
 # EMAIL_HOST scrubbed
 # EMAIL_PORT scrubbed
 # EMAIL_HOST_USER scrubbed
