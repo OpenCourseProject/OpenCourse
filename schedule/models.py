@@ -12,6 +12,7 @@ class ScheduleEntry(models.Model):
     time_created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        unique_together = ('user', 'term', 'course_crn',)
         verbose_name = "scheduled course"
         verbose_name_plural = "scheduled courses"
 

@@ -142,6 +142,9 @@ class FollowEntry(models.Model):
     course_crn = models.IntegerField()
     time_created = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ('user', 'term', 'course_crn',)
+
     def __unicode__(self):
         return "%s: %d" % (self.user, self.course_crn)
 
