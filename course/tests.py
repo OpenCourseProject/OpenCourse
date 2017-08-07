@@ -16,7 +16,7 @@ class TermTestCase(TestCase):
 
 class InstructorTestCase(TestCase):
     def setUp(self):
-        Instructor.objects.create(first_name="Joe", last_name="Instructor", rmp_score=5.0, rmp_link="http://google.com")
+        Instructor.objects.create(first_name="Joe", last_name="Instructor", rmp_link="http://google.com")
 
     def test_instructor_named_correctly(self):
         instructor = Instructor.objects.get(last_name="Instructor")
@@ -122,7 +122,7 @@ class VersioningTestCase(TestCase):
         course = Course.objects.get(term=term, crn=1234)
         course.status = 0
         course.save()
-        instructor = Instructor.objects.create(first_name="Bill", last_name="Gates", rmp_score=1.0, rmp_link="http://microsoft.com")
+        instructor = Instructor.objects.create(first_name="Bill", last_name="Gates", rmp_link="http://microsoft.com")
         course.instructor = instructor
         course.save()
         versions = CourseVersion.objects.find(course)
@@ -178,7 +178,6 @@ class WebSearchTestCase(TestCase):
             {'start_hour': '10', 'start_minute': '00', 'start_meridiem': 'a.m.'},
             {'end_hour': '11', 'end_minute': '15', 'end_meridiem': 'a.m.'},
             {'instructor': course.instructor.last_name},
-            {'min_rating': course.instructor.rmp_score},
         ]
         for data in values:
             data['term'] = str(term.value)
@@ -255,7 +254,7 @@ def create_dummy_course():
         attributes = "ABCD  SI"
         ctype = "Lec"
         location = "ROOM 217"
-        instructor = Instructor.objects.create(first_name="Joe", last_name="Instructor", rmp_score=6.0, rmp_link="http://google.com")
+        instructor = Instructor.objects.create(first_name="Joe", last_name="Instructor", rmp_link="http://google.com")
         seats = 1
         status = 1
         course = Course.objects.create(term=term, crn=crn, course=course, course_link=course_link, section=section, title=title, bookstore_link=bookstore_link, hours=hours, attributes=attributes, ctype=ctype, location=location, instructor=instructor, seats=seats, status=status)

@@ -1,4 +1,4 @@
-import os
+import os, sys
 import django.conf.global_settings as DEFAULT_SETTINGS
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -32,6 +32,8 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 MAINTENANCE_MODE = False
+
+TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
 
 LOGGING = {
     'version': 1,

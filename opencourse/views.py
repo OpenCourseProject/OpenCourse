@@ -82,9 +82,10 @@ def report(request):
             report = Report(user=request.user, url=url, description=description)
             report.save()
             # Send mail
-            subject = "Report created"
-            message = "{} created a new report on {}: {}".format(request.user.username, url, description)
-            mail_admins(subject, message)
+            if not settings.TESTING:
+                subject = "Report created"
+                message = "{} created a new report on {}: {}".format(request.user.username, url, description)
+                mail_admins(subject, message)
             context = {
                 'report': report,
             }

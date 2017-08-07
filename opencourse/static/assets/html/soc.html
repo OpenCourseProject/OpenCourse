@@ -1,0 +1,2091 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><link href="App_Themes/Default/Default.css" type="text/css" rel="stylesheet" /><title>
+	Schedule of Classes Results
+</title>
+    <style type="text/css">
+        a img, a:link img, a:visited img, a:hover img, a:active img { border:0; }
+        #form1
+        {
+            text-align: center;
+        }
+        .style1
+        {
+            width: 24px;
+        }
+    </style>
+</head>
+<body>
+    <form method="post" action="./socresults.aspx" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['form1'];
+if (!theForm) {
+    theForm = document.form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="A2B3D84C" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdABACsWCZpNEqRFoPQLiAn2NHP1jLJHiqNfRsonZfptdXU834O/GfAV4V4n0wgFZHr3fYzmr/kaXzs7iL0G19By/izOTzjmK5LVCDjOx+/dk9qmLkwQX0We/j6KGGu73p6JyI4JFjqPoMyio9UoSPWZrhaiehMBEQ3VivpnmfwMfRvn03TV1pR62XPVHPluxxQ6QxoWGu/bK9tvSVCjEMN7Q+zRmPZKS++/SAq+ATTh1PoyPeIHER62K6shKo0w5+5Zp/Cq96U2+lTKDE4ulqa74q+DINwvArGfGQtEayiJoHQqagsbr+2fs6G6RV7uqdntrlsOoPW3rv9if9K2mThiNhE02pdu00troGrlF5AXI5uKvNgta83roswTUwOhK3kgo=" />
+</div>
+    <br />
+    <img id="Image1" src="289%20Trajan%20Vertical%20400px.png" />
+    <br />
+    <br />
+        <span id="Label3" style="font-family: Arial, Helvetica, sans-serif; color: #002451; font-size: x-large; font-weight: 700;">Schedule of Classes</span>
+    <br />
+    <br />
+    <span id="RecordCount" style="color:#002451;"><B><font size=5><color: #002451>Fall Semester 2017</color></font size></B><br><font size=4><color: #002451>Semester and year selected: Fall 2014 and after</color></font size><br><br><color: #002451>1238 courses returned.  Click any individual column header to sort.</color></span>
+    <br />
+    <br />
+    <input type="submit" name="Button2" value="Begin New Search" id="Button2" />
+    <input type="submit" name="Button1" value=" Export to Excel (CSV)" id="Button1" />
+    <br />
+    <br />
+    <span id="Label6">Click any individual column header to sort.</span>
+    <br />
+    <br />
+    <div>
+	<table cellspacing="0" cellpadding="3" align="Center" rules="cols" id="GridView1" style="color:Black;background-color:WhiteSmoke;border-color:#999999;border-width:1px;border-style:Solid;font-size:Small;border-collapse:collapse;">
+		<tr style="color:White;background-color:#000042;font-size:0.9em;font-weight:bold;">
+			<th scope="col"><a href="javascript:__doPostBack(&#39;GridView1&#39;,&#39;Sort$CRN&#39;)" style="color:White;">CRN</a></th><th scope="col"><a href="javascript:__doPostBack(&#39;GridView1&#39;,&#39;Sort$COURSE&#39;)" style="color:White;">COURSE</a></th><th scope="col"><a href="javascript:__doPostBack(&#39;GridView1&#39;,&#39;Sort$SEQ_NUMB&#39;)" style="color:White;">SECTION</a></th><th scope="col"><a href="javascript:__doPostBack(&#39;GridView1&#39;,&#39;Sort$TITLE&#39;)" style="color:White;">TITLE</a></th><th scope="col"><a href="javascript:__doPostBack(&#39;GridView1&#39;,&#39;Sort$CREDIT_HR&#39;)" style="color:White;">HOURS</a></th><th scope="col"><a href="javascript:__doPostBack(&#39;GridView1&#39;,&#39;Sort$attr_code&#39;)" style="color:White;">AREA OF LLC</a></th><th scope="col"><a href="javascript:__doPostBack(&#39;GridView1&#39;,&#39;Sort$TYPE&#39;)" style="color:White;">TYPE</a></th><th scope="col"><a href="javascript:__doPostBack(&#39;GridView1&#39;,&#39;Sort$MEETING_DAYS&#39;)" style="color:White;">DAYS</a></th><th scope="col"><a href="javascript:__doPostBack(&#39;GridView1&#39;,&#39;Sort$BEGIN_END_TIME&#39;)" style="color:White;">TIME</a></th><th scope="col"><a href="javascript:__doPostBack(&#39;GridView1&#39;,&#39;Sort$LOCATION&#39;)" style="color:White;">LOCATION</a></th><th scope="col"><a href="javascript:__doPostBack(&#39;GridView1&#39;,&#39;Sort$INSTRUCTOR&#39;)" style="color:White;">INSTRUCTOR</a></th><th scope="col"><a href="javascript:__doPostBack(&#39;GridView1&#39;,&#39;Sort$StudentAvail&#39;)" style="color:White;">Seats Still Available</a></th><th scope="col"><a href="javascript:__doPostBack(&#39;GridView1&#39;,&#39;Sort$StudentAvail&#39;)" style="color:White;">STATUS</a></th>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8079</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_0" href="socadditional.aspx?term_code=201800&amp;crn=8079" target="_blank">ACCT 200</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_0" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8079" target="_blank">Accounting Concepts</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_0"></span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1000-1050
+                </td><td align="left">
+                    LUTR 137
+                </td><td align="left">
+                    Brooks, Abby-Gayle
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_0">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_0">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8080</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_1" href="socadditional.aspx?term_code=201800&amp;crn=8080" target="_blank">ACCT 201</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_1" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8080" target="_blank">Prin of Account I: Financial</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_1"></span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1330-1445
+                </td><td align="left">
+                    LUTR 137
+                </td><td align="left">
+                    Davis, Deborah
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_1">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_1">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8323</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_2" href="socadditional.aspx?term_code=201800&amp;crn=8323" target="_blank">ACCT 201</a>
+                </td><td>10</td><td align="left">
+                    <a id="GridView1_HyperLink2_2" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8323" target="_blank">Prin of Account I: Financial</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_2"></span>
+                </td><td>Lec</td><td>
+                    MW
+                </td><td>
+                    1600-1715
+                </td><td align="left">
+                    LUTR 137
+                </td><td align="left">
+                    Davis, Deborah
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_2">2</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_2">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">9466</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_3" href="socadditional.aspx?term_code=201800&amp;crn=9466" target="_blank">ACCT 201</a>
+                </td><td>11</td><td align="left">
+                    <a id="GridView1_HyperLink2_3" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=9466" target="_blank">Prin of Account I: Financial</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_3"></span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1500-1615
+                </td><td align="left">
+                    LUTR 242
+                </td><td align="left">
+                    Davis, Deborah
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_3">6</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_3">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8082</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_4" href="socadditional.aspx?term_code=201800&amp;crn=8082" target="_blank">ACCT 201</a>
+                </td><td>2</td><td align="left">
+                    <a id="GridView1_HyperLink2_4" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8082" target="_blank">Prin of Account I: Financial</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_4"></span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    0900-0950
+                </td><td align="left">
+                    LUTR 242
+                </td><td align="left">
+                    Brooks, Abby-Gayle
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_4">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_4">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8083</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_5" href="socadditional.aspx?term_code=201800&amp;crn=8083" target="_blank">ACCT 201</a>
+                </td><td>3</td><td align="left">
+                    <a id="GridView1_HyperLink2_5" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8083" target="_blank">Prin of Account I: Financial</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_5"></span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1000-1050
+                </td><td align="left">
+                    LUTR 264
+                </td><td align="left">
+                    Hutt, Melvyn
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_5">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_5">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8086</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_6" href="socadditional.aspx?term_code=201800&amp;crn=8086" target="_blank">ACCT 201</a>
+                </td><td>4</td><td align="left">
+                    <a id="GridView1_HyperLink2_6" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8086" target="_blank">Prin of Account I: Financial</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_6"></span>
+                </td><td>Lec</td><td>
+                    MW
+                </td><td>
+                    1600-1750
+                </td><td align="left">
+                    LUTR 264
+                </td><td align="left">
+                    Morris, Joseph
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_6">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_6">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8088</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_7" href="socadditional.aspx?term_code=201800&amp;crn=8088" target="_blank">ACCT 201</a>
+                </td><td>5</td><td align="left">
+                    <a id="GridView1_HyperLink2_7" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8088" target="_blank">Prin of Account I: Financial</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_7"></span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1200-1250
+                </td><td align="left">
+                    LUTR 105
+                </td><td align="left">
+                    Hutt, Melvyn
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_7">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_7">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8089</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_8" href="socadditional.aspx?term_code=201800&amp;crn=8089" target="_blank">ACCT 201</a>
+                </td><td>6</td><td align="left">
+                    <a id="GridView1_HyperLink2_8" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8089" target="_blank">Prin of Account I: Financial</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_8"></span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1500-1615
+                </td><td align="left">
+                    LUTR 123
+                </td><td align="left">
+                    Morris, Joseph
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_8">5</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_8">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8318</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_9" href="socadditional.aspx?term_code=201800&amp;crn=8318" target="_blank">ACCT 201</a>
+                </td><td>7</td><td align="left">
+                    <a id="GridView1_HyperLink2_9" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8318" target="_blank">Prin of Account I: Financial</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_9"></span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    0800-0850
+                </td><td align="left">
+                    LUTR 242
+                </td><td align="left">
+                    Davis, Deborah
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_9">4</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_9">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8090</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_10" href="socadditional.aspx?term_code=201800&amp;crn=8090" target="_blank">ACCT 201</a>
+                </td><td>8</td><td align="left">
+                    <a id="GridView1_HyperLink2_10" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8090" target="_blank">Prin of Account I: Financial</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_10"></span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1630-1745
+                </td><td align="left">
+                    LUTR 170
+                </td><td align="left">
+                    Morris, Joseph
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_10">3</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_10">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8084</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_11" href="socadditional.aspx?term_code=201800&amp;crn=8084" target="_blank">ACCT 201</a>
+                </td><td>9</td><td align="left">
+                    <a id="GridView1_HyperLink2_11" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8084" target="_blank">Prin of Account I: Financial</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_11"></span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1200-1250
+                </td><td align="left">
+                    LUTR 137
+                </td><td align="left">
+                    Brooks, Abby-Gayle
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_11">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_11">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8319</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_12" href="socadditional.aspx?term_code=201800&amp;crn=8319" target="_blank">ACCT 202</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_12" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8319" target="_blank">Prin of Account II: Managerial</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_12"></span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1800-1915
+                </td><td align="left">
+                    LUTR 242
+                </td><td align="left">
+                    Chung, Keun Ho
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_12">2</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_12">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8320</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_13" href="socadditional.aspx?term_code=201800&amp;crn=8320" target="_blank">ACCT 202</a>
+                </td><td>2</td><td align="left">
+                    <a id="GridView1_HyperLink2_13" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8320" target="_blank">Prin of Account II: Managerial</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_13"></span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1630-1745
+                </td><td align="left">
+                    LUTR 242
+                </td><td align="left">
+                    Chung, Keun Ho
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_13">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_13">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8093</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_14" href="socadditional.aspx?term_code=201800&amp;crn=8093" target="_blank">ACCT 301</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_14" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8093" target="_blank">Intermediate Accounting I</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_14"></span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1100-1215
+                </td><td align="left">
+                    LUTR 372
+                </td><td align="left">
+                    Frucot, Veronique
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_14">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_14">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8327</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_15" href="socadditional.aspx?term_code=201800&amp;crn=8327" target="_blank">ACCT 301</a>
+                </td><td>2</td><td align="left">
+                    <a id="GridView1_HyperLink2_15" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8327" target="_blank">Intermediate Accounting I</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_15"></span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1630-1745
+                </td><td align="left">
+                    LUTR 269
+                </td><td align="left">
+                    Frucot, Veronique
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_15">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_15">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8085</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_16" href="socadditional.aspx?term_code=201800&amp;crn=8085" target="_blank">ACCT 302</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_16" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8085" target="_blank">Intermediate Accounting II</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_16"></span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1300-1350
+                </td><td align="left">
+                    LUTR 137
+                </td><td align="left">
+                    Brooks, Abby-Gayle
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_16">6</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_16">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8328</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_17" href="socadditional.aspx?term_code=201800&amp;crn=8328" target="_blank">ACCT 303</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_17" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8328" target="_blank">Cost/Managerial Accounting</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_17"></span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1100-1215
+                </td><td align="left">
+                    LUTR 242
+                </td><td align="left">
+                    Chung, Keun Ho
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_17">7</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_17">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8087</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_18" href="socadditional.aspx?term_code=201800&amp;crn=8087" target="_blank">ACCT 401</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_18" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8087" target="_blank">Taxation</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_18"></span>
+                </td><td>Lec</td><td>
+                    MW
+                </td><td>
+                    1800-1915
+                </td><td align="left">
+                    LUTR 264
+                </td><td align="left">
+                    Morris, Joseph
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_18">5</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_18">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8095</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_19" href="socadditional.aspx?term_code=201800&amp;crn=8095" target="_blank">ACCT 405</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_19" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8095" target="_blank">Auditing</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_19"></span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    0800-0850
+                </td><td align="left">
+                    LUTR 137
+                </td><td align="left">
+                    Lingenfelter, Gabriele
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_19">1</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_19">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">9406</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_20" href="socadditional.aspx?term_code=201800&amp;crn=9406" target="_blank">ACCT 405</a>
+                </td><td>2</td><td align="left">
+                    <a id="GridView1_HyperLink2_20" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=9406" target="_blank">Auditing</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_20"></span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    0900-0950
+                </td><td align="left">
+                    LUTR 137
+                </td><td align="left">
+                    Lingenfelter, Gabriele
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_20">4</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_20">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">9285</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_21" href="socadditional.aspx?term_code=201800&amp;crn=9285" target="_blank">ACCT 406</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_21" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=9285" target="_blank">WI:Case Studies in Accounting</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_21" title="Writing Intensive">  WI</span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1200-1250
+                </td><td align="left">
+                    LUTR 264
+                </td><td align="left">
+                    Lingenfelter, Gabriele
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_21">1</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_21">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">9286</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_22" href="socadditional.aspx?term_code=201800&amp;crn=9286" target="_blank">ACCT 406</a>
+                </td><td>2</td><td align="left">
+                    <a id="GridView1_HyperLink2_22" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=9286" target="_blank">WI:Case Studies in Accounting</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_22" title="Writing Intensive">  WI</span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1300-1350
+                </td><td align="left">
+                    LUTR 264
+                </td><td align="left">
+                    Lingenfelter, Gabriele
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_22">12</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_22">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8094</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_23" href="socadditional.aspx?term_code=201800&amp;crn=8094" target="_blank">ACCT 451</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_23" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8094" target="_blank">Govt & Nonprof Acctng & Topics</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_23"></span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    0930-1045
+                </td><td align="left">
+                    LUTR 372
+                </td><td align="left">
+                    Frucot, Veronique
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_23">1</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_23">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8247</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_24" href="socadditional.aspx?term_code=201800&amp;crn=8247" target="_blank">ACCT 480</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_24" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8247" target="_blank">Internship in Accounting</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_24"></span>
+                </td><td>Int</td><td>
+
+                </td><td>
+
+                </td><td align="left">
+                    ARR
+                </td><td align="left">
+                    Lingenfelter, Gabriele
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_24">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_24">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">9416</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_25" href="socadditional.aspx?term_code=201800&amp;crn=9416" target="_blank">ACCT 480</a>
+                </td><td>2</td><td align="left">
+                    <a id="GridView1_HyperLink2_25" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=9416" target="_blank">Internship in Accounting</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_25"></span>
+                </td><td>Int</td><td>
+
+                </td><td>
+
+                </td><td align="left">
+                    ARR
+                </td><td align="left">
+                    Brooks, Abby-Gayle
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_25">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_25">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">9417</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_26" href="socadditional.aspx?term_code=201800&amp;crn=9417" target="_blank">ACCT 480</a>
+                </td><td>3</td><td align="left">
+                    <a id="GridView1_HyperLink2_26" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=9417" target="_blank">Internship in Accounting</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_26"></span>
+                </td><td>Int</td><td>
+
+                </td><td>
+
+                </td><td align="left">
+                    ARR
+                </td><td align="left">
+                    Morris, Joseph
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_26">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_26">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8249</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_27" href="socadditional.aspx?term_code=201800&amp;crn=8249" target="_blank">ACCT 499</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_27" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8249" target="_blank">Independent Study</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_27"></span>
+                </td><td>Ind</td><td>
+
+                </td><td>
+
+                </td><td align="left">
+                    ARR
+                </td><td align="left">
+                    Staff, CNU
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_27">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_27">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8357</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_28" href="socadditional.aspx?term_code=201800&amp;crn=8357" target="_blank">AMST 100</a>
+                </td><td>2M</td><td align="left">
+                    <a id="GridView1_HyperLink2_28" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8357" target="_blank">The American Experiment</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_28" title="AI: Western Traditions;AI: U.S. Civic &amp; Democr Engage">  AIDE  </span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1100-1150
+                </td><td align="left">
+                    MCM 112
+                </td><td align="left">
+                    Kaufer Busch, Elizabeth
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_28">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_28">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8358</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_29" href="socadditional.aspx?term_code=201800&amp;crn=8358" target="_blank">AMST 100</a>
+                </td><td>3R</td><td align="left">
+                    <a id="GridView1_HyperLink2_29" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8358" target="_blank">The American Experiment</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_29" title="AI: Western Traditions;AI: U.S. Civic &amp; Democr Engage">  AIDE  </span>
+                </td><td>Lec</td><td>
+                    MW
+                </td><td>
+                    1600-1715
+                </td><td align="left">
+                    MCM 112
+                </td><td align="left">
+                    Kundmueller, Michelle
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_29">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_29">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8359</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_30" href="socadditional.aspx?term_code=201800&amp;crn=8359" target="_blank">AMST 100</a>
+                </td><td>4</td><td align="left">
+                    <a id="GridView1_HyperLink2_30" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8359" target="_blank">The American Experiment</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_30" title="AI: U.S. Civic &amp; Democr Engage;AI: Western Traditions">  AIDE  </span>
+                </td><td>Lec</td><td>
+                    MW
+                </td><td>
+                    1800-1915
+                </td><td align="left">
+                    MCM 112
+                </td><td align="left">
+                    Kundmueller, Michelle
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_30">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_30">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">9266</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_31" href="socadditional.aspx?term_code=201800&amp;crn=9266" target="_blank">AMST 100</a>
+                </td><td>5C</td><td align="left">
+                    <a id="GridView1_HyperLink2_31" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=9266" target="_blank">The American Experiment</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_31" title="AI: Western Traditions;AI: U.S. Civic &amp; Democr Engage">  AIDE  </span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1400-1450
+                </td><td align="left">
+                    MCM 212
+                </td><td align="left">
+                    Garmon, Frank
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_31">1</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_31">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8360</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_32" href="socadditional.aspx?term_code=201800&amp;crn=8360" target="_blank">AMST 100</a>
+                </td><td>5M</td><td align="left">
+                    <a id="GridView1_HyperLink2_32" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8360" target="_blank">The American Experiment</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_32" title="AI: Western Traditions;AI: U.S. Civic &amp; Democr Engage">  AIDE  </span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1330-1445
+                </td><td align="left">
+                    MCM 160
+                </td><td align="left">
+                    Morrison, Jeffry
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_32">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_32">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">9267</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_33" href="socadditional.aspx?term_code=201800&amp;crn=9267" target="_blank">AMST 100</a>
+                </td><td>6</td><td align="left">
+                    <a id="GridView1_HyperLink2_33" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=9267" target="_blank">The American Experiment</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_33" title="AI: Western Traditions;AI: U.S. Civic &amp; Democr Engage">  AIDE  </span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1300-1350
+                </td><td align="left">
+                    MCM 210
+                </td><td align="left">
+                    Garmon, Frank
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_33">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_33">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8361</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_34" href="socadditional.aspx?term_code=201800&amp;crn=8361" target="_blank">AMST 100</a>
+                </td><td>6C</td><td align="left">
+                    <a id="GridView1_HyperLink2_34" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8361" target="_blank">The American Experiment</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_34" title="AI: Western Traditions;AI: U.S. Civic &amp; Democr Engage">  AIDE  </span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1630-1745
+                </td><td align="left">
+                    MCM 257
+                </td><td align="left">
+                    Morrison, Jeffry
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_34">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_34">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">9269</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_35" href="socadditional.aspx?term_code=201800&amp;crn=9269" target="_blank">AMST 100</a>
+                </td><td>7</td><td align="left">
+                    <a id="GridView1_HyperLink2_35" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=9269" target="_blank">The American Experiment</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_35" title="AI: Western Traditions;AI: U.S. Civic &amp; Democr Engage">  AIDE  </span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1800-1915
+                </td><td align="left">
+                    MCM 114
+                </td><td align="left">
+                    White, William
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_35">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_35">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8362</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_36" href="socadditional.aspx?term_code=201800&amp;crn=8362" target="_blank">AMST 100</a>
+                </td><td>7M</td><td align="left">
+                    <a id="GridView1_HyperLink2_36" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8362" target="_blank">The American Experiment</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_36" title="AI: Western Traditions;AI: U.S. Civic &amp; Democr Engage">  AIDE  </span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1500-1615
+                </td><td align="left">
+                    MCM 101
+                </td><td align="left">
+                    White, Jonathan
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_36">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_36">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8363</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_37" href="socadditional.aspx?term_code=201800&amp;crn=8363" target="_blank">AMST 120</a>
+                </td><td>1M</td><td align="left">
+                    <a id="GridView1_HyperLink2_37" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8363" target="_blank">Encounters w/ the Constitution</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_37" title="AI: U.S. Civic &amp; Democr Engage">  AIDE</span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1100-1215
+                </td><td align="left">
+                    MCM 200B
+                </td><td align="left">
+                    White, Jonathan
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_37">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_37">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8364</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_38" href="socadditional.aspx?term_code=201800&amp;crn=8364" target="_blank">AMST 200</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_38" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8364" target="_blank">Evolution-American Experiment</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_38" title="AI: Identity, Inst &amp; Societies;AI: Western Traditions">  AIWT</span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    0930-1045
+                </td><td align="left">
+                    MCM 112
+                </td><td align="left">
+                    Morrison, Jeffry
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_38">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_38">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8365</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_39" href="socadditional.aspx?term_code=201800&amp;crn=8365" target="_blank">AMST 300</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_39" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8365" target="_blank">The American Exp: Global Infl</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_39" title="AI: Global &amp; Multicultur Persp">  AIGM</span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1800-1915
+                </td><td align="left">
+                    MCM 162
+                </td><td align="left">
+                    McCarthy, William
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_39">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_39">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">9319</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_40" href="socadditional.aspx?term_code=201800&amp;crn=9319" target="_blank">AMST 340</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_40" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=9319" target="_blank">America at Sea</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_40"></span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1800-1915
+                </td><td align="left">
+                    MCM 307
+                </td><td align="left">
+                    Nucup, Marc
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_40">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_40">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">9268</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_41" href="socadditional.aspx?term_code=201800&amp;crn=9268" target="_blank">AMST 350</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_41" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=9268" target="_blank">Sex, Law and Society</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_41"></span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1000-1050
+                </td><td align="left">
+                    MCM 162
+                </td><td align="left">
+                    Kaufer Busch, Elizabeth
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_41">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_41">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8368</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_42" href="socadditional.aspx?term_code=201800&amp;crn=8368" target="_blank">AMST 490</a>
+                </td><td>W1</td><td align="left">
+                    <a id="GridView1_HyperLink2_42" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8368" target="_blank">WI: Capstone Sem-Amer Studies</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_42" title="Writing Intensive">  WI</span>
+                </td><td>Lec</td><td>
+                    MW
+                </td><td>
+                    1930-2045
+                </td><td align="left">
+                    MCM 112
+                </td><td align="left">
+                    Kundmueller, Michelle
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_42">8</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_42">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8046</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_43" href="socadditional.aspx?term_code=201800&amp;crn=8046" target="_blank">ANTH 200</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_43" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8046" target="_blank">Human Adaptation</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_43" title="AI: Invstgtng the Nat World">  AINW</span>
+                </td><td>Lec</td><td>
+                    MW
+                </td><td>
+                    1600-1715
+                </td><td align="left">
+                    LUTR 167
+                </td><td align="left">
+                    Loy, Christopher
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_43">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_43">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8047</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_44" href="socadditional.aspx?term_code=201800&amp;crn=8047" target="_blank">ANTH 200</a>
+                </td><td>2R</td><td align="left">
+                    <a id="GridView1_HyperLink2_44" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8047" target="_blank">Human Adaptation</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_44" title="AI: Invstgtng the Nat World">  AINW</span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1100-1215
+                </td><td align="left">
+                    LUTR 264
+                </td><td align="left">
+                    Loy, Christopher
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_44">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_44">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8049</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_45" href="socadditional.aspx?term_code=201800&amp;crn=8049" target="_blank">ANTH 203</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_45" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8049" target="_blank">Cultural Anthropology</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_45" title="AI: Global &amp; Multicultur Persp;AI: Identity, Inst &amp; Societies">  AIGM</span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1400-1450
+                </td><td align="left">
+                    LUTR 170
+                </td><td align="left">
+                    Timmer, Andria
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_45">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_45">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8050</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_46" href="socadditional.aspx?term_code=201800&amp;crn=8050" target="_blank">ANTH 203</a>
+                </td><td>2</td><td align="left">
+                    <a id="GridView1_HyperLink2_46" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8050" target="_blank">Cultural Anthropology</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_46" title="AI: Global &amp; Multicultur Persp;AI: Identity, Inst &amp; Societies">  AIGM</span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1500-1550
+                </td><td align="left">
+                    LUTR 170
+                </td><td align="left">
+                    Timmer, Andria
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_46">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_46">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8051</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_47" href="socadditional.aspx?term_code=201800&amp;crn=8051" target="_blank">ANTH 309</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_47" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8051" target="_blank">The Refugee Experience</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_47" title="AI: Global &amp; Multicultur Persp">  AIGM</span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    0900-0950
+                </td><td align="left">
+                    LUTR 170
+                </td><td align="left">
+                    Timmer, Andria
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_47">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_47">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8053</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_48" href="socadditional.aspx?term_code=201800&amp;crn=8053" target="_blank">ANTH 310</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_48" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8053" target="_blank">Fear and Magic</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_48"></span>
+                </td><td>Lec</td><td>
+                    MW
+                </td><td>
+                    1930-2045
+                </td><td align="left">
+                    LUTR 167
+                </td><td align="left">
+                    Gustafsson, Mai
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_48">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_48">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8054</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_49" href="socadditional.aspx?term_code=201800&amp;crn=8054" target="_blank">ANTH 325</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_49" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8054" target="_blank">Food and Culture</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_49" title="AI: Global &amp; Multicultur Persp">  AIGM</span>
+                </td><td>Lec</td><td>
+                    MW
+                </td><td>
+                    1800-1915
+                </td><td align="left">
+                    LUTR 167
+                </td><td align="left">
+                    Gustafsson, Mai
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_49">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_49">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8056</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_50" href="socadditional.aspx?term_code=201800&amp;crn=8056" target="_blank">ANTH 377</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_50" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8056" target="_blank">Women, Gender and Culture</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_50" title="AI: Global &amp; Multicultur Persp">  AIGM</span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    0930-1045
+                </td><td align="left">
+                    LUTR 167
+                </td><td align="left">
+                    Beranek, Natasha
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_50">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_50">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8057</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_51" href="socadditional.aspx?term_code=201800&amp;crn=8057" target="_blank">ANTH 377</a>
+                </td><td>2</td><td align="left">
+                    <a id="GridView1_HyperLink2_51" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8057" target="_blank">Women, Gender and Culture</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_51" title="AI: Global &amp; Multicultur Persp">  AIGM</span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1100-1215
+                </td><td align="left">
+                    LUTR 167
+                </td><td align="left">
+                    Beranek, Natasha
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_51">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_51">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8904</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_52" href="socadditional.aspx?term_code=201800&amp;crn=8904" target="_blank">ARAB 101</a>
+                </td><td>1R</td><td align="left">
+                    <a id="GridView1_HyperLink2_52" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8904" target="_blank">Beginning Arabic I</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_52"></span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1000-1050
+                </td><td align="left">
+                    MCM 260
+                </td><td align="left">
+                    Obeid, Diana
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_52">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_52">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8905</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_53" href="socadditional.aspx?term_code=201800&amp;crn=8905" target="_blank">ARAB 101</a>
+                </td><td>2R</td><td align="left">
+                    <a id="GridView1_HyperLink2_53" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8905" target="_blank">Beginning Arabic I</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_53"></span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1100-1150
+                </td><td align="left">
+                    MCM 260
+                </td><td align="left">
+                    Obeid, Diana
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_53">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_53">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">9384</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_54" href="socadditional.aspx?term_code=201800&amp;crn=9384" target="_blank">ARAB 195</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_54" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=9384" target="_blank">Special Topics</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_54"></span>
+                </td><td>Lab</td><td>
+                    M
+                </td><td>
+                    1400-1450
+                </td><td align="left">
+                    MCM 260
+                </td><td align="left">
+                    Obeid, Diana
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_54">18</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_54">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">9385</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_55" href="socadditional.aspx?term_code=201800&amp;crn=9385" target="_blank">ARAB 195</a>
+                </td><td>2</td><td align="left">
+                    <a id="GridView1_HyperLink2_55" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=9385" target="_blank">Special Topics</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_55"></span>
+                </td><td>Lab</td><td>
+                    W
+                </td><td>
+                    1400-1450
+                </td><td align="left">
+                    MCM 260
+                </td><td align="left">
+                    Obeid, Diana
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_55">17</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_55">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8907</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_56" href="socadditional.aspx?term_code=201800&amp;crn=8907" target="_blank">ARAB 201</a>
+                </td><td>1R</td><td align="left">
+                    <a id="GridView1_HyperLink2_56" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8907" target="_blank">Intermediate Arabic I</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_56" title="Liberal Learning Fdn;LLF: Second Language Literacy">  LLFL</span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1200-1250
+                </td><td align="left">
+                    MCM 260
+                </td><td align="left">
+                    Obeid, Diana
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_56">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_56">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">9386</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_57" href="socadditional.aspx?term_code=201800&amp;crn=9386" target="_blank">ARAB 295</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_57" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=9386" target="_blank">Special Topics</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_57" title="Liberal Learning Fdn"></span>
+                </td><td>Lab</td><td>
+                    F
+                </td><td>
+                    1400-1450
+                </td><td align="left">
+                    MCM 260
+                </td><td align="left">
+                    Obeid, Diana
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_57">17</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_57">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8476</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_58" href="socadditional.aspx?term_code=201800&amp;crn=8476" target="_blank">BCHM 414</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_58" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8476" target="_blank">Biochemistry I</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_58"></span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    0800-0850
+                </td><td align="left">
+                    FORBES 2070E
+                </td><td align="left">
+                    Gruber, Todd
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_58">1</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_58">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8477</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_59" href="socadditional.aspx?term_code=201800&amp;crn=8477" target="_blank">BCHM 414L</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_59" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8477" target="_blank">Biochemistry I Lab</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_59"></span>
+                </td><td>Lab</td><td>
+                    F
+                </td><td>
+                    1300-1650
+                </td><td align="left">
+                    FORBES 1015
+                </td><td align="left">
+                    Lasseter, Benjamin
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_59">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_59">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8854</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_60" href="socadditional.aspx?term_code=201800&amp;crn=8854" target="_blank">BIOL 107</a>
+                </td><td>1M</td><td align="left">
+                    <a id="GridView1_HyperLink2_60" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8854" target="_blank">General Biology I</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_60" title="AI: Invstgtng the Nat World">  AINW</span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1630-1745
+                </td><td align="left">
+                    FORBES 1022
+                </td><td align="left">
+                    Staff, CNU
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_60">1</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_60">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8864</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_61" href="socadditional.aspx?term_code=201800&amp;crn=8864" target="_blank">BIOL 109L</a>
+                </td><td>10R</td><td align="left">
+                    <a id="GridView1_HyperLink2_61" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8864" target="_blank">General Biology Laboratory</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_61" title="AI: Invstgtng the Nat World">  AINW</span>
+                </td><td>Lab</td><td>
+                    R
+                </td><td>
+                    2000-2150
+                </td><td align="left">
+                    FORBES 1027
+                </td><td align="left">
+                    Lundquist, Adam
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_61">16</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_61">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8855</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_62" href="socadditional.aspx?term_code=201800&amp;crn=8855" target="_blank">BIOL 109L</a>
+                </td><td>1R</td><td align="left">
+                    <a id="GridView1_HyperLink2_62" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8855" target="_blank">General Biology Laboratory</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_62" title="AI: Invstgtng the Nat World">  AINW</span>
+                </td><td>Lab</td><td>
+                    M
+                </td><td>
+                    1400-1550
+                </td><td align="left">
+                    FORBES 1027
+                </td><td align="left">
+                    Loftis, Jon
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_62">1</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_62">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8856</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_63" href="socadditional.aspx?term_code=201800&amp;crn=8856" target="_blank">BIOL 109L</a>
+                </td><td>2R</td><td align="left">
+                    <a id="GridView1_HyperLink2_63" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8856" target="_blank">General Biology Laboratory</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_63" title="AI: Invstgtng the Nat World">  AINW</span>
+                </td><td>Lab</td><td>
+                    M
+                </td><td>
+                    1600-1750
+                </td><td align="left">
+                    FORBES 1027
+                </td><td align="left">
+                    Loftis, Jon
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_63">8</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_63">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8857</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_64" href="socadditional.aspx?term_code=201800&amp;crn=8857" target="_blank">BIOL 109L</a>
+                </td><td>3R</td><td align="left">
+                    <a id="GridView1_HyperLink2_64" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8857" target="_blank">General Biology Laboratory</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_64" title="AI: Invstgtng the Nat World">  AINW</span>
+                </td><td>Lab</td><td>
+                    M
+                </td><td>
+                    1800-1950
+                </td><td align="left">
+                    FORBES 1027
+                </td><td align="left">
+                    Loftis, Jon
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_64">1</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_64">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8858</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_65" href="socadditional.aspx?term_code=201800&amp;crn=8858" target="_blank">BIOL 109L</a>
+                </td><td>4</td><td align="left">
+                    <a id="GridView1_HyperLink2_65" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8858" target="_blank">General Biology Laboratory</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_65" title="AI: Invstgtng the Nat World">  AINW</span>
+                </td><td>Lab</td><td>
+                    M
+                </td><td>
+                    2000-2150
+                </td><td align="left">
+                    FORBES 1027
+                </td><td align="left">
+                    Loftis, Jon
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_65">4</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_65">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8859</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_66" href="socadditional.aspx?term_code=201800&amp;crn=8859" target="_blank">BIOL 109L</a>
+                </td><td>5R</td><td align="left">
+                    <a id="GridView1_HyperLink2_66" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8859" target="_blank">General Biology Laboratory</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_66" title="AI: Invstgtng the Nat World">  AINW</span>
+                </td><td>Lab</td><td>
+                    T
+                </td><td>
+                    1800-1950
+                </td><td align="left">
+                    FORBES 1027
+                </td><td align="left">
+                    Lundquist, Adam
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_66">4</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_66">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8860</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_67" href="socadditional.aspx?term_code=201800&amp;crn=8860" target="_blank">BIOL 109L</a>
+                </td><td>6R</td><td align="left">
+                    <a id="GridView1_HyperLink2_67" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8860" target="_blank">General Biology Laboratory</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_67" title="AI: Invstgtng the Nat World">  AINW</span>
+                </td><td>Lab</td><td>
+                    T
+                </td><td>
+                    2000-2150
+                </td><td align="left">
+                    FORBES 1027
+                </td><td align="left">
+                    Lundquist, Adam
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_67">2</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_67">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8861</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_68" href="socadditional.aspx?term_code=201800&amp;crn=8861" target="_blank">BIOL 109L</a>
+                </td><td>7R</td><td align="left">
+                    <a id="GridView1_HyperLink2_68" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8861" target="_blank">General Biology Laboratory</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_68" title="AI: Invstgtng the Nat World">  AINW</span>
+                </td><td>Lab</td><td>
+                    W
+                </td><td>
+                    1800-1950
+                </td><td align="left">
+                    FORBES 1027
+                </td><td align="left">
+                    Tweed, Michael
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_68">14</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_68">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8862</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_69" href="socadditional.aspx?term_code=201800&amp;crn=8862" target="_blank">BIOL 109L</a>
+                </td><td>8R</td><td align="left">
+                    <a id="GridView1_HyperLink2_69" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8862" target="_blank">General Biology Laboratory</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_69" title="AI: Invstgtng the Nat World">  AINW</span>
+                </td><td>Lab</td><td>
+                    W
+                </td><td>
+                    2000-2150
+                </td><td align="left">
+                    FORBES 1027
+                </td><td align="left">
+                    Tweed, Michael
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_69">13</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_69">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8863</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_70" href="socadditional.aspx?term_code=201800&amp;crn=8863" target="_blank">BIOL 109L</a>
+                </td><td>9R</td><td align="left">
+                    <a id="GridView1_HyperLink2_70" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8863" target="_blank">General Biology Laboratory</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_70" title="AI: Invstgtng the Nat World">  AINW</span>
+                </td><td>Lab</td><td>
+                    R
+                </td><td>
+                    1800-1950
+                </td><td align="left">
+                    FORBES 1027
+                </td><td align="left">
+                    Lundquist, Adam
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_70">14</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_70">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8865</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_71" href="socadditional.aspx?term_code=201800&amp;crn=8865" target="_blank">BIOL 111</a>
+                </td><td>1M</td><td align="left">
+                    <a id="GridView1_HyperLink2_71" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8865" target="_blank">Topics in Botany</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_71" title="AI: Invstgtng the Nat World">  AINW</span>
+                </td><td>Lec</td><td>
+                    MW
+                </td><td>
+                    1600-1715
+                </td><td align="left">
+                    MCM 101
+                </td><td align="left">
+                    Ruane, Lauren
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_71">4</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_71">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8478</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_72" href="socadditional.aspx?term_code=201800&amp;crn=8478" target="_blank">BIOL 113</a>
+                </td><td>1M</td><td align="left">
+                    <a id="GridView1_HyperLink2_72" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8478" target="_blank">Topics in Medicine and Health</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_72" title="AI: Invstgtng the Nat World">  AINW</span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    0800-0850
+                </td><td align="left">
+                    LUTR 121
+                </td><td align="left">
+                    Wiens, Katie
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_72">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_72">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">9403</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_73" href="socadditional.aspx?term_code=201800&amp;crn=9403" target="_blank">BIOL 199</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_73" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=9403" target="_blank">IND ST:Nutrtn & Human Health</a>
+                </td><td>1 - 3</td><td>
+                    <span id="GridView1_Label1_73"></span>
+                </td><td>Ind</td><td>
+
+                </td><td>
+
+                </td><td align="left">
+                    ARR
+                </td><td align="left">
+                    Ruane, Lauren
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_73">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_73">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8479</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_74" href="socadditional.aspx?term_code=201800&amp;crn=8479" target="_blank">BIOL 211</a>
+                </td><td>1M</td><td align="left">
+                    <a id="GridView1_HyperLink2_74" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8479" target="_blank">Principles of Biology I</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_74"></span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1000-1050
+                </td><td align="left">
+                    FORBES 2070D
+                </td><td align="left">
+                    Meighan, Christopher
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_74">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_74">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8481</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_75" href="socadditional.aspx?term_code=201800&amp;crn=8481" target="_blank">BIOL 211</a>
+                </td><td>2M</td><td align="left">
+                    <a id="GridView1_HyperLink2_75" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8481" target="_blank">Principles of Biology I</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_75"></span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1300-1350
+                </td><td align="left">
+                    LUTR 121
+                </td><td align="left">
+                    Webb, Lisa
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_75">5</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_75">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8484</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_76" href="socadditional.aspx?term_code=201800&amp;crn=8484" target="_blank">BIOL 211</a>
+                </td><td>3M</td><td align="left">
+                    <a id="GridView1_HyperLink2_76" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8484" target="_blank">Principles of Biology I</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_76"></span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1400-1450
+                </td><td align="left">
+                    FORBES 2070D
+                </td><td align="left">
+                    Bogenpohl, James
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_76">10</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_76">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8486</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_77" href="socadditional.aspx?term_code=201800&amp;crn=8486" target="_blank">BIOL 211</a>
+                </td><td>4M</td><td align="left">
+                    <a id="GridView1_HyperLink2_77" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8486" target="_blank">Principles of Biology I</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_77"></span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    0800-0915
+                </td><td align="left">
+                    FORBES 2015
+                </td><td align="left">
+                    Mitrano, Darlene
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_77">9</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_77">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8487</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_78" href="socadditional.aspx?term_code=201800&amp;crn=8487" target="_blank">BIOL 211L</a>
+                </td><td>1R</td><td align="left">
+                    <a id="GridView1_HyperLink2_78" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8487" target="_blank">Principles of Biology I Lab</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_78"></span>
+                </td><td>Lab</td><td>
+                    M
+                </td><td>
+                    1300-1650
+                </td><td align="left">
+                    FORBES 1009
+                </td><td align="left">
+                    Tombolato-Terzic, Denise
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_78">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_78">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8489</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_79" href="socadditional.aspx?term_code=201800&amp;crn=8489" target="_blank">BIOL 211L</a>
+                </td><td>2R</td><td align="left">
+                    <a id="GridView1_HyperLink2_79" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8489" target="_blank">Principles of Biology I Lab</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_79"></span>
+                </td><td>Lab</td><td>
+                    M
+                </td><td>
+                    1800-2150
+                </td><td align="left">
+                    FORBES 1009
+                </td><td align="left">
+                    Dorsey, Brittany
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_79">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_79">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8490</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_80" href="socadditional.aspx?term_code=201800&amp;crn=8490" target="_blank">BIOL 211L</a>
+                </td><td>3M</td><td align="left">
+                    <a id="GridView1_HyperLink2_80" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8490" target="_blank">Principles of Biology I Lab</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_80"></span>
+                </td><td>Lab</td><td>
+                    T
+                </td><td>
+                    1330-1720
+                </td><td align="left">
+                    FORBES 1009
+                </td><td align="left">
+                    Brown, Gwynne
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_80">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_80">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8493</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_81" href="socadditional.aspx?term_code=201800&amp;crn=8493" target="_blank">BIOL 211L</a>
+                </td><td>4R</td><td align="left">
+                    <a id="GridView1_HyperLink2_81" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8493" target="_blank">Principles of Biology I Lab</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_81"></span>
+                </td><td>Lab</td><td>
+                    T
+                </td><td>
+                    1800-2150
+                </td><td align="left">
+                    FORBES 1009
+                </td><td align="left">
+                    Aguilar, Leah
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_81">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_81">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8494</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_82" href="socadditional.aspx?term_code=201800&amp;crn=8494" target="_blank">BIOL 211L</a>
+                </td><td>5R</td><td align="left">
+                    <a id="GridView1_HyperLink2_82" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8494" target="_blank">Principles of Biology I Lab</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_82"></span>
+                </td><td>Lab</td><td>
+                    R
+                </td><td>
+                    0800-1150
+                </td><td align="left">
+                    FORBES 1009
+                </td><td align="left">
+                    Guidicelli-Gadea, Lourdes
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_82">2</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_82">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8496</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_83" href="socadditional.aspx?term_code=201800&amp;crn=8496" target="_blank">BIOL 211L</a>
+                </td><td>6R</td><td align="left">
+                    <a id="GridView1_HyperLink2_83" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8496" target="_blank">Principles of Biology I Lab</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_83"></span>
+                </td><td>Lab</td><td>
+                    R
+                </td><td>
+                    1330-1720
+                </td><td align="left">
+                    FORBES 1009
+                </td><td align="left">
+                    Mitrano, Darlene
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_83">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_83">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8497</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_84" href="socadditional.aspx?term_code=201800&amp;crn=8497" target="_blank">BIOL 211L</a>
+                </td><td>7R</td><td align="left">
+                    <a id="GridView1_HyperLink2_84" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8497" target="_blank">Principles of Biology I Lab</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_84"></span>
+                </td><td>Lab</td><td>
+                    R
+                </td><td>
+                    1800-2150
+                </td><td align="left">
+                    FORBES 1009
+                </td><td align="left">
+                    Mitrano, Darlene
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_84">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_84">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8866</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_85" href="socadditional.aspx?term_code=201800&amp;crn=8866" target="_blank">BIOL 212</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_85" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8866" target="_blank">Principles of Biology II</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_85"></span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    0800-0915
+                </td><td align="left">
+                    MCM 164
+                </td><td align="left">
+                    Lattanzio, Matthew
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_85">7</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_85">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8867</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_86" href="socadditional.aspx?term_code=201800&amp;crn=8867" target="_blank">BIOL 212</a>
+                </td><td>2</td><td align="left">
+                    <a id="GridView1_HyperLink2_86" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8867" target="_blank">Principles of Biology II</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_86"></span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    0930-1045
+                </td><td align="left">
+                    FORBES 2015
+                </td><td align="left">
+                    Harwell, Heather
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_86">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_86">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8868</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_87" href="socadditional.aspx?term_code=201800&amp;crn=8868" target="_blank">BIOL 212</a>
+                </td><td>3</td><td align="left">
+                    <a id="GridView1_HyperLink2_87" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8868" target="_blank">Principles of Biology II</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_87"></span>
+                </td><td>Lec</td><td>
+                    TR
+                </td><td>
+                    1100-1215
+                </td><td align="left">
+                    MCM 164
+                </td><td align="left">
+                    Lattanzio, Matthew
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_87">3</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_87">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8869</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_88" href="socadditional.aspx?term_code=201800&amp;crn=8869" target="_blank">BIOL 212L</a>
+                </td><td>1</td><td align="left">
+                    <a id="GridView1_HyperLink2_88" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8869" target="_blank">Principles of Biology II Lab</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_88"></span>
+                </td><td>Lab</td><td>
+                    T
+                </td><td>
+                    1330-1720
+                </td><td align="left">
+                    FORBES 1027
+                </td><td align="left">
+                    Haymond, Shauna
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_88">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_88">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8870</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_89" href="socadditional.aspx?term_code=201800&amp;crn=8870" target="_blank">BIOL 212L</a>
+                </td><td>2</td><td align="left">
+                    <a id="GridView1_HyperLink2_89" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8870" target="_blank">Principles of Biology II Lab</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_89"></span>
+                </td><td>Lab</td><td>
+                    T
+                </td><td>
+                    1330-1720
+                </td><td align="left">
+                    FORBES 1002
+                </td><td align="left">
+                    Jaworski, Kortney
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_89">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_89">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8871</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_90" href="socadditional.aspx?term_code=201800&amp;crn=8871" target="_blank">BIOL 212L</a>
+                </td><td>3</td><td align="left">
+                    <a id="GridView1_HyperLink2_90" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8871" target="_blank">Principles of Biology II Lab</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_90"></span>
+                </td><td>Lab</td><td>
+                    W
+                </td><td>
+                    0900-1250
+                </td><td align="left">
+                    FORBES 1002
+                </td><td align="left">
+                    Jaworski, Kortney
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_90">8</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_90">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8872</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_91" href="socadditional.aspx?term_code=201800&amp;crn=8872" target="_blank">BIOL 212L</a>
+                </td><td>4</td><td align="left">
+                    <a id="GridView1_HyperLink2_91" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8872" target="_blank">Principles of Biology II Lab</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_91"></span>
+                </td><td>Lab</td><td>
+                    W
+                </td><td>
+                    1300-1650
+                </td><td align="left">
+                    FORBES 1002
+                </td><td align="left">
+                    Lattanzio, Matthew
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_91">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_91">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8873</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_92" href="socadditional.aspx?term_code=201800&amp;crn=8873" target="_blank">BIOL 212L</a>
+                </td><td>5</td><td align="left">
+                    <a id="GridView1_HyperLink2_92" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8873" target="_blank">Principles of Biology II Lab</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_92"></span>
+                </td><td>Lab</td><td>
+                    R
+                </td><td>
+                    1330-1720
+                </td><td align="left">
+                    FORBES 1027
+                </td><td align="left">
+                    Haymond, Shauna
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_92">3</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_92">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8874</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_93" href="socadditional.aspx?term_code=201800&amp;crn=8874" target="_blank">BIOL 212L</a>
+                </td><td>6</td><td align="left">
+                    <a id="GridView1_HyperLink2_93" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8874" target="_blank">Principles of Biology II Lab</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_93"></span>
+                </td><td>Lab</td><td>
+                    R
+                </td><td>
+                    1330-1720
+                </td><td align="left">
+                    FORBES 1002
+                </td><td align="left">
+                    Jaworski, Kortney
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_93">3</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_93">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8875</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_94" href="socadditional.aspx?term_code=201800&amp;crn=8875" target="_blank">BIOL 213</a>
+                </td><td>1B</td><td align="left">
+                    <a id="GridView1_HyperLink2_94" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8875" target="_blank">Principles in Biology III</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_94"></span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    0900-0950
+                </td><td align="left">
+                    FORBES 2070C
+                </td><td align="left">
+                    Steven, Janet<BR>Collar, David
+                </td><td style="color:Blue;">
+                    <span id="GridView1_StuAvailableLabel_94">0</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_94">Closed</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8876</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_95" href="socadditional.aspx?term_code=201800&amp;crn=8876" target="_blank">BIOL 213</a>
+                </td><td>2B</td><td align="left">
+                    <a id="GridView1_HyperLink2_95" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8876" target="_blank">Principles in Biology III</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_95"></span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1100-1150
+                </td><td align="left">
+                    FORBES 2070D
+                </td><td align="left">
+                    Ruane, Lauren<BR>Burke, Russell
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_95">18</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_95">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8877</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_96" href="socadditional.aspx?term_code=201800&amp;crn=8877" target="_blank">BIOL 213</a>
+                </td><td>3A</td><td align="left">
+                    <a id="GridView1_HyperLink2_96" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8877" target="_blank">Principles in Biology III</a>
+                </td><td>3</td><td>
+                    <span id="GridView1_Label1_96"></span>
+                </td><td>Lec</td><td>
+                    MWF
+                </td><td>
+                    1100-1150
+                </td><td align="left">
+                    FORBES 2070E
+                </td><td align="left">
+                    Burke, Russell<BR>Ruane, Lauren
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_96">12</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_96">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">8998</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_97" href="socadditional.aspx?term_code=201800&amp;crn=8998" target="_blank">BIOL 213L</a>
+                </td><td>1B</td><td align="left">
+                    <a id="GridView1_HyperLink2_97" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8998" target="_blank">Principles of Biology III Lab</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_97"></span>
+                </td><td>Lab</td><td>
+                    T
+                </td><td>
+                    1330-1720
+                </td><td align="left">
+                    FORBES 1033
+                </td><td align="left">
+                    Sweet, Krista<BR>Collar, David
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_97">8</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_97">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;">
+			<td style="width:100px;">8999</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_98" href="socadditional.aspx?term_code=201800&amp;crn=8999" target="_blank">BIOL 213L</a>
+                </td><td>2A</td><td align="left">
+                    <a id="GridView1_HyperLink2_98" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=8999" target="_blank">Principles of Biology III Lab</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_98"></span>
+                </td><td>Lab</td><td>
+                    T
+                </td><td>
+                    1330-1720
+                </td><td align="left">
+                    FORBES 1039
+                </td><td align="left">
+                    Collar, David<BR>Sweet, Krista
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_98">15</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_98">Open</span>
+                </td>
+		</tr><tr align="center" onmouseover="this.originalstyle=this.style.backgroundColor;this.style.backgroundColor=&#39;#EEFFAA&#39;" onmouseout="this.style.backgroundColor=this.originalstyle;" style="background-color:#E1EAF5;font-size:Small;">
+			<td style="width:100px;">9000</td><td align="left" style="width:100px;">
+                     <a id="GridView1_HyperLink1_99" href="socadditional.aspx?term_code=201800&amp;crn=9000" target="_blank">BIOL 213L</a>
+                </td><td>3B</td><td align="left">
+                    <a id="GridView1_HyperLink2_99" href="https://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=1245&amp;term_id-1=201800&amp;crn-1=9000" target="_blank">Principles of Biology III Lab</a>
+                </td><td>1</td><td>
+                    <span id="GridView1_Label1_99"></span>
+                </td><td>Lab</td><td>
+                    R
+                </td><td>
+                    0800-1150
+                </td><td align="left">
+                    FORBES 1033
+                </td><td align="left">
+                    Sweet, Krista<BR>Tweed, Michael
+                </td><td>
+                    <span id="GridView1_StuAvailableLabel_99">11</span>
+                </td><td>
+                    <span id="GridView1_StatusLabel_99">Open</span>
+                </td>
+		</tr>
+	</table>
+</div>
+
+
+        <br />
+        <br />
+        <input type="submit" name="Button3" value="Begin New Search" id="Button3" />
+        <br />
+        <br />
+
+            <span id="Label9" style="display:inline-block;color:#002451;width:400px;">Office of the Registrar, Newport Hall, 1st Floor Commons</span><br/>
+            <span id="Label101" style="color:#002451;">Voice: 757.594.7155, Fax: 757.594.7711, </span>
+            <span><a id="HyperLink7" href="mailto:register@cnu.edu">register@cnu.edu</a></span>
+
+        <br />
+        <br />
+                <a id="HyperLink5" href="http://its.cnu.edu" target="_blank"><img src="ITS-3%20200px.png" alt="" /></a>
+            &nbsp;</form>
+</body>
+</html>
