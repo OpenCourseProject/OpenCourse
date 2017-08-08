@@ -3,8 +3,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
-<link rel="stylesheet" href="/static/assets/css/fullcalendar.css" />
-<link rel="stylesheet" href="/static/assets/css/fullcalendar.print.css" media="print" />
+<link rel="stylesheet" href="/static/assets/css/fullcalendar.min.css" />
 <script src="/static/assets/js/moment.min.js"></script>
 <script src="/static/assets/js/fullcalendar.min.js"></script>
 <meta property="og:title" content="{{ term.name }} schedule for {{ schedule_user.first_name }} {{ schedule_user.last_name }}" />
@@ -63,13 +62,19 @@ $(document).ready(function() {
   defaultView: 'agendaWeek',
   header: false,
   editable: false,
-  hiddenDays: [0],
+  hiddenDays: {% if show_sat %}[0]{% else %}[0, 6]{% endif %},
   allDaySlot: false,
-  scrollTime: '07:30:00',
+  minTime: '{{ time_min }}',
+	maxTime: '{{ time_max }}',
   columnFormat: 'ddd',
   events: '/schedule/calendar/course/?identifier={{ identifier }}&color=false',
   loading: function(isLoading, view) {
     // Hacky fix to avoid calendar loading
+		var slatHeight = $("#calendar").find('.fc-slats').height();
+		var height = $('#calendar').find('.fc-time-grid-container').height();
+		if(slatHeight < height) {
+				$('#calendar').find('.fc-time-grid-container').css('max-height', slatHeight + 'px');
+		}
     if (!isLoading) {
       $('#viewTabs a[href="#list-tab"]').tab('show')
     }

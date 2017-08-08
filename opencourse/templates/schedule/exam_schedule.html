@@ -3,8 +3,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
-<link rel="stylesheet" href="/static/assets/css/fullcalendar.css" />
-<link rel="stylesheet" href="/static/assets/css/fullcalendar.print.css" media="print" />
+<link rel="stylesheet" href="/static/assets/css/fullcalendar.min.css" />
 <script src="/static/assets/js/moment.min.js"></script>
 <script src="/static/assets/js/fullcalendar.min.js"></script>
 <script src="/static/assets/js/facebook.js"></script>
@@ -66,6 +65,8 @@ $(document).ready(function() {
     },
     defaultView: 'agendaWeek',
     defaultDate: '{{ first_exam }}',
+    minTime: '08:00:00',
+    maxTime: '22:00:00',
     editable: false,
     hiddenDays: [0],
     allDaySlot: false,
@@ -116,7 +117,7 @@ $(document).ready(function() {
     </ul>
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane" id="list-tab"><br>{% render_table table %}</div>
-      <div role="tabpanel" class="tab-pane active" id="calendar-tab"><div class="pagebreak"></div><div id="calendar"></div></div>
+      <div role="tabpanel" class="tab-pane active" id="calendar-tab"><div class="pagebreak"></div><div id="calendar" style="overflow-y: scroll;"></div></div>
     </div>
   </div>
 </div>

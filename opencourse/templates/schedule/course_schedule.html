@@ -3,8 +3,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
-<link rel="stylesheet" href="/static/assets/css/fullcalendar.css" />
-<link rel="stylesheet" href="/static/assets/css/fullcalendar.print.css" media="print" />
+<link rel="stylesheet" href="/static/assets/css/fullcalendar.min.css" />
 <link rel="stylesheet" href="/static/assets/css/introjs.css" />
 <script src="/static/assets/js/moment.min.js"></script>
 <script src="/static/assets/js/fullcalendar.min.js"></script>
@@ -108,9 +107,10 @@ $(document).ready(function() {
     defaultView: 'agendaWeek',
     header: false,
     editable: false,
-    hiddenDays: [0],
+    hiddenDays: {% if show_sat %}[0]{% else %}[0, 6]{% endif %},
     allDaySlot: false,
-    scrollTime: '07:30:00',
+    minTime: '{{ time_min }}',
+    maxTime: '{{ time_max }}',
     columnFormat: 'ddd',
     events: '/schedule/calendar/course/?identifier={{ identifier }}&color=true',
     loading: function(isLoading, view) {
@@ -118,6 +118,11 @@ $(document).ready(function() {
         // Update 2 for calendar elements
         updateColors($('#id_show_colors').get(0));
         updateDetails($('#id_show_details').get(0));
+        var slatHeight = $("#calendar").find('.fc-slats').height();
+        var height = $('#calendar').find('.fc-time-grid-container').height();
+        if(slatHeight < height) {
+            $('#calendar').find('.fc-time-grid-container').css('max-height', slatHeight + 'px');
+        }
         $('#course-list').css('max-height', $('#calendar').height() + 'px');
       }
     }
@@ -208,7 +213,7 @@ function updateDetails(element) {
   {% if invalid_courses %}
   <div class="alert alert-warning alert-dismissible" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <strong>Whoops!</strong> Some of the classes you scheduled couldn't be found. The following CRNs are invalid for this term:
+    <strong>Warning:</strong> Some of the classes you scheduled couldn't be found. The following CRNs are invalid for this term:
     {% for entry in invalid_courses %}
     {{ entry.course_crn }}{% if not forloop.last %}, {% else %}.{% endif %}
     {% endfor %}
@@ -225,7 +230,7 @@ function updateDetails(element) {
   {% endif %}
   <div class="print-only">
     <center>
-      <h1>Your <strong>{{ term.name }}</strong> schedule</h1>
+      <h1><strong>{{ term.name }}</strong></h1>
     </center>
   </div>
   <div class="well noprint">
@@ -258,7 +263,7 @@ function updateDetails(element) {
   </div>
   {% if has_courses %}
   {% if has_exams %}
-  <div class="alert alert-info" role="alert" data-step="3" data-intro="You can check out when your exams are by clicking here.">
+  <div class="alert alert-info noprint" role="alert" data-step="3" data-intro="You can check out when your exams are by clicking here.">
     <center><a href="/schedule/exam/{{ term.value }}/" class="alert-link">View Exam Schedule</a></center>
   </div>
   {% endif %}
@@ -287,6 +292,8 @@ function updateDetails(element) {
                     <br>
                     <strong>CRN:</strong> {{ course.crn }}
                     <br>
+                    <strong>Section:</strong> {{ course.section }}
+                    <br>
                     <strong>Type:</strong> {{ course.ctype }}
                     <br>
                     <strong>Seats:</strong> {{ course.seats }}
@@ -310,8 +317,10 @@ function updateDetails(element) {
       {{ options_form.show_details }} {{ options_form.show_details.label }}
     </form>
   </div>
-  <div class="print-only">
-    {% render_table print_table %}
+  <div class="print-only" style="margin: 1rem">
+    <center>
+      {% render_table print_table %}
+    </center>
   </div>
   {% else %}
   <div class="well">

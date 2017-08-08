@@ -8,11 +8,12 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         # Positional arguments
-        parser.add_argument('type', nargs='+', type=str)
+        parser.add_argument('--duplicates', action='store_true')
+        parser.add_argument('--stale', action='store_true')
 
     def handle(self, *args, **options):
         instructors = Instructor.objects.all()
-        if 'dupes' in options['type']:
+        if options['duplicates']:
             self.stdout.write("Finding duplicates for {} instructors".format(len(instructors)))
             dupes = Instructor.objects.values('last_name').annotate(Count('id')).order_by().filter(id__count__gt=1)
             i = 1
@@ -39,15 +40,22 @@ class Command(BaseCommand):
                                 course.save()
                             self.stdout.write("Migrated {} to {}".format(migrate_from, migrate_to))
                 i += 1
-        if 'stale' in options['type']:
+        if options['stale']:
             table = []
+            entries = []
             for instructor in instructors:
                 courses = Course.objects.filter(instructor=instructor)
                 if len(courses) == 0:
                     table.append([len(table) + 1, instructor.last_name, instructor.first_name, len(courses), instructor.id])
-                    instructor.delete()
-            self.stdout.write('Removed the following stale instructors:')
+                    entries.append(instructor)
+            self.stdout.write('Instructors which have no associated course:')
             self.stdout.write(tabulate(table, headers=["#", "Last Name", "First Name", "Courses", "ID"], tablefmt="fancy_grid"))
+            if len(entries) > 0:
+                value = raw_input("Delete all stale entries? (y/n): ")
+                if value == "y" or value == "Y":
+                    for entry in entries:
+                        entry.delete()
+                    self.stdout.write('{} entries deleted'.format(len(entries)))
         self.stdout.write('Done cleaning')
 
     def validate_index(self, value, table):

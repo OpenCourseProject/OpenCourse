@@ -38,13 +38,16 @@ def schedule(request):
     options_form.fields['show_colors'].initial = profile.show_colors_schedule
     options_form.fields['show_details'].initial = profile.show_details_schedule
 
-    query = ScheduleEntry.objects.filter(user=request.user, term=term)
+    query = ScheduleEntry.objects.filter(user=request.user, term=term).order_by('course_crn')
     courses = schedule_get_courses(query)
     hash = get_identifier(request.user, term)
     share_url = request.build_absolute_uri('/schedule/' + hash + '/')
 
     credits_min = 0
     credits_max = 0
+    time_min = datetime.time(8, 0, 0)
+    time_max = datetime.time(0, 0, 0)
+    show_sat = False
     invalid_courses = []
     deleted_courses = []
     if len(query) > 0:
@@ -60,11 +63,19 @@ def schedule(request):
                     deleted_courses.append(course)
                 value = course.hours
                 credits_min += int(value[:1])
+                meeting_time = course.primary_meeting_time
+                if meeting_time.start_time < time_min:
+                    time_min = meeting_time.start_time
+                if meeting_time.end_time > time_max:
+                    time_max = meeting_time.end_time
+                if 'S' in meeting_time.days:
+                    show_sat = True
                 if len(value) > 1:
                     credits_max += int(value[4:])
     if credits_max > 0:
         credits_max = credits_min + credits_max
-
+    time_min = time_min.strftime('%H:%M:%S')
+    time_max = time_max.strftime('%H:%M:%S')
     has_exams = False
     try:
         source = ExamSource.objects.get(term=term)
@@ -88,6 +99,9 @@ def schedule(request):
         'share_url': share_url,
         'credits_min': credits_min,
         'credits_max': credits_max,
+        'time_min': time_min,
+        'time_max': time_max,
+        'show_sat': show_sat,
         'invalid_courses': invalid_courses,
         'deleted_courses': deleted_courses,
         'has_exams': has_exams,
@@ -138,8 +152,11 @@ def exam_schedule(request, termid):
 def schedule_view(request, identifier):
     query = ScheduleEntry.objects.filter(identifier=identifier)
     courses = schedule_get_courses(query)
+    time_min = datetime.time(8, 0, 0)
+    time_max = datetime.time(0, 0, 0)
     credits_min = 0
     credits_max = 0
+    show_sat = False
     desc = None
     if len(query) > 0:
         desc = str(len(query)) + (" courses: " if len(query) > 1 else " course: ")
@@ -154,6 +171,13 @@ def schedule_view(request, identifier):
                 value = course.hours
                 desc += course.title + ", "
                 credits_min += int(value[:1])
+                meeting_time = course.primary_meeting_time
+                if meeting_time.start_time < time_min:
+                    time_min = meeting_time.start_time
+                if meeting_time.end_time > time_max:
+                    time_max = meeting_time.end_time
+                if 'S' in meeting_time.days:
+                    show_sat = True
                 if len(value) > 1:
                     credits_max += int(value[4:])
         desc = desc[:-2]
@@ -162,6 +186,8 @@ def schedule_view(request, identifier):
 
     if credits_max > 0:
         credits_max = credits_min + credits_max
+    time_min = time_min.strftime('%H:%M:%S')
+    time_max = time_max.strftime('%H:%M:%S')
     table = ScheduleTable(courses)
 
     RequestConfig(request).configure(table)
@@ -176,6 +202,9 @@ def schedule_view(request, identifier):
         'identifier': identifier,
         'credits_min': credits_min,
         'credits_max': credits_max,
+        'show_sat': show_sat,
+        'time_min': time_min,
+        'time_max': time_max,
     }
 
     if user != request.user and request.user.is_authenticated():
@@ -197,7 +226,7 @@ def schedule_calendar(request):
         use_color = True
         if 'color' in request.GET:
             use_color = request.GET['color'] == 'true'
-        query = ScheduleEntry.objects.filter(identifier=request.GET['identifier'])
+        query = ScheduleEntry.objects.filter(identifier=request.GET['identifier']).order_by('course_crn')
         courses = schedule_get_courses(query)
         colors = get_colors_for_courses(courses)
         events = []

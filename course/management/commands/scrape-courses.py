@@ -6,7 +6,7 @@ from pyvirtualdisplay import Display
 from splinter import Browser
 from splinter.request_handler.status_code import HttpResponseError
 from selenium.common.exceptions import TimeoutException
-from lxml import html, etree
+from lxml import html
 from datetime import datetime
 from django.utils import timezone
 from time import sleep

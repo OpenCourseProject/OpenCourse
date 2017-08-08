@@ -1,20 +1,24 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db.models import Max, Count
 from account.models import Profile
-from course.models import Course, FollowEntry
+from course.models import Course, FollowEntry, CourseVersion, Term
 from schedule.models import ScheduleEntry
 from tabulate import tabulate
+from course.utils import create_changelog
+import datetime
+import json
 
 class Command(BaseCommand):
     help = 'Helps clean up duplicated schedule entries'
 
     def add_arguments(self, parser):
         # Positional arguments
-        parser.add_argument('type', nargs='+', type=str)
+        parser.add_argument('--schedule', action='store_true')
+        parser.add_argument('--follow', action='store_true')
 
     def handle(self, *args, **options):
         table = []
-        if 'schedule' in options['type']:
+        if options['schedule']:
             unique_fields = ['user', 'term', 'course_crn']
             dupes = (ScheduleEntry.objects.values(*unique_fields)
                                          .order_by()
@@ -35,7 +39,7 @@ class Command(BaseCommand):
                     for entry in entries:
                         entry.delete()
                     self.stdout.write('{} duplicates deleted'.format(len(entries)))
-        if 'follow' in options['type']:
+        if options['follow']:
             unique_fields = ['user', 'term', 'course_crn']
             dupes = (FollowEntry.objects.values(*unique_fields)
                                          .order_by()
