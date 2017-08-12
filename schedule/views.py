@@ -64,12 +64,13 @@ def schedule(request):
                 value = course.hours
                 credits_min += int(value[:1])
                 meeting_time = course.primary_meeting_time
-                if meeting_time.start_time < time_min:
-                    time_min = meeting_time.start_time
-                if meeting_time.end_time > time_max:
-                    time_max = meeting_time.end_time
-                if 'S' in meeting_time.days:
-                    show_sat = True
+                if meeting_time is not None:
+                    if meeting_time.start_time < time_min:
+                        time_min = meeting_time.start_time
+                    if meeting_time.end_time > time_max:
+                        time_max = meeting_time.end_time
+                    if 'S' in meeting_time.days:
+                        show_sat = True
                 if len(value) > 1:
                     credits_max += int(value[4:])
     if credits_max > 0:

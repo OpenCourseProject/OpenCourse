@@ -1,12 +1,9 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db.models import Max, Count
 from account.models import Profile
-from course.models import Course, FollowEntry, CourseVersion, Term
+from course.models import Course, FollowEntry
 from schedule.models import ScheduleEntry
 from tabulate import tabulate
-from course.utils import create_changelog
-import datetime
-import json
 
 class Command(BaseCommand):
     help = 'Helps clean up duplicated schedule entries'
