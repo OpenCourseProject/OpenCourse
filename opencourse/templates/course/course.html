@@ -88,9 +88,9 @@ facebookCallback = function(response) {
 {% block search-active %}active{% endblock %}
 {% block content %}
 <!-- Instructor Modal -->
-{% include "component/instructor-modal.html" %}
+{% include "component/course/instructor-modal.html" %}
 <!-- Materials Modal -->
-{% include "component/materials-modal.html" %}
+{% include "component/course/materials-modal.html" %}
 <div class="container">
   {% if course.deleted %}
   <div class="alert alert-danger" role="alert">

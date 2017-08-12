@@ -35,7 +35,7 @@ def changes(request):
         'current_term': current_term,
         'changes': changes,
     }
-    return render(request, 'dashboard/changes.html', context)
+    return render(request, 'component/dashboard/changes.html', context)
 
 def events(request):
     events = []
@@ -57,7 +57,7 @@ def events(request):
     context = {
         'events': events,
     }
-    return render(request, 'dashboard/events.html', context)
+    return render(request, 'component/dashboard/events.html', context)
 
 def courses(request):
     current_term = Term.objects.get(value=settings.CURRENT_TERM)
@@ -77,7 +77,7 @@ def courses(request):
     context = {
         'courses': courses,
     }
-    return render(request, 'dashboard/courses.html', context)
+    return render(request, 'component/dashboard/courses.html', context)
 
 def sort_by_time(obj):
     return obj['time']
@@ -89,4 +89,4 @@ def updates(request):
         'updates': updates,
         'terms': terms,
     }
-    return render(request, 'dashboard/updates.html', context)
+    return render(request, 'component/dashboard/updates.html', context)
