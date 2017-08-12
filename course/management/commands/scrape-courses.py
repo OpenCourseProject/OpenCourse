@@ -34,8 +34,8 @@ class Command(BaseCommand):
         parser.add_argument('--debug', nargs='?', choices=['y', 'n'], default='n', help="If y will do a dry-run with no database updates")
         parser.add_argument('--local_data', nargs='?', choices=['y', 'n'], default='n', help="If y will use a local file instead of scraping from the web")
         parser.add_argument('--local_data_term', nargs='?', type=int, default=201800, help="The term to update if a local file is being used")
-        parser.add_argument('--local_data_soc_source', nargs='?', type=str, default='/var/www/opencourse/opencourse/static/assets/html/soc.html', help="The soc local file")
-        parser.add_argument('--local_data_fsoc_source', nargs='?', type=str, default='/var/www/opencourse/opencourse/static/assets/html/fsoc.html', help="The fsoc local file")
+        parser.add_argument('--local_data_soc_source', nargs='?', type=str, help="The soc local file")
+        parser.add_argument('--local_data_fsoc_source', nargs='?', type=str, help="The fsoc local file")
 
     def signal_handler(signal, frame):
         self.log('Update process manually aborted')

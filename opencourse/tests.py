@@ -1,9 +1,10 @@
-from django.test import TestCase, Client
+from django.test import TestCase, TransactionTestCase, Client
 from django.test.utils import setup_test_environment
 from django.contrib.auth.models import User
 from course.models import Term, Course
 from opencourse.models import Report, UpdateLog
 from django.core.management import call_command
+from django.conf import settings
 
 class ReportTestCase(TestCase):
     def setUp(self):
@@ -140,7 +141,7 @@ class ScrapeTestCase(TestCase):
             '--output', 'n',
             '--local_data', 'y',
             '--local_data_term', '42',
-            '--local_data_soc_source', '/var/www/opencourse/opencourse/static/assets/html/soc.html',
-            '--local_data_fsoc_source', '/var/www/opencourse/opencourse/static/assets/html/fsoc.html',
+            '--local_data_soc_source', '{}/static/assets/html/soc.html'.format(settings.BASE_DIR),
+            '--local_data_fsoc_source', '{}/static/assets/html/fsoc.html'.format(settings.BASE_DIR),
         ]
         call_command('scrape-courses', *args)
