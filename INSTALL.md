@@ -69,6 +69,29 @@ Now we'll need to configure the MySQL database we setup earlier. In the DATABASE
 
 Finally, to be able to send emails from the system, you'll need to provide SMTP server connection details. This will differ from host to host, so check with them to get your details.
 
+**IMPORTANT:** Since you've made changes to the configuration files with private information, you should enable the content filter to keep these changes from being committed to the database. To do this, run the following git commands:
+
+    git config filter.private.clean "sed '/#private$/'d"
+    git config filter.private.smudge "cat"
+    git config filter.private.required true
+
+You should now terminate any line you have added to the configuration with '#private' to identify it as a non-committable line. For instance:
+
+    ...
+    DATABASES = {
+        'default': {#private
+            'ENGINE': 'django.db.backends.mysql',#private
+            'NAME': 'opencourse',#private
+            'USER': 'opencourse',#private
+            'PASSWORD': 'mypassword',#private
+            'HOST': 'localhost',#private
+            'PORT': '3306',#private
+        }#private
+    }
+    ...
+
+When you diff or commit settings files from now on, the lines marked with #private will not be included as changes.
+
 Run the migrations to set up the database:
 
     python manage.py migrate
