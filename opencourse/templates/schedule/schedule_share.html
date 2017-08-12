@@ -20,8 +20,11 @@
 		margin: 0 auto;
 	}
   .print-content {
-    display: none
+    display: none;
   }
+	.pagination {
+		display: none;
+	}
   @media print {
     .noprint {display:none !important;}
     a:link:after, a:visited:after {
@@ -101,8 +104,19 @@ $(document).ready(function() {
       <li role="presentation" class="active"><a href="#calendar-tab" aria-controls="calendar-tab" role="tab" data-toggle="tab">Calendar View</a></li>
     </ul>
     <div class="tab-content">
-      <div role="tabpanel" class="tab-pane" id="list-tab"><br>{% render_table table %}</div>
-      <div role="tabpanel" class="tab-pane active" id="calendar-tab"><div id="calendar"></div></div>
+      <div role="tabpanel" class="tab-pane" id="list-tab">
+				<br>
+				<center>
+					{% render_table table %}
+				</center>
+				<center>
+					<strong>{{ courses|length }}</strong> {% if courses|length == 1 %}course{% else %}courses{% endif %} | <strong>{{ credits_min }}{% if credits_max > 0 %} - {{ credits_max }}{% endif %}</strong> credits
+        </center>
+				<br>
+			</div>
+      <div role="tabpanel" class="tab-pane active" id="calendar-tab">
+				<div id="calendar"></div>
+			</div>
     </div>
   </div>
 </div>

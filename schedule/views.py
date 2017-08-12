@@ -193,6 +193,7 @@ def schedule_view(request, identifier):
     RequestConfig(request).configure(table)
 
     context = {
+        'courses': courses,
         'table': table,
         'social_desc': desc,
         'term': term,
