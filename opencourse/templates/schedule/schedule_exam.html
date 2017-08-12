@@ -17,18 +17,20 @@
   input {
     display: table-cell;
   }
-	#calendar-tab {
-		margin: 40px 10px;
-		padding: 0;
-		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
-		font-size: 14px;
-	}
 	#calendar {
-		max-width: 900px;
+    max-width: 70%;
 		margin: 0 auto;
 	}
+  .print-only {
+    display: none;
+  }
   @media print {
-    .noprint {display:none !important;}
+    .print-only {
+      display: block !important;
+    }
+    .noprint, footer {
+      display: none;
+    }
     a:link:after, a:visited:after {
       display: none;
       content: "";
@@ -48,11 +50,6 @@
 .pagebreak {
   page-break-before: always;
 }
-#calendar-tab {
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
 </style>
 <script>
 var switched = false;
@@ -61,23 +58,16 @@ $(document).ready(function() {
     header: {
       left:   'today prev,next',
       center: 'title',
-      right:  'agendaWeek,month',
+      right:  'listMonth,agendaWeek',
     },
-    defaultView: 'agendaWeek',
+    defaultView: 'listMonth',
     defaultDate: '{{ first_exam }}',
     minTime: '08:00:00',
     maxTime: '22:00:00',
     editable: false,
     hiddenDays: [0],
     allDaySlot: false,
-    events: '/schedule/calendar/exam/?identifier={{ identifier }}',
-    loading: function(isLoading, view) {
-      // Hacky fix to avoid calendar loading
-      if (!isLoading && !switched) {
-        $('#viewTabs a[href="#list-tab"]').tab('show');
-        switched=true;
-      }
-    }
+    events: '/schedule/calendar/exam/?identifier={{ identifier }}'
   });
 });
 </script>
@@ -110,15 +100,6 @@ $(document).ready(function() {
       </h6>
     </h1>
   </div>
-  <div role="tabpanel">
-    <ul class="nav nav-tabs" role="tablist" id="viewTabs">
-      <li role="presentation"><a href="#list-tab" aria-controls="list-tab" role="tab" data-toggle="tab">List View</a></li>
-      <li role="presentation" class="active"><a href="#calendar-tab" aria-controls="calendar-tab" role="tab" data-toggle="tab">Calendar View</a></li>
-    </ul>
-    <div class="tab-content">
-      <div role="tabpanel" class="tab-pane" id="list-tab"><br>{% render_table table %}</div>
-      <div role="tabpanel" class="tab-pane active" id="calendar-tab"><div class="pagebreak"></div><div id="calendar" style="overflow-y: scroll;"></div></div>
-    </div>
-  </div>
+  <div id="calendar" style="overflow-y: scroll;"></div>
 </div>
 {% endblock %}

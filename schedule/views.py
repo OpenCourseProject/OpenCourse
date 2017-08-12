@@ -106,7 +106,7 @@ def schedule(request):
         'deleted_courses': deleted_courses,
         'has_exams': has_exams,
     }
-    return render(request, 'schedule/course_schedule.html', context)
+    return render(request, 'schedule/schedule.html', context)
 
 @login_required
 def exam_schedule(request, termid):
@@ -147,7 +147,7 @@ def exam_schedule(request, termid):
         'identifier': identifier,
         'authenticated': True,
     }
-    return render(request, 'schedule/exam_schedule.html', context)
+    return render(request, 'schedule/schedule_exam.html', context)
 
 def schedule_view(request, identifier):
     query = ScheduleEntry.objects.filter(identifier=identifier)
@@ -211,7 +211,7 @@ def schedule_view(request, identifier):
         context['user_courses'] = schedule_get_courses(ScheduleEntry.objects.filter(user=request.user, term=term))
         context['profile'] = Profile.objects.get(user=request.user)
 
-    return render(request, 'schedule/course_schedule_view.html', context)
+    return render(request, 'schedule/schedule_share.html', context)
 
 def schedule_calendar(request):
     if request.method == 'GET':

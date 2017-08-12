@@ -8,7 +8,6 @@ class ScheduleTable(tables.Table):
 
     class Meta:
         model = Course
-        template = "schedule/course_table.html"
         order_by = "start_time"
         empty_text = "No courses yet!"
         attrs = {"class": "table table-bordered table-striped table-hover"}
@@ -21,7 +20,6 @@ class SchedulePrintTable(tables.Table):
 
     class Meta:
         model = Course
-        template = "schedule/course_table.html"
         order_by = "start_time"
         empty_text = "No courses yet!"
         attrs = {"class": "table table-bordered table-striped"}
@@ -36,7 +34,6 @@ class ExamTable(tables.Table):
     end_time = tables.TimeColumn()
 
     class Meta:
-        template = "schedule/exam_table.html"
         order_by = "date"
         empty_text = "No exams found for your schedule"
         attrs = {"class": "table table-bordered table-striped table-hover"}

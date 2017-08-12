@@ -24,6 +24,9 @@
   .schedule-form input {
     display: table-cell;
   }
+  .pagination {
+    display: none;
+  }
 	#calendar-tab {
 		margin: 40px 10px;
 		padding: 0;
@@ -31,7 +34,6 @@
 		font-size: 14px;
 	}
 	#calendar {
-		max-width: 900px;
 		margin: 0 auto;
 	}
   #course-list {
@@ -270,7 +272,7 @@ function updateDetails(element) {
   <div class="schedule">
     <table class="table">
       <tr style="border: 0;">
-        <td class="noprint">
+        <td class="noprint" style="white-space: nowrap;">
           <div id="course-list" data-step="3" data-position="right" data-intro="Click on any of your course listings to open the course page. There you can see your textbooks, who else is in the class, and way more.">
             <div class="list-group pull-left">
               {% for course, color in course_colors.items %}
@@ -320,6 +322,9 @@ function updateDetails(element) {
   <div class="print-only" style="margin: 1rem">
     <center>
       {% render_table print_table %}
+    </center>
+    <center>
+      <strong>{{ courses|length }}</strong> {% if courses|length == 1 %}course{% else %}courses{% endif %} | <strong>{{ credits_min }}{% if credits_max > 0 %} - {{ credits_max }}{% endif %}</strong> credits
     </center>
   </div>
   {% else %}
