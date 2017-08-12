@@ -3,6 +3,8 @@ from .common import *
 
 DEBUG = True
 
+# SESSION_COOKIE_DOMAIN sets development URL for cookie storage
+
 DATABASES = {
     'default': {
         # 'ENGINE' scrubbed
