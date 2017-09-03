@@ -43,6 +43,14 @@ Install the necessary pip libraries:
 
     pip install -r requirements.txt
 
+Note: for installs on macOS, you may run across a compile error for MySQL:
+
+    ld: library not found for -lssl
+
+To make sure openssl libraries are included at compile time, run the command with the following options:
+
+    pip install -r requirements.txt --global-option=build_ext --global-option="-I/usr/local/opt/openssl/include" --global-option="-L/usr/local/opt/openssl/lib"
+
 The settings files are now located at ```opencourse/settings/```. It is important to note that by default the **development** settings are used. You can change this to production settings in the ```__init__.py``` file in this directory when you're ready.
 
 Open ```common.py``` up using your favorite text editor because we have some work to do. Some private values have been removed from the settings file and have been noted in comments. You'll need to provide your own replacement for these.
