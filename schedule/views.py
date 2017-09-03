@@ -46,7 +46,7 @@ def schedule(request):
     credits_min = 0
     credits_max = 0
     time_min = datetime.time(8, 0, 0)
-    time_max = datetime.time(0, 0, 0)
+    time_max = datetime.time(18, 0, 0)
     show_sat = False
     invalid_courses = []
     deleted_courses = []
