@@ -366,7 +366,7 @@ class Command(BaseCommand):
                     change_log.append('Changed value deleted: true -> false')
                     obj.deleted = False
                     changed = True
-                if len([item for item in obj.meeting_times.all() if item not in meeting_times]) > 0:
+                if (len([item for item in obj.meeting_times.all() if item not in meeting_times]) > 0) or (len(obj.meeting_times.all()) is 0 and len(meeting_times) > 0):
                     change_log.append('Changed meeting times ' + str(obj.meeting_times.all()) + ' -> ' + str(meeting_times))
                     changed = True
                     obj.meeting_times = meeting_times
