@@ -13,6 +13,9 @@ def version_course(sender, instance, **kwargs):
     send_follow_email(instance)
 
 def send_follow_email(course):
+    if settings.DEBUG or settings.TESTING:
+        return
+
     term = course.term
     subject, from_email = 'Course Update: ' + course.title, 'admin@opencourseproject.com',
     course_link = 'https://opencourseproject.com/course/' + str(term.value) + '/' + str(course.crn) + '/'

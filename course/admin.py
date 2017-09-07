@@ -9,8 +9,12 @@ class CourseAdmin(admin.ModelAdmin):
 class CourseInline(admin.StackedInline):
     model = Course
 
+@admin.register(CourseVersion)
+class CourseVersionAdmin(admin.ModelAdmin):
+    search_fields = ['course_crn']
+
 @admin.register(Term)
-class CourseAdmin(admin.ModelAdmin):
+class TermAdmin(admin.ModelAdmin):
     search_fields = ['name']
     list_filter = ('update',)
 
@@ -22,7 +26,6 @@ class InstructorAdmin(admin.ModelAdmin):
 class FollowEntryAdmin(admin.ModelAdmin):
     search_fields = ['course_crn', 'user__username']
 
-admin.site.register(CourseVersion)
 admin.site.register(Attribute)
 admin.site.register(InstructorSuggestion)
 admin.site.register(QueryLog)
