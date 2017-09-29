@@ -1,6 +1,6 @@
 {% for update in updates %}
 <!-- Output Modal -->
-{% include "dashboard/output-modal.html" %}
+{% include "component/dashboard/output-modal.html" %}
 <a href="javascript:;" class="list-group-item" data-toggle="collapse" data-target="#update-{{ update.time_created|date:"YmdHi" }}" data-parent="#update-log">
   <strong>{{ update.time_created }}</strong>:
   {% if update.status == 0 %}
