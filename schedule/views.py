@@ -27,10 +27,9 @@ def schedule(request):
         if 'term' in request.GET:
             term = Term.objects.get(value=request.GET['term'])
         else:
+            term = Term.objects.all()[0]
             if profile.default_term:
                 term = profile.default_term
-            else:
-                term = Term.objects.all()[0]
         form = ScheduleForm(request.user)
         form.fields['term'].initial = term
 
@@ -39,6 +38,11 @@ def schedule(request):
     options_form.fields['show_details'].initial = profile.show_details_schedule
 
     query = ScheduleEntry.objects.filter(user=request.user, term=term).order_by('course_crn')
+    if len(query) is 0:
+        temp = ScheduleEntry.objects.all()
+        if len(temp) > 0:
+            term = schedule_get_course(temp[0])
+            query = ScheduleEntry.objects.filter(user=request.user, term=term).order_by('course_crn')
     courses = schedule_get_courses(query)
     hash = get_identifier(request.user, term)
     share_url = request.build_absolute_uri('/schedule/' + hash + '/')
