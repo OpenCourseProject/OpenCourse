@@ -71,7 +71,13 @@
             {% if table.page.has_previous %}
                 {% block pagination.previous %}
                 <li class="previous">
-                    <a href="{% querystring table.prefixed_page_field=table.page.previous_page_number %}" class="btn btn-default"><span aria-hidden="true">&larr;</span> {% trans 'previous' %}</a>
+                    <form class="form-horizontal" action="{% querystring table.prefixed_page_field=table.page.previous_page_number %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            {{ field.as_hidden }}
+                        {% endfor %}
+                        <a href="javascript:void(0)" onclick="$(this).closest('form').submit()" class="btn btn-default"><span aria-hidden="true">&larr;</span> {% trans 'Previous' %}</a>
+                    </form>
                 </li>
                 {% endblock pagination.previous %}
             {% endif %}
@@ -87,7 +93,13 @@
             {% if table.page.has_next %}
                 {% block pagination.next %}
                 <li class="next">
-                    <a href="{% querystring table.prefixed_page_field=table.page.next_page_number %}" class="btn btn-default">{% trans 'next' %} <span aria-hidden="true">&rarr;</span></a>
+                    <form class="form-horizontal" action="{% querystring table.prefixed_page_field=table.page.next_page_number %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            {{ field.as_hidden }}
+                        {% endfor %}
+                        <a href="javascript:void(0)" onclick="$(this).closest('form').submit()" class="btn btn-default">{% trans 'Next' %} <span aria-hidden="true">&rarr;</span></a>
+                    </form>
                 </li>
                 {% endblock pagination.next %}
             {% endif %}
