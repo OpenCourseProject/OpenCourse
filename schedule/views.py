@@ -39,9 +39,9 @@ def schedule(request):
 
     query = ScheduleEntry.objects.filter(user=request.user, term=term).order_by('course_crn')
     if len(query) is 0:
-        temp = ScheduleEntry.objects.all()
+        temp = ScheduleEntry.objects.filter(user=request.user)
         if len(temp) > 0:
-            term = schedule_get_course(temp[0])
+            term = schedule_get_course(temp[0]).term
             query = ScheduleEntry.objects.filter(user=request.user, term=term).order_by('course_crn')
     courses = schedule_get_courses(query)
     hash = get_identifier(request.user, term)
