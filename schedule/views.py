@@ -18,6 +18,7 @@ import datetime
 
 @login_required
 def schedule(request):
+    term = Term.objects.all()[0]
     profile = Profile.objects.get(user=request.user)
     if request.method == 'POST':
         form = ScheduleForm(request.user, request.POST)
