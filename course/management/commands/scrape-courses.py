@@ -390,13 +390,14 @@ class Command(BaseCommand):
                 self.log('> Meeting times: {}'.format(course.meeting_times.all()), True)
                 added += 1
         # Remove courses that didn't show up
-        missing_courses = Course.objects.filter(term=term, deleted=False, hidden=f_mark).exclude(crn__in=crns)
-        for missing_course in missing_courses:
-            missing_course.deleted = True
-            if not self.debug:
-                missing_course.save()
-            self.log('Removed a course that no longer exists, CRN {}'.format(missing_course.crn), True)
-            deleted += 1
+        if term.value == settings.CURRENT_TERM or term.value == settings.REGISTER_TERM:
+            missing_courses = Course.objects.filter(term=term, deleted=False, hidden=f_mark).exclude(crn__in=crns)
+            for missing_course in missing_courses:
+                missing_course.deleted = True
+                if not self.debug:
+                    missing_course.save()
+                self.log('Removed a course that no longer exists, CRN {}'.format(missing_course.crn), True)
+                deleted += 1
 
         count = 0 if len(rows) is 0 else len(rows) - 1
         stats = {
