@@ -54,6 +54,7 @@ class ExamEntry(models.Model):
     class Meta:
         verbose_name = "exam period"
         verbose_name_plural = "exam periods"
+        unique_together = ('term', 'days', 'course_start_time', 'course_end_time',)
 
     def __unicode__(self):
         return "%s: %s %s-%s" % (self.term.name, self.days, self.course_start_time, self.course_end_time)
