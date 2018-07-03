@@ -201,7 +201,6 @@ class Command(BaseCommand):
                         self.complete_update(UpdateLog.FAILED)
                         return
                     # Select the relevant term
-                    self.browser.select('startyearlist', '2')
                     self.browser.select('semesterlist', str(term.value))
                     # Find and click the 'search' button
                     button = self.browser.find_by_id('Button1').click()
